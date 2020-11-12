@@ -16,13 +16,12 @@ class EstadisticaCuenta(models.Model):
 
 class Cuenta(models.Model):
     nomUsuario=models.CharField(max_length=15, primary_key=True)
-    clave=models.CharField(max_length=12,primary_key=True)
+    clave=models.CharField(max_length=12)
     idEstadisticas=models.ForeignKey(EstadisticaCuenta,on_delete=models.PROTECT)
     passcode=models.CharField(max_length=6)
 
 class BancoPregunta(models.Model):    
     nomUsuario=models.ForeignKey(Cuenta, on_delete=models.PROTECT)
-    clave=models.ForeignKey(Cuenta, on_delete=models.PROTECT)
     numPregunta=models.ForeignKey(Pregunta, on_delete=models.PROTECT)
 
 class OpcionCrud(models.Model):
@@ -33,11 +32,11 @@ class OpcionCrud(models.Model):
 class Empleado(models.Model):
     idEmpleado=models.IntegerField(primary_key=True)
     nomUsuario=models.ForeignKey(Cuenta, on_delete=models.PROTECT)
-    clave=models.ForeignKey(Cuenta, on_delete=models.PROTECT)
+    #clave=models.ForeignKey(Cuenta, on_delete=models.PROTECT)
     #idERH=models.ForeignKey(ERH, on_delete=models.PROTECT)
     nombre=models.CharField(max_length=50)
     apellido=models.CharField(max_length=50)
-    salario=models.DecimalField()
+    salario=models.DecimalField(max_digits=5, decimal_places=2)
     dui=models.CharField(max_length=50)
     isss=models.CharField(max_length=50)
     nup=models.CharField(max_length=50)
@@ -61,7 +60,7 @@ class Rol(models.Model):
     descripRol=models.CharField(max_length=200)
 
 class Solicitud(models.Model):
-    idSolicitud=models.CharField(primary_key=True)    
+    #idSolicitud=models.CharField(primary_key=True, max_length=)    
     idEmpleado=models.ForeignKey(Empleado, on_delete=models.PROTECT)
     idERH=models.ForeignKey(ERH, on_delete=models.PROTECT)
     tipoSolicitud=models.CharField(max_length=50)
