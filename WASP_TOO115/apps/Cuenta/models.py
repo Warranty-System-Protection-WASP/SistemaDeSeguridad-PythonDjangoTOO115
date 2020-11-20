@@ -88,10 +88,12 @@ class BancoPregunta(models.Model):
     nomUsuario=models.ForeignKey(Usuario, on_delete=models.PROTECT)
     numPregunta=models.ForeignKey(Pregunta, on_delete=models.PROTECT)
     respuesta=models.CharField(max_length=75)
+    class Meta:
+        unique_together = ("nomUsuario", "numPregunta")
 
 class EstadisticaCuenta(models.Model):
     idEstadisticas=models.AutoField(primary_key=True)
-    cuenta = models.ForeignKey(Usuario, on_delete= models.PROTECT)
+    cuenta = models.OneToOneField(Usuario, on_delete= models.PROTECT)
     cambioClave=models.PositiveIntegerField(default=0)
     cambioRol=models.PositiveIntegerField(default=0)
     bloqueos=models.PositiveIntegerField(default=0)
