@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.Cuenta.models import Cuenta
+from apps.Cuenta.models import Usuario
 
 # Create your models here.
 class Rol(models.Model):
@@ -10,7 +10,7 @@ class Rol(models.Model):
 
 class OpcionCrud(models.Model):
     idOpcion=models.IntegerField(primary_key=True)
-    numCrud=models.IntegerField()    
+    numCrud=models.IntegerField()
     descripCrud=models.CharField(max_length=100)
 
 class RolOpcion(models.Model):
@@ -18,6 +18,8 @@ class RolOpcion(models.Model):
     idRol=models.ForeignKey(Rol, on_delete=models.PROTECT)
 
 class RolUsuario(models.Model):
-    idEmpleado=models.ForeignKey(Cuenta, on_delete=models.PROTECT)
+    idEmpleado=models.ForeignKey(Usuario, on_delete=models.PROTECT)
     idRol=models.ForeignKey(Rol, on_delete=models.PROTECT)
     is_activo=models.BooleanField()
+    #FechaInicio, creo que debe ir según el ejemplo del ingeniero a mi pregunta
+    #FechaFin, creo que debe ir según el ejemplo del ingeniero a mi pregunta
