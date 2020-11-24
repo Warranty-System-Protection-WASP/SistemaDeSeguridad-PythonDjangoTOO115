@@ -17,7 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from apps.Cuenta import views
 
+#Librerias para el login 
+from django.contrib.auth.views import LoginView,LogoutView
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
+    path('prueba/', views.index),
+    #Url para el login
+    path('login/', LoginView.as_view(template_name='login/login.html'), name='login'),        
 ]
