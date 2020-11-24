@@ -22,7 +22,7 @@ class UserManager(BaseUserManager):
             salario=salario,genero=genero,
             estadoCivil=estadoCivil,
             numCasa=numCasa,
-            calle=numCalle,
+            calle=calle,
             colonia=colonia)
         usuario.set_password(password)
         usuario.save()
