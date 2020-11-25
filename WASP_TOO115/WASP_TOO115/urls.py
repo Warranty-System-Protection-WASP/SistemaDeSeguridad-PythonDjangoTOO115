@@ -15,15 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from WASP_TOO115.views import index
 from apps.Cuenta import views
 
-#Librerias para el login 
+#Librerias para el login
 from django.contrib.auth.views import LoginView,LogoutView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('prueba/', views.index),
+    path('', index, name="index"),
+    #path('prueba/', views.index),
     #Url para el login
-    path('login/', LoginView.as_view(template_name='login/login.html'), name='login'),        
+    #path('login/', LoginView.as_view(template_name='login/login.html'), name='login'),
 ]
