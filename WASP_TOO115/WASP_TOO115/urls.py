@@ -18,6 +18,8 @@ from django.urls import path
 from WASP_TOO115.views import index
 from apps.Cuenta import views
 
+from apps.Rol.views import index_roles, view_rol, edit_rol, delete_rol
+
 #Librerias para el login
 from django.contrib.auth.views import LoginView,LogoutView
 
@@ -25,6 +27,10 @@ from django.contrib.auth.views import LoginView,LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
+    path(r'^Roles$', index_roles, name='index roles'),
+    path(r'^Roles/Nuevo$', view_rol, name='view roles'),
+    path(r'^Roles/Editar/(?P<id_rol>[^/]+)/$', edit_rol, name='edit roles'),
+    path(r'^Roles/Eliminar/(?P<id_rol>[^/]+)/$', delete_rol, name='delete roles'),
     #path('prueba/', views.index),
     #Url para el login
     #path('login/', LoginView.as_view(template_name='login/login.html'), name='login'),

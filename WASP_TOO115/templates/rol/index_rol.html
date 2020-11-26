@@ -1,0 +1,59 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}
+Catálogo De Puestos | WASP - TOO115
+{% endblock %}
+
+{% block contentHeader %}
+Puestos De Trabajo:
+{% endblock %}
+
+{% block content %}
+<section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Catálogo De Puestos De Trabajo:</h3><a href="{% url 'view roles' %}"><button type="button" class="btn btn-info float-right"><i class="fas fa-plus"></i> Crear</button></a>
+              </div>
+              <div class="card-body">
+                  <table id="tabla_roles" class="table table-bordered table-hover">
+                      <thead>
+                         <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                         </tr>
+                      </thead>
+                      <tbody>
+                        {% if roles %}
+                        {% for rol in roles %}
+                         <tr>
+                            <td>{{ rol.id }}</td>
+                            <td>{{ rol.nombreRol }}</td>
+                            <td>{{ rol.descripRol }}</td>
+                            <td><a href="{% url 'edit roles' rol.id %}"><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <button type="button" class="btn btn-info" name="editar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                         </tr>
+                         {% endfor %}
+                         {% else %}
+                         <h4>No hay registros de Puestos</h4>
+                         {% endif %}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                           <th>ID</th>
+                           <th>Título</th>
+                           <th>Descripción</th>
+                           <th>Acciones</th>
+                        </tr>
+                      </tfoot>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+{% endblock %}

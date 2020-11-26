@@ -1,0 +1,17 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}
+Catálogo De Puestos | WASP - TOO115
+{% endblock %}
+
+{% block contentHeader %}
+Crear Puestos De Trabajo:
+{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-info"><i class="fas fa-save"></i> Guardar</button>
+</form>
+{% endblock %}
