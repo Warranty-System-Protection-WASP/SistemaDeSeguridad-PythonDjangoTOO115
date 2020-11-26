@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from django.conf.urls import include
 from WASP_TOO115.views import index
 from apps.Cuenta import views
 
@@ -27,10 +28,7 @@ from django.contrib.auth.views import LoginView,LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
-    path(r'^Roles$', index_roles, name='index roles'),
-    path(r'^Roles/Nuevo$', view_rol, name='view roles'),
-    path(r'^Roles/Editar/(?P<id_rol>[^/]+)/$', edit_rol, name='edit roles'),
-    path(r'^Roles/Eliminar/(?P<id_rol>[^/]+)/$', delete_rol, name='delete roles'),
+    path(r'^Roles$', include('apps.Rol.urls'), name='roles'),
     #path('prueba/', views.index),
     #Url para el login
     #path('login/', LoginView.as_view(template_name='login/login.html'), name='login'),

@@ -5,13 +5,160 @@ Catálogo De Puestos | WASP - TOO115
 {% endblock %}
 
 {% block contentHeader %}
-Crear Puestos De Trabajo:
+Formulario De Puestos De Trabajo:
 {% endblock %}
 
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-info"><i class="fas fa-save"></i> Guardar</button>
-</form>
+<div class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">General</h3>
+  </div>
+  <!-- /.card-header -->
+  <!-- form start -->
+  <form role="form" method="post">
+    {% csrf_token %}
+    <div class="card-body">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Título</label>
+        {{ form.nombreRol }}
+      </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Descripción</label>
+        {{ form.descripRol }}
+      </div>
+    </div>
+    <div class="card-footer">
+      <button type="submit" class="btn btn-info"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+  </form>
+</div>
+
+<div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title">Acceso</h3>
+              </div>
+              <!-- /.card-header -->
+            <form role="form" method="post">
+              {% csrf_token %}
+              <div class="card-body">
+                  <ul class="products-list product-list-in-card pl-2 pr-2">
+                    <div class="form-group">
+                      <label for="customRange1"><h3>Catálogo De Puestos De Trabajo</h3></label>
+                    </div>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                          <label class="custom-control-label" for="customSwitch1">Consultar Puesto de Trabajo</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                          <label class="custom-control-label" for="customSwitch2">Crear Puesto de Trabajo</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                          <label class="custom-control-label" for="customSwitch3">Modificar Puesto de Trabajo</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch4">
+                          <label class="custom-control-label" for="customSwitch4">Eliminar Puesto de Trabajo</label>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <ul class="products-list product-list-in-card pl-2 pr-2">
+                    <div class="form-group">
+                      <label for="customRange1"><h3>Unidades Organizacionales</h3></label>
+                    </div>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch5">
+                          <label class="custom-control-label" for="customSwitch5">Consultar Unidades Organizacionales</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch6">
+                          <label class="custom-control-label" for="customSwitch6">Crear Unidades Organizacionales</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch7">
+                          <label class="custom-control-label" for="customSwitch7">Modificar Unidades Organizacionales</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch8">
+                          <label class="custom-control-label" for="customSwitch8">Eliminar Unidades Organizacionales</label>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <ul class="products-list product-list-in-card pl-2 pr-2">
+                    <div class="form-group">
+                      <label for="customRange1"><h3>Usuarios</h3></label>
+                    </div>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch9">
+                          <label class="custom-control-label" for="customSwitch9">Consultar Usuarios</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch10">
+                          <label class="custom-control-label" for="customSwitch10">Crear Usuarios</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch11">
+                          <label class="custom-control-label" for="customSwitch11">Modificar Usuarios</label>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="form-group">
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                          <input type="checkbox" class="custom-control-input" id="customSwitch12">
+                          <label class="custom-control-label" for="customSwitch12">Eliminar Usuarios</label>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-info"><i class="fas fa-save"></i> Guardar</button>
+              </div>
+              </form>
+              <!-- /.card-body -->
+            </div>
 {% endblock %}

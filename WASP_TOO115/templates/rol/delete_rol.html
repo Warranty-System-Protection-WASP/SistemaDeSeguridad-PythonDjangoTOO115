@@ -1,7 +1,51 @@
-<div class="window-notice" id="window-notice">
-    <div class="content">
-        <div class="content-text">Este sitio utiliza cookies para obtener la mejor experiencia en nuestra web.
-        <a href="#">Leer más.</a></div>
-        <div class="content-buttons"><a href="#" id="close-button">Aceptar</a></div>
-    </div>
-</div>
+  {% extends 'Base/Base.html' %}
+
+  {% block title %}
+  Catálogo De Puestos | WASP - TOO115
+  {% endblock %}
+
+  {% block contentHeader %}
+  Crear Puestos De Trabajo:
+  {% endblock %}
+
+  {% block extrastatic %}
+  <style type="text/css">
+    .window-notice {
+      background: rgba(33, 41, 52, .85);
+      left: 0;
+      bottom: 0;
+      right: 0;
+      top: 0;
+      display: flex;
+      position: fixed;
+      z-index: 999;
+    }
+
+    .window-notice .content {
+      background: #fff;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(33, 41, 52, .75);
+      box-sizing: content-box;
+      display: flex;
+      flex-direction: column;
+      margin: auto;
+      max-width: 600px;
+      min-width: 320px !important;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      padding: 2rem;
+      font-size: 1.3rem;
+    }
+  </style>
+  {% endblock %}
+
+{% block content %}
+  <div class="window-notice" id="window-notice">
+      <form method="post" class="content">
+        {% csrf_token %}
+        <h3>¿Desea eliminar el registro de {{ rol.nombreRol }}?</h3>
+        <br/><a href="{% url 'index roles' %}"><button type="submit" class="btn btn-info" name="eliminar_rol"><i class="fas fa-exclamation-circle"></i>  Sí, eliminar</button></a>
+        <br/><a href="{% url 'index roles' %}"><button type="cancel" class="btn btn-info" name="cancelar_rol"><i class="fas fa-ban"></i> Cancelar</button></a>
+  </div>
+{% endblock %}

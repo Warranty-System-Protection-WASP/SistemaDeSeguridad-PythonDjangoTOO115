@@ -34,7 +34,7 @@ Puestos De Trabajo:
                             <td>{{ rol.id }}</td>
                             <td>{{ rol.nombreRol }}</td>
                             <td>{{ rol.descripRol }}</td>
-                            <td><a href="{% url 'edit roles' rol.id %}"><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <button type="button" class="btn btn-info" name="editar"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+                            <td><a href="{% url 'edit roles' rol.id %}"><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <a href="{% url 'delete roles' rol.id %}"><button type="button" class="btn btn-info" name="eliminar"><i class="fas fa-trash-alt"></i> Eliminar</button></a></td>
                          </tr>
                          {% endfor %}
                          {% else %}
