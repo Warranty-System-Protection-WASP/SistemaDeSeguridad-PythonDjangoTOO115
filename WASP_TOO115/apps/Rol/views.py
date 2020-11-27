@@ -53,25 +53,17 @@ def update_acceso(request):
                for sw in switches:
                    if request.POST['id'] == sw:
                        try:
+                           obj = RolOpcion.objects.filter(idRol = 1, idOpcion = contador)
+                           if request.POST['estado'] == 'unchecked':
+                               obj.delete()
                            if request.POST['estado'] == 'checked':
                                with connection.cursor() as cursor:
                                    cursor.execute("INSERT INTO ROL_ROLOPCION (IDOPCION_ID,IDROL_ID) VALUES ( %s , %s );", [contador,1])
                                    cursor.close()
                        except:
                            obj = RolOpcion.objects.filter(idRol = 1, idOpcion = contador)
-                           #obj = obj1.filter(idOpcion = contador)
                            if request.POST['estado'] == 'unchecked':
                                obj.delete()
-                               #opcion = OpcionCrud.objects.get(id = contador)
-                               #rol = Rol.objects.get(id = 1)
-                               #op = RolOpcion.objects.create(idOpcion = opcion, idRol = rol)
-                       #if obj is None:
-                        #   if request.POST['estado'] == 'checked':
-                        #       op = RolOpcion.objects.create(idOpcion = contador, idRol = '1')
-                               #op.save(force_insert=True)
-                       #else:
-                        #   if request.POST['estado'] == 'unchecked':
-                        #       obj.delete()
                        return HttpResponse('success')
                    contador +=1
 
