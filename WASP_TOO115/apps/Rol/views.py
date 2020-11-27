@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
-
-from apps.Rol.models import Rol
+from django.utils.safestring import mark_safe
+from django.core import serializers
+from apps.Rol.models import Rol, RolOpcion
 from apps.Rol.forms import rol_form
+
+import json
 
 # Create your views here.
 def index_roles(request):
@@ -21,6 +24,8 @@ def view_rol(request):
 
 def edit_rol(request, id_rol):
     rol = Rol.objects.get(id = id_rol)
+    acceso = RolOpcion.objects.filter(idRol = id_rol)
+    js_data = serializers.serialize('json', acceso)
     if request.method == 'GET':
         form = rol_form(instance = rol)
     else:
@@ -28,7 +33,7 @@ def edit_rol(request, id_rol):
         if form.is_valid():
             form.save()
         return redirect('index roles')
-    return render(request, 'rol/form_rol.html', {'form':form})
+    return render(request, 'rol/form_rol.html', {'form':form, 'my_data':js_data})
 
 def delete_rol(request, id_rol):
     rol = Rol.objects.get(id = id_rol)

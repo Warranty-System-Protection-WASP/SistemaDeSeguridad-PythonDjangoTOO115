@@ -34,11 +34,14 @@ Formulario De Puestos De Trabajo:
 </div>
 
 <div class="card card-secondary">
+              {% for acceso in accesos %}
+              {{ acceso.idOpcion.descripCrud }}
+              {% endfor %}
               <div class="card-header">
                 <h3 class="card-title">Acceso</h3>
               </div>
               <!-- /.card-header -->
-            <form role="form" method="post">
+            <form role="form" method="post" id="control-acceso" value="{{ my_data }}">
               {% csrf_token %}
               <div class="card-body">
                   <ul class="products-list product-list-in-card pl-2 pr-2">
@@ -48,7 +51,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                          <input type="checkbox" value="1" class="custom-control-input" id="customSwitch1" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch1">Consultar Puesto de Trabajo</label>
                         </div>
                       </div>
@@ -56,7 +59,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                          <input type="checkbox" value="2" class="custom-control-input" id="customSwitch2" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch2">Crear Puesto de Trabajo</label>
                         </div>
                       </div>
@@ -64,7 +67,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                          <input type="checkbox" value="3" class="custom-control-input" id="customSwitch3" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch3">Modificar Puesto de Trabajo</label>
                         </div>
                       </div>
@@ -72,7 +75,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch4">
+                          <input type="checkbox" value="4" class="custom-control-input" id="customSwitch4" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch4">Eliminar Puesto de Trabajo</label>
                         </div>
                       </div>
@@ -86,7 +89,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch5">
+                          <input type="checkbox" value="5" class="custom-control-input" id="customSwitch5" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch5">Consultar Unidades Organizacionales</label>
                         </div>
                       </div>
@@ -94,7 +97,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch6">
+                          <input type="checkbox" value="6" class="custom-control-input" id="customSwitch6" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch6">Crear Unidades Organizacionales</label>
                         </div>
                       </div>
@@ -102,7 +105,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch7">
+                          <input type="checkbox" value="7" class="custom-control-input" id="customSwitch7" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch7">Modificar Unidades Organizacionales</label>
                         </div>
                       </div>
@@ -110,7 +113,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch8">
+                          <input type="checkbox" value="8" class="custom-control-input" id="customSwitch8" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch8">Eliminar Unidades Organizacionales</label>
                         </div>
                       </div>
@@ -124,7 +127,7 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch9">
+                          <input type="checkbox" value="9" class="custom-control-input" id="customSwitch9" onclick="cambiar(this.id)" unchecked>
                           <label class="custom-control-label" for="customSwitch9">Consultar Usuarios</label>
                         </div>
                       </div>
@@ -132,24 +135,16 @@ Formulario De Puestos De Trabajo:
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch10">
-                          <label class="custom-control-label" for="customSwitch10">Crear Usuarios</label>
+                          <input type="checkbox" value="10" class="custom-control-input" id="customSwitch10" onclick="cambiar(this.id)" unchecked>
+                          <label class="custom-control-label" for="customSwitch10">Modificar Usuarios</label>
                         </div>
                       </div>
                     </li>
                     <li class="item">
                       <div class="form-group">
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch11">
-                          <label class="custom-control-label" for="customSwitch11">Modificar Usuarios</label>
-                        </div>
-                      </div>
-                    </li>
-                    <li class="item">
-                      <div class="form-group">
-                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                          <input type="checkbox" class="custom-control-input" id="customSwitch12">
-                          <label class="custom-control-label" for="customSwitch12">Eliminar Usuarios</label>
+                          <input type="checkbox" value="11" class="custom-control-input" id="customSwitch11" onclick="cambiar(this.id)" unchecked>
+                          <label class="custom-control-label" for="customSwitch11">Eliminar Usuarios</label>
                         </div>
                       </div>
                     </li>
@@ -161,4 +156,72 @@ Formulario De Puestos De Trabajo:
               </form>
               <!-- /.card-body -->
             </div>
+            <script type="text/javascript">
+                //se declara un array con los ids de todos los switches que hay en la vista para mayor facilidad
+                var switches = ["customSwitch1","customSwitch2","customSwitch3","customSwitch4","customSwitch5","customSwitch6","customSwitch7","customSwitch8","customSwitch9","customSwitch10","customSwitch11","customSwitch12",];
+                //La lista de control de acceso se pasa a traves de un atributo de una etiqueta HTML con un id especifico
+                //y se recoge aqui, al mismo tiempo que se serializa en JSON para poder obtener sus datos.
+                var element = document.getElementById("control-acceso");
+                var arreglo = element.getAttribute("value");
+                var obj = JSON.parse(arreglo);
+
+                //Aqui se recorren los datos de la lista de control de acceso y se pintan en la vista para mostrar
+                //los permisos habilitados-deshabilitados
+                for(var a=0;a<obj.length;a++){
+                  var item = obj[a].fields.idOpcion;
+                  cambiar2("customSwitch"+item);
+                }
+
+                //por ultimo se verifica la lista
+                validar();
+
+                //Funcion que cambia el atributo del switch a checked-unchecked segun el ID que se especifica
+                function cambiar(id){
+                  sw = document.getElementById(id);
+                  if(sw.getAttribute("unchecked")==""){
+                    sw.removeAttribute("unchecked");
+                    sw.setAttribute("checked","");
+                  }else{
+                    sw.removeAttribute("checked");
+                    sw.setAttribute("unchecked","");
+                  }
+                  //Se valida solo en el caso que los switches correspondientes a CREAR sean modificados
+                  if(id == switches[0] || id == switches[4] || id == switches[8]){
+                    validar();
+                  }
+                }
+                
+                //Esta es la misma funcion de cambiar, pero sin la verificacion al final
+                function cambiar2(id){
+                  sw = document.getElementById(id);
+                  if(sw.getAttribute("unchecked")==""){
+                    sw.removeAttribute("unchecked");
+                    sw.setAttribute("checked","");
+                  }else{
+                    sw.removeAttribute("checked");
+                    sw.setAttribute("unchecked","");
+                  }
+                }
+
+                //La funcion validar se encarga de verificar si algun switch correspondiente a CREAR ha sido modificados
+                //De ser así, deshabilita los switches de MODIFICAR,ACTUALIZAR y ELIMINAR.
+                function validar(){
+                  for(var i = 1;i <= 9;i++)
+                  {
+                    var sw = document.getElementById("customSwitch"+i);
+                    if(sw.getAttribute("unchecked")==""){
+                      for(var j = 1;j <= 3;j++){
+                        var swx = document.getElementById("customSwitch"+(i+j));
+                        swx.setAttribute("disabled","");
+                      }
+                    }else{
+                      for(var j = 1;j <= 3;j++){
+                        var swy = document.getElementById("customSwitch"+(i+j));
+                        swy.removeAttribute("disabled","");
+                      }
+                    }
+                    i=i+3;
+                  }
+                }
+            </script>
 {% endblock %}
