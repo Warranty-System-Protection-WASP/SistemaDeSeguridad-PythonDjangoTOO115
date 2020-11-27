@@ -4,6 +4,10 @@
 Catálogo De Puestos | WASP - TOO115
 {% endblock %}
 
+{% block extrastatic %}
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+{% endblock %}
+
 {% block contentHeader %}
 Formulario De Puestos De Trabajo:
 {% endblock %}
@@ -175,18 +179,35 @@ Formulario De Puestos De Trabajo:
 
                 //Funcion que cambia el atributo del switch a checked-unchecked segun el ID que se especifica
                 function cambiar(id){
+                  //var part = $('#'+id).attr("unchecked");
+                  //alert(part);
                   sw = document.getElementById(id);
                   if(sw.getAttribute("unchecked")==""){
                     sw.removeAttribute("unchecked");
                     sw.setAttribute("checked","");
+
+                    actualizar_acceso(id, "checked");
                   }else{
                     sw.removeAttribute("checked");
                     sw.setAttribute("unchecked","");
+
+                    actualizar_acceso(id, "unchecked");
                   }
                   //Se valida solo en el caso que los switches correspondientes a CREAR sean modificados
                   if(id == switches[0] || id == switches[4] || id == switches[8]){
                     validar();
                   }
+                }
+
+                function actualizar_acceso(id, estado){
+                  var data = {'csrfmiddlewaretoken': '{{ csrf_token }}', 'id': id, 'estado': estado}
+                  $.post("{% url 'update acceso' %}", data, function(response){
+                    if(response == 'success'){
+                      //alert('yes');
+                    }else{
+                      alert('Ah ocurrido un error!');
+                    }
+                  });
                 }
 
                 //Esta es la misma funcion de cambiar, pero sin la verificacion al final
