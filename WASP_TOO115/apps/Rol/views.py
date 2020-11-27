@@ -13,6 +13,7 @@ def index_roles(request):
     return render(request, 'rol/index_rol.html', context)
 
 def view_rol(request):
+    js_data = ""
     if request.method == 'POST':
         form = rol_form(request.POST)
         if form.is_valid():
@@ -20,7 +21,7 @@ def view_rol(request):
         return redirect('index roles')
     else:
         form = rol_form()
-    return render(request, 'rol/form_rol.html', {'form':form})
+    return render(request, 'rol/form_rol.html', {'form':form, 'my_data':js_data})
 
 def edit_rol(request, id_rol):
     rol = Rol.objects.get(id = id_rol)

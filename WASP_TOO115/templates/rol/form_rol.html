@@ -34,9 +34,6 @@ Formulario De Puestos De Trabajo:
 </div>
 
 <div class="card card-secondary">
-              {% for acceso in accesos %}
-              {{ acceso.idOpcion.descripCrud }}
-              {% endfor %}
               <div class="card-header">
                 <h3 class="card-title">Acceso</h3>
               </div>
@@ -163,15 +160,16 @@ Formulario De Puestos De Trabajo:
                 //y se recoge aqui, al mismo tiempo que se serializa en JSON para poder obtener sus datos.
                 var element = document.getElementById("control-acceso");
                 var arreglo = element.getAttribute("value");
-                var obj = JSON.parse(arreglo);
 
                 //Aqui se recorren los datos de la lista de control de acceso y se pintan en la vista para mostrar
                 //los permisos habilitados-deshabilitados
-                for(var a=0;a<obj.length;a++){
-                  var item = obj[a].fields.idOpcion;
-                  cambiar2("customSwitch"+item);
+                if(arreglo != ""){
+                  var obj = JSON.parse(arreglo);
+                  for(var a=0;a<obj.length;a++){
+                    var item = obj[a].fields.idOpcion;
+                    cambiar2("customSwitch"+item);
+                  }
                 }
-
                 //por ultimo se verifica la lista
                 validar();
 
@@ -190,7 +188,7 @@ Formulario De Puestos De Trabajo:
                     validar();
                   }
                 }
-                
+
                 //Esta es la misma funcion de cambiar, pero sin la verificacion al final
                 function cambiar2(id){
                   sw = document.getElementById(id);
