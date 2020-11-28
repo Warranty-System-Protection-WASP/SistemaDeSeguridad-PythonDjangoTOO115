@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
     path(r'^Roles$', include('apps.Rol.urls'), name='roles'),
+    path('Cuenta/', include('apps.Cuenta.urls', namespace='Cuenta')),
     #path('prueba/', views.index),
     #Url para el login
     #path('login/', LoginView.as_view(template_name='login/login.html'), name='login'),

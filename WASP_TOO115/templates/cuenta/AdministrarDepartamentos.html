@@ -1,0 +1,85 @@
+{% extends 'Base/Base.html' %}
+
+{% block Title %}
+Catálogo de departamentos | WASP - TOO115
+{% endblock Title %}
+
+{% block contentHeader %}
+Departamentos
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center" align="center">
+  <div class="col-lg-6 col-md col-sm col-xs text-center mt-1" width="50%">
+    <div class="row container">
+      <a class="btn btn-primary btn-lg" href="{% url 'Cuenta:CrearDepartamento' %}"><i class="fas fa-plus"></i> Departamento</a>
+    </div>
+    {% for message in messages %}
+    <div class="alert alert-success mt-5 col-sm-3 text-center">
+      <a class="close" href="#" data-dismiss="alert">×</a>
+        {{ message }}
+    </div>
+    {% endfor %}
+    <table id="datosTable" class="table table-striped table-dark">
+      <thead class="table-dark">
+        <tr>
+          <th scope="col" align="center">Id</th>
+          <th scope="col" align="center">Nombre</th>
+          <th scope="col" width="150px">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in object_list%}
+        <tr>
+          <td>{{ row.pk}}</td>
+          <td>{{ row.nomDepartamento}}</td>
+          <td>
+            <a href="{% url 'Cuenta:ModificarDepartamento' row.pk %}" class="btn-info btn btn-lg">
+              <i class="fas fa-pencil-alt"></i>
+            </a>
+            <button class="btn-danger btn btn-lg" data-toggle='modal' data-target='#deleteModal' data-pk='{{ row.pk }}'>
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">BORRAR</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          ¿Desea borrar el departamento seleccionado? Esta acción no se podrá deshacer
+        </p>
+      </div>
+      <div class="modal-footer">
+        <form id='deleteForm' method="post">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-danger" value="Aceptar"></input>
+        </form>
+        <form method="post">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extrajs %}
+<script>
+  $('#deleteModal').on('shown.bs.modal', (event) => {
+    var btn = $(event.relatedTarget);
+    var pk = btn.data('pk');
+    $('#deleteForm').attr('action', "{% url 'Cuenta:AdministrarDepartamentos' %}/" + pk + "/Borrar");
+  })
+</script>
+{% endblock extrajs %}

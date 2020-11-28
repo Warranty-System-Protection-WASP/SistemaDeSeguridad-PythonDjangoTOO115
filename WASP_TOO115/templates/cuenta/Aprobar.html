@@ -1,0 +1,22 @@
+{% extends 'Base/Base.html' %}
+
+{% block Title %}
+    Gestión de solictud
+{% endblock Title %}
+
+{% block contentHeader %}
+    Tome una decisión
+{% endblock %}
+
+
+{% block content %}
+
+<form method="POST">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <button type="submit">Registrar</button>
+</form>
+
+<hr />
+
+{% endblock %}

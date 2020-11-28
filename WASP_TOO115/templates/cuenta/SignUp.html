@@ -1,0 +1,30 @@
+{% extends 'Base/Base.html' %}
+
+{% block Title %}
+    SignUp | WASP - TOO115
+{% endblock Title %}
+
+{% block contentHeader %}
+    Ingrese sus datos
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="small-box" style="background: rgb(214, 234, 248); opacity: 70%; padding: 8px; width:60%">
+    <div class="inner">
+      <form method="POST">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-10 col-md-offset-2">
+            <div align= "left" class="btn_crear mb-3">
+              <button class="btn btn-primary btn-lg" type="submit"><i class="fas fa-save"></i> Guardar</button>
+              <a class="btn btn-danger btn-lg" href="{% url 'Cuenta:Solicitudes'%}"><i class="fas fa-times-circle"></i> Cancelar</a>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
