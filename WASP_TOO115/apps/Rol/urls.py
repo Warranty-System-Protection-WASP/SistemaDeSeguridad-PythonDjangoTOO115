@@ -1,6 +1,6 @@
 from django.urls import path, re_path
 
-from apps.Rol.views import index_roles, create_rol, edit_rol, delete_rol, edit_acceso, create_acceso
+from apps.Rol.views import index_roles, edit_rol, delete_rol, edit_acceso, create_acceso, create_rol
 
 urlpatterns = [
     path('', index_roles, name='index roles'),

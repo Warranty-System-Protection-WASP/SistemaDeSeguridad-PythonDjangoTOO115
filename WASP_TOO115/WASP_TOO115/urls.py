@@ -21,8 +21,6 @@ from apps.Cuenta import views
 from django.contrib.auth.decorators import login_required
 from apps.Cuenta.views import Login, Logout
 
-from apps.Rol.views import index_roles, view_rol, edit_rol, delete_rol
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),

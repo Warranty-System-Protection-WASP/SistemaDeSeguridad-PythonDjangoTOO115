@@ -18,7 +18,7 @@ Formulario De Puestos De Trabajo:
                 <h3 class="card-title">Acceso</h3>
               </div>
               <!-- /.card-header -->
-            <form role="form" method="post" id="control-acceso" value="{{ my_data }}">
+            <form role="form" method="post" id="control-acceso" value="{{ id_rol }}">
               {% csrf_token %}
               <div class="card-body">
                   <ul class="products-list product-list-in-card pl-2 pr-2">
@@ -128,7 +128,7 @@ Formulario De Puestos De Trabajo:
                   </ul>
               </div>
               <div class="card-footer">
-                <button type="submit" class="btn btn-info"><i class="fas fa-save"></i> Guardar</button>
+                <a href="{% url 'index roles' %}"><button type="button" class="btn btn-info"><i class="fas fa-save"></i> Guardar</button></a>
               </div>
               </form>
               <!-- /.card-body -->
@@ -136,19 +136,13 @@ Formulario De Puestos De Trabajo:
             <script type="text/javascript">
                 //se declara un array con los ids de todos los switches que hay en la vista para mayor facilidad
                 var switches = ["customSwitch1","customSwitch2","customSwitch3","customSwitch4","customSwitch5","customSwitch6","customSwitch7","customSwitch8","customSwitch9","customSwitch10","customSwitch11","customSwitch12",];
-                //La lista de control de acceso se pasa a traves de un atributo de una etiqueta HTML con un id especifico
-                //y se recoge aqui, al mismo tiempo que se serializa en JSON para poder obtener sus datos.
-                var element = document.getElementById("control-acceso");
-                var arreglo = element.getAttribute("value");
-
+                var idRol = (document.getElementById("control-acceso")).getAttribute("value");
                 //Aqui se recorren los datos de la lista de control de acceso y se pintan en la vista para mostrar
                 //los permisos habilitados-deshabilitados
-                if(arreglo != ""){
-                  var obj = JSON.parse(arreglo);
-                  for(var a=0;a<obj.length;a++){
-                    var item = obj[a].fields.idOpcion;
-                    cambiar2("customSwitch"+item);
-                  }
+                var arreglo = {{ my_data|safe }}
+                for(var x=0;x<arreglo.length;x++){
+                  var item = arreglo[x].fields.idOpcion;
+                  cambiar2("customSwitch"+item);
                 }
                 //por ultimo se verifica la lista
                 validar();
@@ -176,10 +170,10 @@ Formulario De Puestos De Trabajo:
                 }
 
                 function actualizar_acceso(id, estado){
-                  var data = {'csrfmiddlewaretoken': '{{ csrf_token }}', 'id': id, 'estado': estado}
-                  $.post("{% url 'update acceso' %}", data, function(response){
+                  var data = {'csrfmiddlewaretoken': '{{ csrf_token }}', 'id': id, 'estado': estado, 'id_rol': idRol}
+                  $.post("{% url 'edit acceso' %}", data, function(response){
                     if(response == 'success'){
-                      //alert('yes');
+                      alert('yes');
                     }else{
                       alert('Ah ocurrido un error!');
                     }
