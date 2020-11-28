@@ -1,5 +1,5 @@
 {% extends 'Base/Base.html' %}
-
+{% load static %}
 {% block Title %}
     SignUp | WASP - TOO115
 {% endblock Title %}
@@ -7,6 +7,28 @@
 {% block contentHeader %}
     Ingrese sus datos
 {% endblock %}
+
+{% block sidebar %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="{% url 'index' %}" class="row justify-content-center" style="background-color: rgb(255, 255, 255)">
+      <img src="{% static 'WASP.png' %}" alt="AdminLTE Logo" style="width:50%">
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
+{% endblock %}
+
 
 {% block content %}
 <div class="row justify-content-center">

@@ -1,28 +1,64 @@
-{% extends 'base/base.html' %}
-{% block title %}
-Iniciar sesión
+{% extends 'Base/Base.html' %}
+{% load static %}
+{% block Title %}
+Iniciar sesión | WASP - TOO115
+{% endblock Title %}
+
+{% block sidebar %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="{% url 'index' %}" class="row justify-content-center" style="background-color: rgb(255, 255, 255)">
+      <img src="{% static 'WASP.png' %}" alt="AdminLTE Logo" style="width:50%">
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-header">OPCIONES</li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-undo"></i>
+            <p>Reestablecer contraseña</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'Cuenta:SignUp' %}" class="nav-link">
+            <i class="nav-icon fa fa-user-plus"></i>
+            <p>Crear cuenta</p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
 {% endblock %}
-{% block navbar %}
+
+{% block contentHeader %}
+Ingrese sus credenciales
 {% endblock %}
+
 {% block content %}
-<!doctype html>
 <div class="container" style="width:400px" >
   <div class="card" style="background-color: rgb(32,32,32) ; opacity: 70%;">
     <div class="mx-auto">
       <form method="POST">
         {% csrf_token %}
-        <div class="container-fluid mt-3">
+        <div class="container-fluid mt-0">
           <div class="form-group">
             <h2>Ingrese sus credenciales</h2>
             {% if form.error_messages %}
-              <div class="mt-3 alert alert-danger alert-dismissible" role="alert">
+              <div class="mt-1 alert alert-danger alert-dismissible" role="alert">
                 <button type="button" class= "close" data-dismiss="alert" arial-labe= "Close" name="button">
                   <span aria-hiden="true">&times;</span>
                 </button>
                 <strong>Error: </strong> {{ form.get_invalid_login_error }}
               </div>
             {% endif %}
-            <label style="color:#FFFFFF" class="mt-3">Nombre de usuario</label>
+            <label style="color:#FFFFFF" class="mt-0">Nombre de usuario</label>
             {{ form.username }}
           </div>
           <div class="form-group">

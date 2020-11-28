@@ -9,14 +9,19 @@
     </li>
   </ul>
 
-  
-
   <!-- Right navbar links -->
+  {% if request.user.is_authenticated %}
   <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link" data-slide="true" href="{% url 'Logout' %}" role="button">
+        <i class="fas fa-sign-out"></i> Cerrar sesión
+      </a>
+    </li>
     <li class="nav-item">
       <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
         <i class="fas fa-th-large"></i>
       </a>
     </li>
   </ul>
+  {% endif %}
 </nav>
