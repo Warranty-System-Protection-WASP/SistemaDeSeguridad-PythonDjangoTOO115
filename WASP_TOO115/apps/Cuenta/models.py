@@ -1,34 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, UserManager
 
 # Create your models here.
-class UserManager(BaseUserManager):
-    def create_user(self, nomUsuario, passcode, nombre, apellido, fechaNacimiento,
-        correo, telefono, dui, nit, isss, nup, salario, genero, estadoCivil, numCasa, calle, colonia, password = None):
-        if not  correo:
-            raise ValueError('El usuario debe tener un correo')
-
-        usuario = self.model(
-            nomUsuario = nomUsuario,
-            passcode = passcode,
-            nombre=nombre, apellido=apellido,
-            fechaNacimiento=fechaNacimiento,
-            correo = self.normalize_email(correo),
-            telefono=telefono,
-            dui=dui,
-            nit=nit,
-            isss=isss,
-            nup=nup,
-            salario=salario,genero=genero,
-            estadoCivil=estadoCivil,
-            numCasa=numCasa,
-            calle=calle,
-            colonia=colonia)
-        usuario.set_password(password)
-        usuario.save()
-        return usuario
-
-
 class Usuario(AbstractBaseUser):
     EstadoCivil=[
         ('casado', 'Casado'),
@@ -101,16 +74,12 @@ class EstadisticaCuenta(models.Model):
 class Departamento(models.Model):
     idDepartamento = models.AutoField(primary_key=True)
     nomDepartamento = models.CharField(max_length=15)
+    def __str__(self):
+        return  self.nomDepartamento
 
 class Municipio(models.Model):
     idMunicipio = models.AutoField(primary_key = True)
     nomMunicipio = models.CharField(max_length=30)
     departamento = models.ForeignKey(Departamento, on_delete = models.PROTECT)
-
-'''
-class Solicitud(models.Model):
-    idSolicitud=models.IntegerField(primary_key=True)
-    idEmpleado=models.ForeignKey(Cuenta, on_delete=models.PROTECT)
-    tipoSolicitud=models.CharField(max_length=50)
-    estadoSolicitud=models.BooleanField()
-'''
+    def __str__(self):
+        return  self.nomMunicipio
