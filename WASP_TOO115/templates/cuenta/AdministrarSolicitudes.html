@@ -38,7 +38,7 @@ Solicitudes
           <td>{{ row.salario }}</td>
           <td>
             <a href="{% url 'Cuenta:AprobarSolicitud' row.pk %}" class="btn-info btn btn-lg">
-              <i class="fas fa-pencil-alt"></i>
+              <i class="fa fa-check-circle"></i>
             </a>
             <button class="btn-danger btn btn-lg" data-toggle='modal' data-target='#deleteModal' data-pk='{{ row.pk }}'>
               <i class="fas fa-trash-alt"></i>

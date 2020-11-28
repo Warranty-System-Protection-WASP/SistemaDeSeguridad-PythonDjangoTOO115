@@ -3,9 +3,14 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView , UpdateView , DeleteView
 from django.views.generic import ListView , DetailView
 from django.contrib.auth.models import BaseUserManager
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_protect
+from django.views.generic.edit import FormView
+from django.contrib.auth import login, logout
 from django.utils.crypto import get_random_string
 from django.urls import reverse_lazy, reverse
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django import forms
 from .models import *
 from .forms import *
@@ -105,3 +110,30 @@ class Aprobar(SuccessMessageMixin, UpdateView):
             print(password)
             user.is_active = True
         return super(Aprobar, self).form_valid(form)
+
+'''
+def NameUser(request):
+
+    return render(request, 'cuenta/nomUsuario.html', {})
+'''
+
+class Login(FormView):
+    template_name = "cuenta/Login.html"
+    form_class = LoginForm
+    success_url = reverse_lazy('index')
+
+    @method_decorator(csrf_protect)
+    @method_decorator(never_cache)
+    def dispatch(self, request, *args, **kwards):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(self.get_success_url())
+        else:
+            return super(Login, self).dispatch(request, *args, **kwards)
+
+    def form_valid(self, form):
+        login(self.request, form.get_user())
+        return super(Login, self).form_valid(form)
+
+def Logout(request):
+    logout(request)
+    return HttpResponseRedirect('/')

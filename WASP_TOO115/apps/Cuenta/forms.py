@@ -1,6 +1,7 @@
 from django import forms
 import datetime
 from .models import *
+from django.contrib.auth.forms import AuthenticationForm
 
 class DepartamentoForm(forms.ModelForm):
     class Meta:
@@ -118,3 +119,27 @@ class AprobarForm(forms.ModelForm):
             'dui':forms.TextInput(attrs={'class':'form-control', 'readonly':'True'}),
             'salario': forms.TextInput(attrs={'class':'form-control', 'pattern': '[0-9, "."]+', 'title':'Sólo números'})
         }
+
+
+'''
+class NameUserForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = [
+        'nomUsuario',
+        ]
+        labels = {
+        'nomUsuario': 'Usuario',
+        }
+        widgets = {
+        'nomUsuario':forms.TextInput(attrs={'class': 'form-control'}),
+        }
+'''
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs['placeholder'] = 'Nombre de usuario'
+        self.fields['password'].widget.attrs['class'] = 'form-control'
+        self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
