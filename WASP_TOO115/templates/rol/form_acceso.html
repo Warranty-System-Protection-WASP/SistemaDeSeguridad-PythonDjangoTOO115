@@ -173,7 +173,7 @@ Formulario De Puestos De Trabajo:
                   var data = {'csrfmiddlewaretoken': '{{ csrf_token }}', 'id': id, 'estado': estado, 'id_rol': idRol}
                   $.post("{% url 'edit acceso' %}", data, function(response){
                     if(response == 'success'){
-                      alert('yes');
+                      //alert('yes');
                     }else{
                       alert('Ah ocurrido un error!');
                     }

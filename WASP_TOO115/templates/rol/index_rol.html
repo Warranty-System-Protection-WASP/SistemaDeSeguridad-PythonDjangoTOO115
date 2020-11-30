@@ -18,7 +18,17 @@ Puestos De Trabajo:
                 <h3 class="card-title">Catálogo De Puestos De Trabajo:</h3><a href="{% url 'create roles' %}"><button type="button" class="btn btn-info float-right"><i class="fas fa-plus"></i> Crear</button></a>
               </div>
               <div class="card-body">
-                  <table id="tabla_roles" class="table table-bordered table-hover">
+                <form class="form-inline">
+                  <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar my-1" type="search" placeholder="Search" aria-label="Search" id="formulario">
+                    <div class="input-group-append">
+                      <button class="btn btn-navbar my-1" type="button">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                  <table id="tabla_roles" class="table table-bordered table-striped">
                       <thead>
                          <tr>
                             <th>ID</th>
@@ -27,7 +37,7 @@ Puestos De Trabajo:
                             <th>Acciones</th>
                          </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="registros_roles">
                         {% if roles %}
                         {% for rol in roles %}
                          <tr>
@@ -56,4 +66,54 @@ Puestos De Trabajo:
         </div>
       </div>
 </section>
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  var tabla = document.getElementById('tabla_roles');
+  var formulario = document.querySelector('#formulario');
+  var tuplas = document.querySelector('#registros_roles');
+  var registros = [];
+
+  for(var i=1;i<=tabla.rows.length-2;i++){
+    /*for(var j=0;j<3;j++){
+      alert(tabla.rows[i].cells[j].innerHTML);
+    }*/
+    var puesto = {
+      id: tabla.rows[i].cells[0].innerHTML,
+      titulo: tabla.rows[i].cells[1].innerHTML,
+      descrip: tabla.rows[i].cells[2].innerHTML,
+    };
+    registros.push(puesto);
+  }
+
+  const filtrar = ()=>{
+    tuplas.innerHTML = ''
+    const texto = formulario.value.toLowerCase();
+    for(var i=0;i<registros.length;i++){
+      var nombre = registros[i].titulo.toLowerCase();
+      if(nombre.indexOf(texto) !== -1){
+        tuplas.innerHTML += "<td>"+registros[i].id+"</td><td>"+registros[i].titulo+"</td><td>"+registros[i].descrip+"</td>"+"<td><a href='%5ERoles$Editar/"+registros[i].id+"/'><button type='button' class='btn btn-info' name='editar'><i class='fas fa-edit'></i> Editar</button></a>  <a href='%5ERoles$Eliminar/"+registros[i].id+"/'><button type='button' class='btn btn-info' name='eliminar'><i class='fas fa-trash-alt'></i> Eliminar</button></a></td>"
+      }
+    }
+  }
+  formulario.addEventListener('keyup',filtrar);
+
+  $(function () {
+    $('#tabla_roles').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 {% endblock %}

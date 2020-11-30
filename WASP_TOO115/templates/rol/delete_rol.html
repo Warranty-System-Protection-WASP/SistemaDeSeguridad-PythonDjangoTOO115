@@ -46,6 +46,6 @@
         {% csrf_token %}
         <h3>¿Desea eliminar el registro de {{ rol.nombreRol }}?</h3>
         <br/><a href="{% url 'index roles' %}"><button type="submit" class="btn btn-info" name="eliminar_rol"><i class="fas fa-exclamation-circle"></i>  Sí, eliminar</button></a>
-        <br/><a href="{% url 'index roles' %}"><button type="cancel" class="btn btn-info" name="cancelar_rol"><i class="fas fa-ban"></i> Cancelar</button></a>
+        <br/><a href="{% url 'index roles' %}"><button type="button" class="btn btn-info" name="cancelar_rol"><i class="fas fa-ban"></i> Cancelar</button></a>
   </div>
 {% endblock %}

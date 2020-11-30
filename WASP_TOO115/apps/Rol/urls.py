@@ -5,8 +5,8 @@ from apps.Rol.views import index_roles, edit_rol, delete_rol, edit_acceso, creat
 urlpatterns = [
     path('', index_roles, name='index roles'),
     path('Nuevo', create_rol, name='create roles'),
-    path('Editar/(?P<id_rol>[^/]+)/', edit_rol, name='edit roles'),
-    path('Eliminar/(?P<id_rol>[^/]+)/', delete_rol, name='delete roles'),
+    path('Editar/<int:id_rol>/', edit_rol, name='edit roles'),
+    path('Eliminar/<int:id_rol>/', delete_rol, name='delete roles'),
     path('FormAcceso/', create_acceso, name="acceso form"),
     path('UpdateAcceso', edit_acceso, name='edit acceso'),
 ]
