@@ -1,0 +1,69 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}
+Unidades Organizacionales | WASP - TOO115
+{% endblock %}
+
+{% block contentHeader %}
+Unidades Organizacionales
+{% endblock %}
+
+{% block content %}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-12">
+            <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Unidades Organizacionales</h3>
+                <a href="{% url 'view unidad' %}"> <!-- Referenciado al url de nuestra app -->
+                    <button type="button" class="btn btn-info float-right">
+                        <i class="fas fa-plus"></i>Crear
+                    </button>
+                </a>
+            </div>
+                <div class="card-body">
+                    <table id="tabla_unidades" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Rol</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Si existen unidades las recorremos con un for -->
+                            {% if Unidades %}
+                            {% for unidad in Unidades %}
+                            <tr>
+                                <td>{{ unidad.id }}</td>
+                                <td>{{ unidad.idRol }}</td>
+                                <td>{{ unidad.nombreUnidad }}</td>
+                                <td>{{ unidad.descripUnidad }}</td>
+                                <td>
+                                    <a href="#">
+                                        <button type="button" class="btn btn-info" name="editar">
+                                            <i class="fas fa-edit"></i> Editar</button>
+                                    </a>  
+                                    <a href="#">
+                                        <button type="button" class="btn btn-info" name="eliminar">
+                                            <i class="fas fa-trash-alt"></i> Eliminar</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <!-- Si no hay registros de unidades -->
+                            <h4>No hay registros de Unides Organizacionales</h4>
+                            {% endif %}
+                        </tbody>                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

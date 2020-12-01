@@ -1,0 +1,55 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}
+Catálogo De Puestos | WASP - TOO115
+{% endblock %}
+
+{% block contentHeader %}
+Crear Puestos De Trabajo:
+{% endblock %}
+
+{% block extrastatic %}
+<!-- CSS para el diseño de la pagina -->
+<style type="text/css">
+.window-notice {
+    background: rgba(33, 41, 52, .85);
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    position: fixed;
+    z-index: 999;
+}
+
+.window-notice .content {
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(33, 41, 52, .75);
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 600px;
+    min-width: 320px !important;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding: 2rem;
+    font-size: 1.3rem;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Ventana para confirmar la eliminacion -->
+<div class="window-notice" id="window-notice">
+    <form method="post" class="content">
+        {% csrf_token %}
+        <h3>¿Desea eliminar el registro de {{ rol.nombreRol }}?</h3>
+        <!-- Elimina el item seleccionado segun la URL que se haya especificado -->
+        <br/><a href="{% url '#' %}"><button type="submit" class="btn btn-info" name="eliminar_rol"><i class="fas fa-exclamation-circle"></i>  Sí, eliminar</button></a>
+        <!-- En caso de cancelar redirecciona a la url  -->
+        <br/><a href="{% url '#' %}"><button type="cancel" class="btn btn-info" name="cancelar_rol"><i class="fas fa-ban"></i> Cancelar</button></a>
+</div>
+{% endblock %}
