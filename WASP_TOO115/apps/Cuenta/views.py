@@ -8,9 +8,9 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView
 from django.contrib.auth import login, logout
-from django.utils.crypto import get_random_string
 from django.urls import reverse_lazy, reverse
 from django.http import HttpResponseRedirect, HttpResponse
+from passlib.hash import pbkdf2_sha256 #Para encriptación de passcode
 from django import forms
 from .models import *
 from .forms import *
@@ -79,9 +79,31 @@ class SignUp(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         user=form.save(commit=False)
-        user.nomUsuario = get_random_string(length=10)
-        print(user.nomUsuario)
-        user.direccion = "CLL"
+        stringApellidos = user.apellido
+        apellidos = stringApellidos.split(' ')
+        primeraLetraApellido = ''
+        for a in apellidos:
+            primeraLetraApellido += a[0]#Obtiene la primera letra de cada apellido
+        #Generación de nombre de usuario a través de la concatenación de la
+        #primera letra de cada apellido con el dui
+        nomU = primeraLetraApellido + user.dui
+        user.nomUsuario = nomU
+        if self.request.method == 'POST':
+            mun = self.request.POST.get('cbomunicipio')
+            dep = self.request.POST.get('cbodepartamento')
+        muni = Municipio.objects.filter(idMunicipio=mun).filter(departamento=dep).only('nomMunicipio').first()
+        depa = Departamento.objects.filter(idDepartamento=dep).only('nomDepartamento').first()
+        user.direccion = user.calle + ", " + user.colonia + ", Casa #" + str(user.numCasa) + ", " + str(muni) + ", " + str(depa)
+        passcodeHash = user.passcode #Obtiene el passcode ingresado en texto plano
+        hash= pbkdf2_sha256.hash(passcodeHash) #Encripta el passcode
+        user.passcode = hash #Para guardar encriptado el passcode en la BD
+        '''
+        #Lo dejo para prueba... lo ocuparé después en el restablecimiento de contraseña
+        verificar = pbkdf2_sha256.verify(passcodeHash, hash)
+        print(verificar)
+        verificar = pbkdf2_sha256.verify("3451", hash)
+        print(verificar)
+        '''
         user.salario = 0.0
         return super(SignUp, self).form_valid(form)
 
@@ -107,7 +129,7 @@ class Aprobar(SuccessMessageMixin, UpdateView):
         if user.solicitud == 'A':
             password = BaseUserManager().make_random_password(12)
             user.set_password(password)
-            print(password)
+            print("Password que mandaré por correo:", password) #Prueba
             user.is_active = True
         return super(Aprobar, self).form_valid(form)
 

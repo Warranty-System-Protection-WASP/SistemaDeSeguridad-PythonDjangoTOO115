@@ -34,6 +34,8 @@ class MunicipioForm(forms.ModelForm):
 
 #Formulario para la solicitud de SignUp
 class SignUpForm(forms.ModelForm):
+    passcode = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+    'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '4'}))
     class Meta:
         model = Usuario
         #Atributos/Campos a utilizar
@@ -88,8 +90,7 @@ class SignUpForm(forms.ModelForm):
             'numCasa':forms.TextInput(attrs={'class':'form-control'}),
             'calle':forms.TextInput(attrs={'class':'form-control'}),
             'colonia':forms.TextInput(attrs={'class':'form-control'}),
-            'correo':forms.EmailInput(attrs={'class':'form-control'}),
-            'passcode':forms.TextInput(attrs={'class':'form-control'}),
+            'correo':forms.EmailInput(attrs={'class':'form-control'}),            
         }
 
 class AprobarForm(forms.ModelForm):

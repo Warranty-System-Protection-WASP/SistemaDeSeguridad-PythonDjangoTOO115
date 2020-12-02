@@ -14,8 +14,7 @@ urlpatterns = [
     path('CrearMunicipio', CrearMunicipio.as_view(), name = 'CrearMunicipio'),
     path('Municipio/<int:pk>', EditarMunicipio.as_view(), name = 'ModificarMunicipio'),
     path('Municipios/<int:pk>/Borrar', EliminarMunicipio.as_view(), name = 'EliminarMunicipio'),
-    path('Municipios', AdministrarMunicipios.as_view(), name = 'AdministrarMunicipios'),
-    path('SignUp', SignUp.as_view(), name = 'SignUp'),
+    path('Municipios', AdministrarMunicipios.as_view(), name = 'AdministrarMunicipios'),    
     path('Solicitudes', AdministrarSolicitudes.as_view(), name = 'Solicitudes'),
     re_path(r'^Aprobar/(?P<pk>\w+)', Aprobar.as_view(), name = 'AprobarSolicitud'),
 ]

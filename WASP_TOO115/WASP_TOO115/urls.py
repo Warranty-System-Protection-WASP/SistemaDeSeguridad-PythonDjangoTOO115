@@ -19,13 +19,12 @@ from django.conf.urls import include
 from WASP_TOO115.views import index
 from apps.Cuenta import views
 from django.contrib.auth.decorators import login_required
-from apps.Cuenta.views import Login, Logout
+from apps.Cuenta.views import Login, Logout, SignUp
 
 from apps.Rol.views import index_roles, create_rol, edit_rol, delete_rol
 from apps.UnidadOrganizacional.views import index_unidad
 
-#Librerias para el login
-from django.contrib.auth.views import LoginView,LogoutView
+
 
 
 urlpatterns = [
@@ -35,7 +34,8 @@ urlpatterns = [
     path('Cuenta/', include('apps.Cuenta.urls', namespace='Cuenta')),
     path('accounts/login/', Login.as_view(), name = 'Login'),
     path('logout', login_required(Logout), name = 'Logout'),
-    path(r'^Roles$', include('apps.Rol.urls'), name='roles'),    
+    path('SignUp', SignUp.as_view(), name = 'SignUp'),
+    path(r'^Roles$', include('apps.Rol.urls'), name='roles'),
     path(r'^Unidad$', include('apps.UnidadOrganizacional.urls'), name='unidad'),   #URL para UNIDAD ORGANIZACIONAL
     #path('prueba/', views.index),
     #Url para el login

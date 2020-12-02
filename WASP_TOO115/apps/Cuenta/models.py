@@ -23,7 +23,7 @@ class Usuario(AbstractBaseUser):
     nomUsuario=models.CharField(max_length=15, primary_key=True)
     #EstadisticaCuenta no puede ir aquí, porque la misma EstadisticaCuenta se podría asociar a varias cuentas, lo cuál no debe ser
     #idEstadisticas=models.ForeignKey(EstadisticaCuenta,on_delete=models.PROTECT)
-    passcode=models.CharField(max_length=4, blank=False)
+    passcode=models.CharField(max_length=100, blank=False)
     is_bloqueado=models.BooleanField(default=False)
     #Llevará la cuenta de intentos fallidos de contraseña
     contadorIntentos = models.PositiveIntegerField(default = 0)

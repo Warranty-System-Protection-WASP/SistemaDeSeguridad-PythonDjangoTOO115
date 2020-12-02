@@ -21,10 +21,9 @@ Solicitudes
       <thead class="table-dark">
         <tr>
           <th scope="col" align="center">Usuario</th>
+          <th scope="col" align="center">Dirección</th>
+          <th scope="col" align="center">Passcode</th>
           <th scope="col" align="center">Contraseña</th>
-          <th scope="col" align="center">Solicitud</th>
-          <th scope="col" align="center">Estado</th>
-          <th scope="col" align="center">Salario</th>
           <th scope="col" width="150px">Acciones</th>
         </tr>
       </thead>
@@ -32,10 +31,9 @@ Solicitudes
         {% for row in Solicitudes %}
         <tr>
           <td>{{ row.pk }}</td>
+          <td>{{ row.direccion }}</td>
+          <td>{{ row.passcode }}</td>
           <td>{{ row.password }}</td>
-          <td>{{ row.solicitud }}</td>
-          <td>{{ row.is_active }}</td>
-          <td>{{ row.salario }}</td>
           <td>
             <a href="{% url 'Cuenta:AprobarSolicitud' row.pk %}" class="btn-info btn btn-lg">
               <i class="fa fa-check-circle"></i>
