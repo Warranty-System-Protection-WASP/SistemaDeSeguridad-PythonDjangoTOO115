@@ -122,6 +122,7 @@ class AprobarForm(forms.ModelForm):
         }
 
 
+
 '''
 class NameUserForm(forms.ModelForm):
     class Meta:

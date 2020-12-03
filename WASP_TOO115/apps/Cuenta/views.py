@@ -132,7 +132,16 @@ class Aprobar(SuccessMessageMixin, UpdateView):
             print("Password que mandaré por correo:", password) #Prueba
             user.is_active = True
         return super(Aprobar, self).form_valid(form)
+    
 
+#DETALLE USUARIO
+class DetalleUsuario(SuccessMessageMixin,DetailView):
+       model=Usuario
+       template_name = 'cuenta/DetalleUsuario.html'
+       
+       
+       
+       
 '''
 def NameUser(request):
 

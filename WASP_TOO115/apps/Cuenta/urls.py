@@ -17,4 +17,7 @@ urlpatterns = [
     path('Municipios', AdministrarMunicipios.as_view(), name = 'AdministrarMunicipios'),    
     path('Solicitudes', AdministrarSolicitudes.as_view(), name = 'Solicitudes'),
     re_path(r'^Aprobar/(?P<pk>\w+)', Aprobar.as_view(), name = 'AprobarSolicitud'),
+    #Detalle usuario
+    re_path(r'^DetalleUsuario/(?P<pk>\w+)', DetalleUsuario.as_view(), name = 'DetalleUsuario'),
+    
 ]

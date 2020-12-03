@@ -1,0 +1,194 @@
+{% extends 'Base/Base.html' %}
+
+{% block Title %}
+Detalle de Usuario | WASP - TOO115
+{% endblock Title %}
+
+{% block contentHeader %}
+Detalle de Usuario
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="small-box col-lg-8 col-md-12 col-sm-12" style="background: rgb(119, 173, 212); opacity: 70%; padding: 8px; width:60%">
+        <div class="mt-5 ml-5 mr-5 mb-5">  
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Nombre usuario:</label>
+                        <label style="color:black;">
+                            {{ object.nomUsuario}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Nombres:</label>
+                        <label style="color:black;">
+                            {{ object.nombre}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Apellidos:</label>
+                        <label style="color:black;">
+                            {{ object.apellido}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Fecha de Nacimiento:</label>
+                        <label style="color:black;">
+                            {{ object.fechaNacimiento}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Correo:</label>
+                        <label style="color:black;">
+                            {{ object.correo}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Telefono:</label>
+                        <label style="color:black;">
+                            {{ object.telefono}}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Dui:</label>
+                        <label style="color:black;">
+                            {{ object.dui}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Nit:</label>
+                        <label style="color:black;">
+                            {{ object.nit}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Iss:</label>
+                        <label style="color:black;">
+                            {{ object.iss}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Nup:</label>
+                        <label style="color:black;">
+                            {{ object.nup}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Salario:</label>
+                        <label style="color:black;">
+                            {{ object.salario}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Genero:</label>
+                        <label style="color:black;">
+                            {{ object.genero}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Estado Civil:</label>
+                        <label style="color:black;">
+                            {{ object.estadoCivil}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Direccion:</label>
+                        <label style="color:black;">
+                            {{ object.direccion}}
+                        </label>
+                    </div>
+
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Contraseña:</label>
+                        <label style="color:black;">
+                            {{ object.password}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="form-group" style="width: 100%">
+                        <label style="color: black;">Passcode:</label>
+                        <label style="color:black;">
+                            {{ object.passcode}}
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+{% endblock %}

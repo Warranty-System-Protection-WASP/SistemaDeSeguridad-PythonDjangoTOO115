@@ -9,6 +9,9 @@ Solicitudes
 {% endblock %}
 
 {% block content %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--icon-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="row justify-content-center" align="center">
   <div class="col-lg-12 col-md col-sm col-xs text-center mt-1" width="50%">
     {% for message in messages %}
@@ -35,9 +38,17 @@ Solicitudes
           <td>{{ row.passcode }}</td>
           <td>{{ row.password }}</td>
           <td>
+
+            <!--Aprobar-->
             <a href="{% url 'Cuenta:AprobarSolicitud' row.pk %}" class="btn-info btn btn-lg">
               <i class="fa fa-check-circle"></i>
             </a>
+
+            <!--Detalle de usuario-->
+            <a href="{% url 'Cuenta:DetalleUsuario' row.pk %}" style="font-size:36px;color:white">
+                <i class="fa fa-id-card-o "></i>
+            </a>
+              <!--borrar-->
             <button class="btn-danger btn btn-lg" data-toggle='modal' data-target='#deleteModal' data-pk='{{ row.pk }}'>
               <i class="fas fa-trash-alt"></i>
             </button>
