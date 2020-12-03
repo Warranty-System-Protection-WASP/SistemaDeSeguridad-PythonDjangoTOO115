@@ -24,19 +24,21 @@ Solicitudes
       <thead class="table-dark">
         <tr>
           <th scope="col" align="center">Usuario</th>
-          <th scope="col" align="center">Dirección</th>
-          <th scope="col" align="center">Passcode</th>
-          <th scope="col" align="center">Contraseña</th>
-          <th scope="col" width="150px">Acciones</th>
+          <th scope="col" align="center">Nombres</th>
+          <th scope="col" align="center">Apellidos</th>
+          <th scope="col" align="center">Estado</th>
+          <th scope="col" align="center">Solicitud</th>
+          <th scope="col" width="200px">Acciones</th>
         </tr>
       </thead>
       <tbody>
         {% for row in Solicitudes %}
         <tr>
           <td>{{ row.pk }}</td>
-          <td>{{ row.direccion }}</td>
-          <td>{{ row.passcode }}</td>
-          <td>{{ row.password }}</td>
+          <td>{{ row.nombre }}</td>
+          <td>{{ row.apellido }}</td>
+          <td>{{ row.is_active }}</td>
+          <td>{{ row.solicitud }}</td>
           <td>
 
             <!--Aprobar-->
@@ -45,8 +47,8 @@ Solicitudes
             </a>
 
             <!--Detalle de usuario-->
-            <a href="{% url 'Cuenta:DetalleUsuario' row.pk %}" style="font-size:36px;color:white">
-                <i class="fa fa-id-card-o "></i>
+            <a href="{% url 'Cuenta:DetalleUsuario' row.pk %}" class="btn-light btn btn-lg">
+                <i class="fa fa-id-card-o"></i>
             </a>
               <!--borrar-->
             <button class="btn-danger btn btn-lg" data-toggle='modal' data-target='#deleteModal' data-pk='{{ row.pk }}'>

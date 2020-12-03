@@ -19,7 +19,7 @@ from django.conf.urls import include
 from WASP_TOO115.views import index
 from apps.Cuenta import views
 from django.contrib.auth.decorators import login_required
-from apps.Cuenta.views import Login, Logout, SignUp
+from apps.Cuenta.views import Logout, SignUp, NameUser, Contrasenia, IniciarSesion
 
 from apps.Rol.views import index_roles, create_rol, edit_rol, delete_rol
 from apps.UnidadOrganizacional.views import index_unidad
@@ -31,13 +31,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
     path(r'^Roles$', include('apps.Rol.urls'), name='roles'),
-    path('Cuenta/', include('apps.Cuenta.urls', namespace='Cuenta')),
-    path('accounts/login/', Login.as_view(), name = 'Login'),
+    path('Cuenta/', include('apps.Cuenta.urls', namespace='Cuenta')),    
     path('logout', login_required(Logout), name = 'Logout'),
     path('SignUp', SignUp.as_view(), name = 'SignUp'),
     path(r'^Roles$', include('apps.Rol.urls'), name='roles'),
     path(r'^Unidad$', include('apps.UnidadOrganizacional.urls'), name='unidad'),   #URL para UNIDAD ORGANIZACIONAL
-    #path('prueba/', views.index),
-    #Url para el login
-    #path('login/', LoginView.as_view(template_name='login/login.html'), name='login'),
+    path('Login/NomUsuario/', NameUser.as_view(), name = 'NombreUsuario'),
+    path('Login/Contrasenia/', Contrasenia, name = 'Contrasenia'),
+    path('Login/Login/', IniciarSesion, name = 'Login')
 ]

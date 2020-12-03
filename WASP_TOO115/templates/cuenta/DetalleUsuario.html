@@ -12,7 +12,7 @@ Detalle de Usuario
 
 <div class="row justify-content-center">
     <div class="small-box col-lg-8 col-md-12 col-sm-12" style="background: rgb(119, 173, 212); opacity: 70%; padding: 8px; width:60%">
-        <div class="mt-5 ml-5 mr-5 mb-5">  
+        <div class="mt-5 ml-5 mr-5 mb-5">
             <div class="row">
                 <div class="col-md-10 col-md-offset-2">
                     <div class="form-group" style="width: 100%">
@@ -100,9 +100,9 @@ Detalle de Usuario
             <div class="row">
                 <div class="col-md-10 col-md-offset-2">
                     <div class="form-group" style="width: 100%">
-                        <label style="color: black;">Iss:</label>
+                        <label style="color: black;">Isss:</label>
                         <label style="color:black;">
-                            {{ object.iss}}
+                            {{ object.isss}}
                         </label>
                     </div>
 
@@ -157,12 +157,12 @@ Detalle de Usuario
                     <div class="form-group" style="width: 100%">
                         <label style="color: black;">Direccion:</label>
                         <label style="color:black;">
-                            {{ object.direccion}}
+                            {{ object.calle }}, {{ object.colonia}}, Casa #{{ object.numCasa }}, {{ object.municipio.nomMunicipio}}, {{ object.municipio.departamento}}
                         </label>
                     </div>
 
                 </div>
-                
+
             </div>
             <div class="row">
                 <div class="col-md-10 col-md-offset-2">
@@ -186,7 +186,7 @@ Detalle de Usuario
 
                 </div>
             </div>
-           
+
         </div>
     </div>
 </div>

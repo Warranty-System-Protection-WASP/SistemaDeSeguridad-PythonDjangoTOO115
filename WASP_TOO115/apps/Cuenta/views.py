@@ -1,14 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView , UpdateView , DeleteView
-from django.views.generic import ListView , DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib.auth.models import BaseUserManager
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView
+from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
+from django.utils.crypto import get_random_string
 from django.urls import reverse_lazy, reverse
+from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from passlib.hash import pbkdf2_sha256 #Para encriptación de passcode
 from django import forms
@@ -91,9 +94,8 @@ class SignUp(SuccessMessageMixin, CreateView):
         if self.request.method == 'POST':
             mun = self.request.POST.get('cbomunicipio')
             dep = self.request.POST.get('cbodepartamento')
-        muni = Municipio.objects.filter(idMunicipio=mun).filter(departamento=dep).only('nomMunicipio').first()
-        depa = Departamento.objects.filter(idDepartamento=dep).only('nomDepartamento').first()
-        user.direccion = user.calle + ", " + user.colonia + ", Casa #" + str(user.numCasa) + ", " + str(muni) + ", " + str(depa)
+            muni = Municipio.objects.filter(idMunicipio=mun, departamento=dep).only('idMunicipio').first()
+            user.municipio = muni
         passcodeHash = user.passcode #Obtiene el passcode ingresado en texto plano
         hash= pbkdf2_sha256.hash(passcodeHash) #Encripta el passcode
         user.passcode = hash #Para guardar encriptado el passcode en la BD
@@ -127,43 +129,55 @@ class Aprobar(SuccessMessageMixin, UpdateView):
     def form_valid(self, form):
         user=form.save(commit=False)
         if user.solicitud == 'A':
-            password = BaseUserManager().make_random_password(12)
+            password = get_random_string(length=12)
             user.set_password(password)
             print("Password que mandaré por correo:", password) #Prueba
             user.is_active = True
         return super(Aprobar, self).form_valid(form)
-    
+
 
 #DETALLE USUARIO
 class DetalleUsuario(SuccessMessageMixin,DetailView):
        model=Usuario
        template_name = 'cuenta/DetalleUsuario.html'
-       
-       
-       
-       
-'''
-def NameUser(request):
 
-    return render(request, 'cuenta/nomUsuario.html', {})
-'''
+class NameUser(TemplateView):
+    template_name = 'cuenta/Usuario.html'
 
-class Login(FormView):
-    template_name = "cuenta/Login.html"
-    form_class = LoginForm
-    success_url = reverse_lazy('index')
-
-    @method_decorator(csrf_protect)
-    @method_decorator(never_cache)
-    def dispatch(self, request, *args, **kwards):
-        if request.user.is_authenticated:
-            return HttpResponseRedirect(self.get_success_url())
+def Contrasenia(request):
+    if request.method == "POST":
+        u = request.POST.get('nomUser')
+        existeCuenta = Usuario.objects.filter(nomUsuario=u).only('nomUsuario')
+        if existeCuenta.count() != 0:
+            nc = Usuario.objects.filter(nomUsuario=u).values('nombre', 'apellido').first()
+            return render(request, 'cuenta/Contraseña.html', {'u': u, 'nc':nc })
         else:
-            return super(Login, self).dispatch(request, *args, **kwards)
+            messages.error(request, "No existe")
+            return HttpResponseRedirect(reverse_lazy('NombreUsuario'))
+    else:
+        return HttpResponseRedirect(reverse_lazy('NombreUsuario'))
 
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-        return super(Login, self).form_valid(form)
+def IniciarSesion(request):
+    if request.method == 'POST':
+        # Recuperamos las credenciales validadas
+        username = request.POST.get('nombre')
+        password = request.POST.get('contra')
+        u = Usuario.objects.filter(nomUsuario=username).only('nomUsuario').first()
+        nc = Usuario.objects.filter(nomUsuario=u).values('nombre', 'apellido').first()
+        # Verificamos las credenciales del usuario
+        user = authenticate(request, username=username, password=password)
+        # Si existe un usuario con ese nombre y contraseña
+        if user is not None:
+            # Hacemos el login manualmente
+            login(request, user)
+            # Y le redireccionamos a la portada
+            return redirect('/')
+        else:
+            messages.error(request, "Contraseña incorrecta")
+            return render(request, 'cuenta/Contraseña.html', {'u': u, 'nc': nc})
+        return render(request, 'cuenta/Contraseña.html')
+    else:
+        return HttpResponseRedirect(reverse_lazy('NombreUsuario'))
 
 def Logout(request):
     logout(request)

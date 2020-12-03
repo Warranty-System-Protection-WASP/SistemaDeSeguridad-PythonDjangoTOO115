@@ -1,6 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, UserManager
 
+
+class Departamento(models.Model):
+    idDepartamento = models.AutoField(primary_key=True)
+    nomDepartamento = models.CharField(max_length=15)
+    def __str__(self):
+        return  self.nomDepartamento
+
+class Municipio(models.Model):
+    idMunicipio = models.AutoField(primary_key = True)
+    nomMunicipio = models.CharField(max_length=30)
+    departamento = models.ForeignKey(Departamento, on_delete = models.PROTECT)
+    def __str__(self):
+        return  self.nomMunicipio
+
 # Create your models here.
 class Usuario(AbstractBaseUser):
     EstadoCivil=[
@@ -41,8 +55,8 @@ class Usuario(AbstractBaseUser):
     nup=models.CharField(max_length=12, unique= True, blank=False)
     salario=models.DecimalField(max_digits=5, decimal_places=2)
     genero=models.CharField(choices = Genero, max_length=10)
-    estadoCivil=models.CharField(choices = EstadoCivil, max_length=10)
-    direccion = models.CharField(max_length=200)
+    estadoCivil= models.CharField(choices = EstadoCivil, max_length=10)
+    municipio = models.ForeignKey(Municipio, on_delete = models.PROTECT)
     numCasa = models.PositiveIntegerField(blank=False)
     calle = models.CharField(max_length=50, blank=False)
     colonia = models.CharField(max_length=50, blank=False)
@@ -51,7 +65,7 @@ class Usuario(AbstractBaseUser):
     USERNAME_FIELD = 'nomUsuario'
 
     def __str__(self):
-        return  self.dui + " " + self.nombre
+        return  self.nomUsuario
 
 class Pregunta(models.Model):
     numPregunta=models.IntegerField(primary_key=True)
@@ -70,16 +84,3 @@ class EstadisticaCuenta(models.Model):
     cambioClave=models.PositiveIntegerField(default=0)
     cambioRol=models.PositiveIntegerField(default=0)
     bloqueos=models.PositiveIntegerField(default=0)
-
-class Departamento(models.Model):
-    idDepartamento = models.AutoField(primary_key=True)
-    nomDepartamento = models.CharField(max_length=15)
-    def __str__(self):
-        return  self.nomDepartamento
-
-class Municipio(models.Model):
-    idMunicipio = models.AutoField(primary_key = True)
-    nomMunicipio = models.CharField(max_length=30)
-    departamento = models.ForeignKey(Departamento, on_delete = models.PROTECT)
-    def __str__(self):
-        return  self.nomMunicipio
