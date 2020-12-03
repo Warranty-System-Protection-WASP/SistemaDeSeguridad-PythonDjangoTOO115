@@ -98,7 +98,7 @@ Puestos De Trabajo:
     for(var i=0;i<registros.length;i++){
       var nombre = registros[i].titulo.toLowerCase();
       if(nombre.indexOf(texto) !== -1){
-        tuplas.innerHTML += "<td>"+registros[i].id+"</td><td>"+registros[i].titulo+"</td><td>"+registros[i].descrip+"</td>"+"<td><a href='%5ERoles$Editar/"+registros[i].id+"/'><button type='button' class='btn btn-info' name='editar'><i class='fas fa-edit'></i> Editar</button></a>  <a href='%5ERoles$Eliminar/"+registros[i].id+"/'><button type='button' class='btn btn-info' name='eliminar'><i class='fas fa-trash-alt'></i> Eliminar</button></a></td>"
+        tuplas.innerHTML += "<td>"+registros[i].id+"</td><td>"+registros[i].titulo+"</td><td>"+registros[i].descrip+"</td>"+"<td><a href='Editar/"+registros[i].id+"/'><button type='button' class='btn btn-info' name='editar'><i class='fas fa-edit'></i> Editar</button></a>  <a href='Eliminar/"+registros[i].id+"/'><button type='button' class='btn btn-info' name='eliminar'><i class='fas fa-trash-alt'></i> Eliminar</button></a></td>"
       }
     }
   }

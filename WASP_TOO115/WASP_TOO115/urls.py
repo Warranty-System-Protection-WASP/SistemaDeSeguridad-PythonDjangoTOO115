@@ -30,12 +30,11 @@ from apps.UnidadOrganizacional.views import index_unidad
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index, name="index"),
-    path(r'^Roles$', include('apps.Rol.urls'), name='roles'),
-    path('Cuenta/', include('apps.Cuenta.urls', namespace='Cuenta')),    
+    path('Roles/', include('apps.Rol.urls'), name='roles'),
+    path('Cuenta/', include('apps.Cuenta.urls', namespace='Cuenta')),
     path('logout', login_required(Logout), name = 'Logout'),
     path('SignUp', SignUp.as_view(), name = 'SignUp'),
-    path(r'^Roles$', include('apps.Rol.urls'), name='roles'),
-    path(r'^Unidad$', include('apps.UnidadOrganizacional.urls'), name='unidad'),   #URL para UNIDAD ORGANIZACIONAL
+    path('Unidad/', include('apps.UnidadOrganizacional.urls'), name='unidad'),   #URL para UNIDAD ORGANIZACIONAL
     path('Login/NomUsuario/', NameUser.as_view(), name = 'NombreUsuario'),
     path('Login/Contrasenia/', Contrasenia, name = 'Contrasenia'),
     path('Login/Login/', IniciarSesion, name = 'Login')
