@@ -52,6 +52,29 @@
             <p>Unidad Organizacional</p>
           </a>
         </li>
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-globe-americas"></i>
+            <p>
+              Departamentos y Municipios
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{% url 'Cuenta:AdministrarDepartamentos' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Departamentos</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'Cuenta:AdministrarMunicipios' %}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Municipios</p>
+              </a>
+            </li>
+          </ul>
+        </li>
         <!--
 
           NAV DE MULTI NIVEL
@@ -113,6 +136,12 @@
           <a href="{% url 'NombreUsuario' %}" class="nav-link">
             <i class="nav-icon fas fa-sign-in-alt" style='font-size:15px;color:white'></i>
             <p>Iniciar sesión</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'SignUp' %}" class="nav-link">
+            <i class="nav-icon fa fa-user-plus"></i>
+            <p>Solicitar creción de cuenta</p>
           </a>
         </li>
         {% endif %}

@@ -168,11 +168,24 @@ def IniciarSesion(request):
         user = authenticate(request, username=username, password=password)
         # Si existe un usuario con ese nombre y contraseña
         if user is not None:
-            # Hacemos el login manualmente
-            login(request, user)
-            # Y le redireccionamos a la portada
-            return redirect('/')
+            pL = Usuario.objects.filter(nomUsuario=user).values('last_login') #Para verificar el último login
+            primerL = pL.get()
+            primerLogin = primerL.get('last_login')
+            if primerLogin != None:
+                print("SOLO ESTOY COMPROBANDO EL last_login DIFERENTE DE NONE", primerLogin)
+                # Hacemos el login manualmente
+                login(request, user)
+                # Y le redireccionamos a la portada
+                return redirect('/')
+            else:
+                print("SOLO ESTOY COMPROBANDO EL last_login EN NONE", primerLogin)
+                login(request, user)
+                # AQUÍ SE LE VA A REDIRIGIR A UNA PANTALLA PARA EL CAMBIO DE CONTRA Y OTRAS CONFIGURACIONES
+                #DE MOMENTO EL REDIRECCIONAMIENTO A LA LIST VIEW DE MUNICIPIOS SOLO ES PARA PRUEBA :V
+                # RECORDATORIO PARA CUANDO ME DESPIERTE, SÍ FUNCIONA :3
+                return HttpResponseRedirect(reverse_lazy('Cuenta:AdministrarMunicipios'))
         else:
+            falloContra = Usuario.objects.filter(nomUsuario=user).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para lalógica del bloqueo de cuenta
             messages.error(request, "Contraseña incorrecta")
             return render(request, 'cuenta/Contraseña.html', {'u': u, 'nc': nc})
         return render(request, 'cuenta/Contraseña.html')

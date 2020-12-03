@@ -37,5 +37,5 @@ urlpatterns = [
     path('Unidad/', include('apps.UnidadOrganizacional.urls'), name='unidad'),   #URL para UNIDAD ORGANIZACIONAL
     path('Login/NomUsuario/', NameUser.as_view(), name = 'NombreUsuario'),
     path('Login/Contrasenia/', Contrasenia, name = 'Contrasenia'),
-    path('Login/Login/', IniciarSesion, name = 'Login')
+    path('accounts/login/', IniciarSesion, name = 'Login')
 ]

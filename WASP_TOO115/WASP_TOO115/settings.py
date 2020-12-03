@@ -136,6 +136,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+#Para expirar las sesión luego de un periodo de inactividad
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 180 #segungos ...3 min para prueba
+SESSION_SAVE_EVERY_REQUEST = True
+
 #Para archivos estaticos
 STATIC_URL = '/static/'
 
