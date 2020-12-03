@@ -21,7 +21,7 @@ class unidad_form(forms.ModelForm):
         }
 
         widgets={            
-            'idRol': forms.Select(attrs={'class':'form-control'}),
+            'idRol': forms.CheckboxSelectMultiple(),
             'nombreUnidad':forms.TextInput(attrs={'class':'form-control'}),
             'descripUnidad':forms.TextInput(attrs={'class':'form-control'}),
         }
