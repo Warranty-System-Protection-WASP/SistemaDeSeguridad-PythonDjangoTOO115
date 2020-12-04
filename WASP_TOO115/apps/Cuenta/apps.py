@@ -27,6 +27,21 @@ class CuentaConfig(AppConfig):
                 existeOpcion=cursorVerificacion.fetchone()
             except:
                 pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'UNIDADORGANIZACIONAL_UNIDA4EEA' FETCH FIRST 1 ROWS ONLY;")
+                existeUnidad=cursorVerificacion.fetchone()
+            except:
+                pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'ROL_ROL' FETCH FIRST 1 ROWS ONLY;")
+                existeRolOpcion=cursorVerificacion.fetchone()
+            except:
+                pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'ROL_ROLOPCION' FETCH FIRST 1 ROWS ONLY;")
+                existeRol=cursorVerificacion.fetchone()
+            except:
+                pass
 
         with connection.cursor() as cursor:
             if(existeDepartamento!=None):
@@ -67,3 +82,22 @@ class CuentaConfig(AppConfig):
                     cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(31,'Consultar Usuario');")
                     cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(33,'Modificar Usuario');")
                     cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(34,'Eliminar Usuario');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(34,'Eliminar Usuario');")
+
+            if(existeUnidad!=None):
+                cursor.execute("SELECT COUNT(*) FROM UNIDADORGANIZACIONAL_UNIDA4EEA")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("INSERT INTO UNIDADORGANIZACIONAL_UNIDA4EEA (NOMBREUNIDAD, DESCRIPUNIDAD) VALUES(1,'Departamento De Recursos Humanos');")
+
+            if(existeRol!=None):
+                cursor.execute("SELECT COUNT(*) FROM ROL_ROL")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("INSERT INTO ROL_ROL (NOMBREROL, DESCRIPROL, UNIDAD_ID) VALUES(1,'San Salvador');")
+
+            if(existeRolOpcion!=None):
+                cursor.execute("SELECT COUNT(*) FROM ROL_ROLOPCION")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (IDOPCION_ID, IDROL_ID) VALUES(1,'San Salvador');")
