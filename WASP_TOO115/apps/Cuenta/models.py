@@ -60,6 +60,7 @@ class Usuario(AbstractBaseUser):
     numCasa = models.PositiveIntegerField(blank=False)
     calle = models.CharField(max_length=50, blank=False)
     colonia = models.CharField(max_length=50, blank=False)
+    password_change_date = models.DateTimeField(null=True)
     objects = UserManager()
 
     USERNAME_FIELD = 'nomUsuario'
