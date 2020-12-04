@@ -248,6 +248,8 @@ class PasswordChangeView(FormView):
         return kwargs
 
     def form_valid(self, form):
+        user=form.save(commit=False)
+        user.password_change_date = datetime.now()
         form.save()
         # Updating the password logs out all other sessions for the user
         # except the current one.
