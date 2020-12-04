@@ -22,7 +22,7 @@ from django.contrib.auth.decorators import login_required
 from apps.Cuenta.views import Logout, SignUp, NameUser, Contrasenia, IniciarSesion
 
 from apps.Rol.views import index_roles, create_rol, edit_rol, delete_rol
-from apps.UnidadOrganizacional.views import index_unidad
+from apps.UnidadOrganizacional.views import UnidadList
 
 
 

@@ -8,20 +8,20 @@ class unidad_form(forms.ModelForm):
         model=UnidadOrganizacional
 
         fields=[
-            'idUnidad',
-            'idRol',
+            #'idUnidad',
+            #'idRol',
             'nombreUnidad',
             'descripUnidad',
         ]
 
         labels={
-            'idRol': 'Rol',
+            #'idRol': 'Rol',
             'nombreUnidad': 'Titulo',
             'descripUnidad': 'Descripción',
         }
 
         widgets={            
-            'idRol': forms.Select(attrs={'class':'form-control'}),
+            #'idRol': forms.CheckboxSelectMultiple(),
             'nombreUnidad':forms.TextInput(attrs={'class':'form-control'}),
             'descripUnidad':forms.TextInput(attrs={'class':'form-control'}),
         }
