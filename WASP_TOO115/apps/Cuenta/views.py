@@ -21,13 +21,17 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from passlib.hash import pbkdf2_sha256 #Para encriptación de passcode
 from django import forms
+from apps.Rol.models import Rol, RolUsuario
+from apps.UnidadOrganizacional.models import UnidadOrganizacional
 from .models import *
 from .forms import *
+
+from datetime import datetime
 
 # Create your views here.
 
 #CRUD de Departamento
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class CrearDepartamento(SuccessMessageMixin, CreateView):
     model = Departamento
     form_class = DepartamentoForm
@@ -35,7 +39,7 @@ class CrearDepartamento(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('Cuenta:AdministrarDepartamentos')
     success_message = 'Departamento creado con éxito'
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class EditarDepartamento(SuccessMessageMixin, UpdateView):
     model = Departamento
     form_class = DepartamentoForm
@@ -43,20 +47,20 @@ class EditarDepartamento(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('Cuenta:AdministrarDepartamentos')
     success_message = 'Departamento editado con éxito'
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class EliminarDepartamento(DeleteView):
     model = Departamento
     form_class = DepartamentoForm
     def get_success_url(self):
         return reverse_lazy('Cuenta:AdministrarDepartamentos')
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class AdministrarDepartamentos(ListView):
     model = Departamento
     template_name = 'cuenta/AdministrarDepartamentos.html'
 
 #CRUD de Municipios
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class CrearMunicipio(SuccessMessageMixin, CreateView):
     model = Municipio
     form_class = MunicipioForm
@@ -64,7 +68,7 @@ class CrearMunicipio(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('Cuenta:AdministrarMunicipios')
     success_message = 'Municipio creado con éxito'
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class EditarMunicipio(SuccessMessageMixin, UpdateView):
     model = Municipio
     form_class = MunicipioForm
@@ -72,14 +76,14 @@ class EditarMunicipio(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('Cuenta:AdministrarMunicipios')
     success_message = 'Municipio editado con éxito'
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class EliminarMunicipio(DeleteView):
     model = Municipio
     form_class = MunicipioForm
     def get_success_url(self):
         return reverse_lazy('Cuenta:AdministrarMunicipios')
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class AdministrarMunicipios(ListView):
     model = Municipio
     template_name = 'cuenta/AdministrarMunicipios.html'
@@ -123,28 +127,40 @@ class SignUp(SuccessMessageMixin, CreateView):
         return super(SignUp, self).form_valid(form)
 
 #Gestión de Solicitudes
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class AdministrarSolicitudes(ListView):
     model = Usuario
     template_name = 'cuenta/AdministrarSolicitudes.html'
     context_object_name = 'Solicitudes'
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class EliminarSolicitud(DeleteView):
     model = Usuario
     form_class = SignUpForm
     def get_success_url(self):
         return reverse_lazy('Cuenta:AdministrarSolicitudes')
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 class Aprobar(SuccessMessageMixin, UpdateView):
     model = Usuario
     form_class = AprobarForm
     template_name = 'cuenta/Aprobar.html'
     success_url = reverse_lazy('Cuenta:Solicitudes')
+
+    def get_context_data(self, **kwargs):
+        context = super(Aprobar, self).get_context_data(**kwargs)
+        context['roles'] = Rol.objects.all()
+        context['unidades'] = UnidadOrganizacional.objects.all()
+        return context
+
     def form_valid(self, form):
         user=form.save(commit=False)
         if user.solicitud == 'A':
+            puesto = self.request.POST.get('puestoUsuario')
+            now = datetime.now()
+            rol = Rol.objects.get(id=puesto)
+            object = RolUsuario.objects.create(idEmpleado=user, idRol=rol, is_activo=True, fecha_inicio=now.date(), fecha_fin='2021-12-04')
+            object.save()
             password = get_random_string(length=12)
             user.set_password(password)
             print("Password que mandaré por correo:", password) #Prueba

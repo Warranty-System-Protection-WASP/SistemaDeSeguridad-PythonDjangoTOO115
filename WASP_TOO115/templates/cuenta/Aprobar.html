@@ -14,6 +14,23 @@
 <form method="POST">
     {{ form.as_p }}
     {% csrf_token %}
+
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="cbodepartamento">Puesto:</label>
+        <select class="form-control" id="puestoUsuario" name="puestoUsuario" required >
+          <option value="">Seleccionar</option>
+          {% for puesto in roles %}
+            {% for unidad in unidades %}
+                {% if puesto.unidad == unidad %}
+                    <option value="{{ puesto.id }}">{{ puesto.nombreRol }} - {{ unidad.nombreUnidad }}</option>
+                {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
     <button type="submit">Registrar</button>
 </form>
 
