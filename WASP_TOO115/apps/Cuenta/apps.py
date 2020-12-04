@@ -84,7 +84,7 @@ class CuentaConfig(AppConfig):
                     cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(34,'Eliminar Usuario');")
                     cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(34,'Eliminar Usuario');")
 
-            if(existeUnidad!=None):
+            '''if(existeUnidad!=None):
                 cursor.execute("SELECT COUNT(*) FROM UNIDADORGANIZACIONAL_UNIDA4EEA")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
@@ -94,10 +94,10 @@ class CuentaConfig(AppConfig):
                 cursor.execute("SELECT COUNT(*) FROM ROL_ROL")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
-                    cursor.execute("INSERT INTO ROL_ROL (NOMBREROL, DESCRIPROL, UNIDAD_ID) VALUES(1,'San Salvador');")
+                    cursor.execute("INSERT INTO ROL_ROL (NOMBREROL, DESCRIPROL, UNIDAD_ID) VALUES('Jefe De Recursos Huamnos','Administrador del sistema.',1);")
 
             if(existeRolOpcion!=None):
                 cursor.execute("SELECT COUNT(*) FROM ROL_ROLOPCION")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
-                    cursor.execute("INSERT INTO ROL_ROLOPCION (IDOPCION_ID, IDROL_ID) VALUES(1,'San Salvador');")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (IDOPCION_ID, IDROL_ID) VALUES(1,1);")'''
