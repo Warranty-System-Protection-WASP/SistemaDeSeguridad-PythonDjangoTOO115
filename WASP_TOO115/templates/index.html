@@ -30,6 +30,7 @@ Ejemplo de sobreescritura de Content-Header
 
 {% block extrajs %}
 <script>
+  document.getElementById('catalogo-puestos').style.display = 'none';
   var anioActual = (new Date()).getFullYear();
   document.getElementById("anioA").value = anioActual;
 
@@ -37,7 +38,10 @@ Ejemplo de sobreescritura de Content-Header
   //alert(arreglo);
   console.log(JSON.stringify(arreglo));
   for(var x=0;x<arreglo.length;x++){
-    //alert("item");
+    var item = arreglo[x].fields.numCrud;
+    if(item == '11'){
+      //document.getElementById('catalogo-puestos').style.display = 'none';
+    }
   }
 </script>
 {% endblock %}
