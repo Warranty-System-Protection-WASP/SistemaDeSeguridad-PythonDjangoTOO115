@@ -48,14 +48,26 @@ class UnidadUpdate(UpdateView):
     model=UnidadOrganizacional
     template_name='unidad/form_unidad.html'
     form_class=unidad_form
+    success_url=reverse_lazy('index unidad')
     
 
     def get_context_data(self, **kwargs):
-        #Aca llamamos a los objetos y que se rendericen en cada texto de nuestro update
+        #Aca llamamos a los objetos y que se rendericen en cada texto de nuestro update y asi llenar el form
         context=super(UnidadUpdate, self).get_context_data(**kwargs)
-        pk=self.kwargs
-        solicitud=self.model.objets.get(id=pk)
+        pk=self.kwargs.get('pk',0)
+        solicitud=self.model.objects.get(idUnidad=pk)
         if  'form' not in context:
             context['form']=self.form_class()
         context['id']=pk
         return context
+
+
+
+#id_unidad nos sirve para referenciar al objeto que eliminamos
+def UnidadDelete(request, id_unidad):
+    unidad = UnidadOrganizacional.objects.get(idUnidad = id_unidad)
+    if request.method == 'POST':
+        UnidadOrganizacional.objects.filter(idUnidad = id_unidad).delete()
+        unidad.delete()
+        return redirect('index unidad')
+    return render(request, 'unidad/delete_unidad.html', {'unidad':unidad})

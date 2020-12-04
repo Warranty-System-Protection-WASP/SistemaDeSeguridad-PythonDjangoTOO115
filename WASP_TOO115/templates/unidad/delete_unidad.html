@@ -43,13 +43,10 @@ Crear Puestos De Trabajo:
 
 {% block content %}
 <!-- Ventana para confirmar la eliminacion -->
-<div class="window-notice" id="window-notice">
-    <form method="post" class="content">
-        {% csrf_token %}
-        <h3>¿Desea eliminar el registro de {{ rol.nombreRol }}?</h3>
-        <!-- Elimina el item seleccionado segun la URL que se haya especificado -->
-        <br/><a href="{% url '#' %}"><button type="submit" class="btn btn-info" name="eliminar_rol"><i class="fas fa-exclamation-circle"></i>  Sí, eliminar</button></a>
-        <!-- En caso de cancelar redirecciona a la url  -->
-        <br/><a href="{% url '#' %}"><button type="cancel" class="btn btn-info" name="cancelar_rol"><i class="fas fa-ban"></i> Cancelar</button></a>
-</div>
+<form method="post">
+	{% csrf_token %}
+	<h3>¿Desea eliminar la Unidad organizacional de {{  unidad.nombreUnidad }}?</h3>	
+	<button class="btn btn-danger" type="submit">Sí, eliminar</button>
+	<a class= "btn btn-default" href="{% url 'index unidad' %}">Cancelar</a>
+</form>
 {% endblock %}
