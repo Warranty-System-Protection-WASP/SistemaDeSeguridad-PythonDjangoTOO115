@@ -30,6 +30,10 @@ Formulario De Puestos De Trabajo:
         <label for="exampleInputEmail1">Descripción</label>
         {{ form.descripRol }}
       </div>
+      <div class="form-group">
+        <label for="exampleInputEmail1">Unidad/Departamento</label>
+        {{ form.unidad}}
+      </div>
     </div>
     <div class="card-footer">
       <a href="{% url 'acceso form' %}"><button type="submit" class="btn btn-info float-right"><i class="fas fa-arrow-right"></i> Siquiente</button></a>
