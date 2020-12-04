@@ -1,7 +1,5 @@
 from django.db import models
 
-from apps.Rol.models import Rol
-
 # Create your models here.
 class UnidadOrganizacional(models.Model):
     idUnidad=models.AutoField(primary_key=True)

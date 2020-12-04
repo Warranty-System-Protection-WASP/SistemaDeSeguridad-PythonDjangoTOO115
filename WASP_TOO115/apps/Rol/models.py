@@ -1,11 +1,13 @@
 from django.db import models
 
 from apps.Cuenta.models import Usuario
+from apps.UnidadOrganizacional.models import UnidadOrganizacional
 
 # Create your models here.
 class Rol(models.Model):
     nombreRol=models.CharField(max_length=50)
     descripRol=models.CharField(max_length=200)
+    unidad = models.ForeignKey(UnidadOrganizacional, on_delete = models.CASCADE)
 
 class OpcionCrud(models.Model):
     numCrud=models.IntegerField()
