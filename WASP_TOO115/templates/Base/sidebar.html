@@ -52,6 +52,18 @@
             <p>Unidad Organizacional</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a href="{% url 'Cuenta:Solicitudes' %}" class="nav-link"> <!-- el href tiene que referenciar al nombre del url de nuestra app -->
+            <i class="nav-icon fas fa-paperclip"></i> <!-- Icono a utilizar -->
+            <p>Solicitudes</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'Cuenta:password_change' %}" class="nav-link"> <!-- el href tiene que referenciar al nombre del url de nuestra app -->
+            <i class="nav-icon fas fa-key"></i> <!-- Icono a utilizar -->
+            <p>Cambiar contraseña</p>
+          </a>
+        </li>
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-globe-americas"></i>

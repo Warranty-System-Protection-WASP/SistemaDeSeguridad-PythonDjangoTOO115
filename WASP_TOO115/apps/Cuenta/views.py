@@ -5,8 +5,14 @@ from django.views.generic import ListView, DetailView, TemplateView
 from django.contrib.auth.models import BaseUserManager
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.generic.edit import FormView
+from django.contrib.auth.forms import PasswordChangeForm
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.debug import sensitive_post_parameters
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 from django.utils.crypto import get_random_string
@@ -195,3 +201,29 @@ def IniciarSesion(request):
 def Logout(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+####Para cambio de contraseña####
+class PasswordChangeView(FormView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('index')
+    template_name = 'cuenta/change_password.html'
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(csrf_protect)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        # Updating the password logs out all other sessions for the user
+        # except the current one.
+        update_session_auth_hash(self.request, form.user)
+        return super().form_valid(form)
+    
