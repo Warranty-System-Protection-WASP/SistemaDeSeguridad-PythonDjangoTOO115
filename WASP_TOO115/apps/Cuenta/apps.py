@@ -22,6 +22,11 @@ class CuentaConfig(AppConfig):
                 existeUsuario=cursorVerificacion.fetchone()
             except:
                 pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'ROL_OPCIONCRUD' FETCH FIRST 1 ROWS ONLY;")
+                existeOpcion=cursorVerificacion.fetchone()
+            except:
+                pass
 
         with connection.cursor() as cursor:
             if(existeDepartamento!=None):
@@ -47,3 +52,18 @@ class CuentaConfig(AppConfig):
                 if(cantidad[0]==0):
 
                     cursor.execute("INSERT INTO CUENTA_USUARIO (PASSWORD, LAST_LOGIN, NOMUSUARIO, PASSCODE, IS_BLOQUEADO, CONTADORINTENTOS, IS_ACTIVE, SOLICITUD, NOMBRE, APELLIDO, FECHANACIMIENTO, CORREO, TELEFONO, DUI, NIT, ISSS, NUP, SALARIO, GENERO, ESTADOCIVIL, MUNICIPIO_ID, NUMCASA, CALLE, COLONIA) VALUES('pbkdf2_sha256$216000$3eV7aGYpIlRH$TGj6vyx4oCODWXHJxwKyg4zrsMqzVeY1gMIWOx6z87I=',NULL, 'admin', '$pbkdf2-sha256$29000$3RsDwBhDKKW01rrXeq917g$MPi8zq254FVo8ZAKVnysLxcHoXbgyRdO131tfiBaxwY',0,0,1, 'A','admin','admin', to_date('1996-06-09', 'yyyy-mm-dd'),'vabcruz96@gmail.com','63141818','053733490','06140906961090','123456789','123456789012',500.0,'femenino', 'soltero', 1, 6, 'Rafael Hernández','La Fuente');")
+            if(existeOpcion!=None):
+                cursor.execute("SELECT COUNT(*) FROM ROL_OPCIONCRUD")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(11,'Consultar Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(12,'Crear Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(13,'Modificar Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(14,'Eliminar Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(21,'Consultar Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(22,'Crear Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(23,'Modificar Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(24,'Eliminar Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(31,'Consultar Usuario');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(33,'Modificar Usuario');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(34,'Eliminar Usuario');")
