@@ -9,14 +9,14 @@ Unidades Organizacionales
 {% endblock %}
 
 {% block content %}
-<section class="content">
+<!-- <section class="content">
     <div class="container-fluid">
         <div class="row">
         <div class="col-12">
             <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Unidades Organizacionales</h3>
-                <a href="{% url 'view unidad' %}"> <!-- Referenciado al url de nuestra app -->
+                <a href="{% url 'view unidad' %}"> <!-- Referenciado al url de nuestra app 
                     <button type="button" class="btn btn-info float-right">
                         <i class="fas fa-plus"></i>Crear
                     </button>
@@ -34,12 +34,12 @@ Unidades Organizacionales
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Si existen unidades las recorremos con un for -->
+                            <!-- Si existen unidades las recorremos con un for 
                             {% if Unidades %}
                             {% for unidad in Unidades %}
                             <tr>
                                 <td>{{ unidad.id }}</td>
-                                <td>{{ unidad.idRol }}</td>
+                                <td></td>
                                 <td>{{ unidad.nombreUnidad }}</td>
                                 <td>{{ unidad.descripUnidad }}</td>
                                 <td>
@@ -55,7 +55,7 @@ Unidades Organizacionales
                             </tr>
                             {% endfor %}
                             {% else %}
-                            <!-- Si no hay registros de unidades -->
+                            <!-- Si no hay registros de unidades 
                             <h4>No hay registros de Unides Organizacionales</h4>
                             {% endif %}
                         </tbody>                        
@@ -65,5 +65,49 @@ Unidades Organizacionales
         </div>
     </div>
 </div>
-</section>
+</section> -->
+
+<table class="table table-bordered">
+	<thead>
+        <div>
+            <a href="{% url 'view unidad' %}"> <!-- Referenciado al url de nuestra app -->
+                <button type="button" class="btn btn-info float-right">
+                    <i class="fas fa-plus"></i>Crear
+                </button>
+            </a>
+        </div>
+        <!-- Tabla para Unidades organizacionales  -->
+		<tr>
+			<th>ID</th>            
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+		</tr>
+		
+	</thead>
+	<tbody>
+        <!-- Si la lista esta creada traeremos los datos de unidadesOrganizacionales -->
+        {% if object_list %}
+        <!-- Recorremos la tabla  -->
+		{% for unidad in object_list %}
+		<tr>
+            <!-- Imprimimos los valores deaceurdo al form -->
+			<td>{{ unidad.idUnidad }}</td>            
+            <td>{{ unidad.nombreUnidad }}</td>
+            <td>{{ unidad.descripUnidad }}</td>
+            
+            <!-- Opciones de cada unidad organizacional -->
+			<td>
+				<a class="btn btn-primary" href="#">Editar</a>
+				<a class="btn btn-danger" href="#">Eliminar</a>
+			</td>
+        </tr>
+		{% endfor %}
+        
+        <!-- Si la lista de objetos esta vacia no mostraremos los registros sino un mensaje en el encabezado -->
+		{% else %}
+		<h1>No hay registros de solicitudes</h1>
+		{% endif %}
+	</tbody>
+</table> 
 {% endblock %}
