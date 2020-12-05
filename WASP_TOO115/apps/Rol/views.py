@@ -37,9 +37,12 @@ def verificar_permiso(request, permiso):
 
 @login_required(login_url='Login')
 def index_roles(request):
-    rol = Rol.objects.all()
-    context = {'roles':rol}
-    return render(request, 'rol/index_rol.html', context)
+    if verificar_permiso(request, 1):
+        rol = Rol.objects.all()
+        context = {'roles':rol}
+        return render(request, 'rol/index_rol.html', context)
+    else:
+        return render(request, '403.html')
 @login_required(login_url='Login')
 def create_rol(request):
 #En acceso se obtienen todos los permisos/accesos que se tienen en el rol especificado

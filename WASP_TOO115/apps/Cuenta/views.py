@@ -204,7 +204,7 @@ def IniciarSesion(request):
             pL = Usuario.objects.filter(nomUsuario=user).values('last_login') #Para verificar el último login
             primerL = pL.get()
             primerLogin = primerL.get('last_login')
-            if primerLogin != None:
+            if primerLogin != None and user.password_change_date is not None:
                 hoy = datetime.now(timezone.utc)
                 pp = user.password_change_date
                 restaTiempo = hoy - user.password_change_date
