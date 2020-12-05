@@ -208,7 +208,6 @@ def IniciarSesion(request):
                 hoy = datetime.now(timezone.utc)
                 pp = user.password_change_date
                 restaTiempo = hoy - user.password_change_date
-                #print(resta)
                 if  restaTiempo > timedelta(seconds=180): #Para comprobar si el tiempo desde que se cambió la contra aún es válido
                     contraExpirada = True
                     print("SOLO ESTOY COMPROBANDO EL last_login DIFERENTE DE NONE", primerLogin)
