@@ -96,10 +96,10 @@ Unidades Organizacionales
             <td>{{ unidad.nombreUnidad }}</td>
             <td>{{ unidad.descripUnidad }}</td>
             
-            <!-- Opciones de cada unidad organizacional -->
+            <!-- Opciones de cada unidad organizacional  con su respectivo id -->
 			<td>
-				<a class="btn btn-primary" href="#">Editar</a>
-				<a class="btn btn-danger" href="#">Eliminar</a>
+				<a class="btn btn-primary" href="{% url 'edit unidad' unidad.idUnidad %}">Editar</a>
+				<a class="btn btn-danger" href="{% url 'delete unidad' unidad.idUnidad %}">Eliminar</a>
 			</td>
         </tr>
 		{% endfor %}
