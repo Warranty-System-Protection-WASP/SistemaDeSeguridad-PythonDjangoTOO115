@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core import serializers
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView , UpdateView , DeleteView
 from django.views.generic import ListView, DetailView, TemplateView
@@ -21,15 +22,63 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from passlib.hash import pbkdf2_sha256 #Para encriptación de passcode
 from django import forms
-from apps.Rol.models import Rol, RolUsuario
 from apps.UnidadOrganizacional.models import UnidadOrganizacional
 from .models import *
 from .forms import *
 
+from apps.Rol.forms import rol_form
+from apps.Rol.models import RolUsuario, RolOpcion, Rol, OpcionCrud
+from apps.Cuenta.models import Usuario
+
 from datetime import datetime, timedelta, timezone
 
-# Create your views here.
+import json
 
+# Create your views here.
+def verificar_permiso(request, permiso):
+    valor = False
+
+    usuario = Usuario.objects.get(nomUsuario = request.user)
+    roluser = RolUsuario.objects.get(idEmpleado = usuario, is_activo=True)
+    puesto = Rol.objects.get(id = roluser.idRol.id)
+    opciones = RolOpcion.objects.filter(idRol = puesto)
+    cruds = []
+    for obj in opciones:
+        item = OpcionCrud.objects.get(id = obj.idOpcion.id)
+        cruds.append(item)
+    acceso = serializers.serialize('json', cruds)
+
+    usuario = Usuario.objects.get(nomUsuario = request.user)
+    roluser = RolUsuario.objects.get(idEmpleado = usuario, is_activo=True)
+    puesto = Rol.objects.get(id = roluser.idRol.id)
+    opciones = RolOpcion.objects.filter(idRol = puesto)
+    try:
+        for obj in opciones:
+            item = OpcionCrud.objects.get(id = obj.idOpcion.id)
+            if item.numCrud == permiso:
+                valor = True
+                break
+        return valor
+    except ObjectDoesNotExist:
+        return False
+
+def index_usuarios(request):
+    if verificar_permiso(request, 31):
+        usuario = Usuario.objects.filter(is_bloqueado=False)
+        usuario_bloqueado = Usuario.objects.filter(is_bloqueado=True)
+        solicitud = Usuario.objects.filter(solicitud = 'P')
+        usuario2 = Usuario.objects.get(nomUsuario = request.user)
+        token = False
+        if usuario2.nomUsuario == 'admin':
+            token = True
+            context = {'usuarios':usuario, 'bloqueados':usuario_bloqueado, 'solicitudes':solicitud, 'admin':token}
+            return render(request, 'Usuarios/index_usuarios.html', context)
+        else:
+            token = False
+            context = {'usuarios':usuario, 'bloqueados':usuario_bloqueado, 'solicitudes':solicitud, 'admin':token}
+            return render(request, 'Usuarios/index_usuarios.html', context)
+    else:
+        return render(request, '403.html')
 #CRUD de Departamento
 #@method_decorator(login_required, name='dispatch')
 class CrearDepartamento(SuccessMessageMixin, CreateView):
@@ -122,17 +171,17 @@ class SignUp(SuccessMessageMixin, CreateView):
         print(verificar)
         verificar = pbkdf2_sha256.verify("3451", hash)
         print(verificar)
-        
+
         user.salario = 0.0
         return super(SignUp, self).form_valid(form)
 
 #Gestión de Solicitudes
 #@method_decorator(login_required, name='dispatch')
-class AdministrarSolicitudes(ListView):
+'''class AdministrarSolicitudes(ListView):
     model = Usuario
     template_name = 'cuenta/AdministrarSolicitudes.html'
     context_object_name = 'Solicitudes'
-
+'''
 #@method_decorator(login_required, name='dispatch')
 class EliminarSolicitud(DeleteView):
     model = Usuario

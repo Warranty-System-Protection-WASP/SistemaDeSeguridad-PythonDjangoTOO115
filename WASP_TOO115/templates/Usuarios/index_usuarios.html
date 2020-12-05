@@ -1,0 +1,288 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}
+Usuarios | WASP - TOO115
+{% endblock %}
+
+{% block contentHeader %}
+Usuarios:
+{% endblock %}
+
+{% block content %}
+<section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Catálogo De Usuarios:</h3>
+              </div>
+              <div class="card-body">
+                <form class="form-inline">
+                  <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar my-1" type="search" placeholder="Search" aria-label="Search" id="formulario">
+                    <div class="input-group-append">
+                      <button class="btn btn-navbar my-1" type="button">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                  <table id="tabla_usuarios" class="table table-bordered table-striped">
+                      <thead>
+                         <tr>
+                            <th>UserName</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                            <th>Telefono</th>
+                            <th>DUI</th>
+                            <th>Acciones</th>
+                         </tr>
+                      </thead>
+                      <tbody id="registros_usuarios">
+                        {% if usuarios %}
+                        {% for usuario in usuarios %}
+                         <tr>
+                            <td>{{ usuario.nomUsuario }}</td>
+                            <td>{{ usuario.nombre }}</td>
+                            <td>{{ usuario.apellido }}</td>
+                            <td>{{ usuario.correo }}</td>
+                            <td>{{ usuario.telefono }}</td>
+                            <td>{{ usuario.dui }}</td>
+                            <td><a href=""><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <a href=""><button type="button" class="btn btn-danger" name="bloquear"><i class="fas fa-lock"></i> Bloquear</button></a></td>
+                         </tr>
+                         {% endfor %}
+                         {% else %}
+                         <h5>No hay registros de Usuarios</h5>
+                         {% endif %}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>UserName</th>
+                          <th>Nombre</th>
+                          <th>Apellido</th>
+                          <th>Correo</th>
+                          <th>Telefono</th>
+                          <th>DUI</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </tfoot>
+                  </table>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Usuarios Bloqueados:</h3>
+              </div>
+              <div class="card-body">
+                <form class="form-inline">
+                  <div class="input-group input-group-sm">
+                    <input class="form-control form-control-navbar my-1" type="search" placeholder="Search" aria-label="Search" id="formulario_bloqueados">
+                    <div class="input-group-append">
+                      <button class="btn btn-navbar my-1" type="button">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                  <table id="tabla_usuarios_bloqueados" class="table table-bordered table-striped">
+                      <thead>
+                         <tr>
+                            <th>UserName</th>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Correo</th>
+                            <th>Telefono</th>
+                            <th>DUI</th>
+                            <th>Acciones</th>
+                         </tr>
+                      </thead>
+                      <tbody id="registros_usuarios_bloqueados">
+                        {% if bloqueados %}
+                        {% for usuario_bloqueado in bloqueados %}
+                         <tr>
+                            <td>{{ usuario_bloqueado.nomUsuario }}</td>
+                            <td>{{ usuario_bloqueado.nombre }}</td>
+                            <td>{{ usuario_bloqueado.apellido }}</td>
+                            <td>{{ usuario_bloqueado.correo }}</td>
+                            <td>{{ usuario_bloqueado.telefono }}</td>
+                            <td>{{ usuario_bloqueado.dui }}</td>
+                            <td><a href=""><button type="button" class="btn btn-info" name="desbloquear"><i class="fas fa-lock-open"></i> Desbloquear</button></a></td>
+                         </tr>
+                         {% endfor %}
+                         {% else %}
+                         <h5>No hay registros de Usuarios Bloqueados</h5>
+                         {% endif %}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>UserName</th>
+                          <th>Nombre</th>
+                          <th>Apellido</th>
+                          <th>Correo</th>
+                          <th>Telefono</th>
+                          <th>DUI</th>
+                          <th>Acciones</th>
+                        </tr>
+                      </tfoot>
+                  </table>
+              </div>
+            </div>
+            <div class="card" id="card_solicitudes" value="{{ admin }}">
+              <div class="card-header">
+                <h3 class="card-title">Solicitudes:</h3>
+              </div>
+              <div class="card-body">
+                  <table id="tabla_solicitudes" class="table table-bordered table-dark table-striped">
+                    <thead class="table-dark">
+                      <tr>
+                        <th scope="col" align="center">Usuario</th>
+                        <th scope="col" align="center">Nombres</th>
+                        <th scope="col" align="center">Apellidos</th>
+                        <th scope="col" align="center">Estado</th>
+                        <th scope="col" align="center">Solicitud</th>
+                        <th scope="col" width="200px">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% if solicitudes %}
+                      {% for row in solicitudes %}
+                      <tr>
+                        <td>{{ row.pk }}</td>
+                        <td>{{ row.nombre }}</td>
+                        <td>{{ row.apellido }}</td>
+                        <td>{{ row.is_active }}</td>
+                        <td>{{ row.solicitud }}</td>
+                        <td>
+
+                          <!--Aprobar-->
+                          <a href="{% url 'Cuenta:AprobarSolicitud' row.pk %}" class="btn-info btn btn-lg">
+                            <i class="fa fa-check-circle"></i>
+                          </a>
+
+                          <!--Detalle de usuario-->
+                          <a href="{% url 'Cuenta:DetalleUsuario' row.pk %}" class="btn-light btn btn-lg">
+                              <i class="fa fa-id-card-o"></i>
+                          </a>
+                            <!--borrar-->
+                          <button class="btn-danger btn btn-lg" data-toggle='modal' data-target='#deleteModal' data-pk='{{ row.pk }}'>
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                      {% else %}
+                      <h5>No hay registros de Solicitudes</h5>
+                      {% endif %}
+                    </tbody>
+                      <tfoot>
+                        <tr>
+                          <th scope="col" align="center">Usuario</th>
+                          <th scope="col" align="center">Nombres</th>
+                          <th scope="col" align="center">Apellidos</th>
+                          <th scope="col" align="center">Estado</th>
+                          <th scope="col" align="center">Solicitud</th>
+                          <th scope="col" width="200px">Acciones</th>
+                        </tr>
+                      </tfoot>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables -->
+<script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script>
+  var tabla = document.getElementById('tabla_usuarios');
+  var tabla_bloqueados = document.getElementById('tabla_usuarios_bloqueados');
+  var formulario = document.querySelector('#formulario');
+  var formulario_bloqeuados = document.querySelector('#formulario_bloqueados');
+  var tuplas = document.querySelector('#registros_usuarios');
+  var tuplas_bloqueados = document.querySelector('#registros_usuarios_bloqueados');
+  var registros = [];
+  var registros_bloqueados = [];
+  var card = document.getElementById('card_solicitudes');
+
+  for(var i=1;i<=tabla.rows.length-2;i++){
+    /*for(var j=0;j<3;j++){
+      alert(tabla.rows[i].cells[j].innerHTML);
+    }*/
+    var usuario = {
+      username: tabla.rows[i].cells[0].innerHTML,
+      nombre: tabla.rows[i].cells[1].innerHTML,
+      apellido: tabla.rows[i].cells[2].innerHTML,
+      correo: tabla.rows[i].cells[3].innerHTML,
+      telefono: tabla.rows[i].cells[4].innerHTML,
+      dui: tabla.rows[i].cells[5].innerHTML,
+    };
+    registros.push(usuario);
+  }
+
+  const filtrar = ()=>{
+    tuplas.innerHTML = ''
+    const texto = formulario.value.toLowerCase();
+    for(var i=0;i<registros.length;i++){
+      var nombre = registros[i].username.toLowerCase();
+      if(nombre.indexOf(texto) !== -1){
+        tuplas.innerHTML += "<td>"+registros[i].username+"</td><td>"+registros[i].nombre+"</td><td>"+registros[i].apellido+"</td><td>"+registros[i].correo+"</td><td>"+registros[i].telefono+"</td><td>"+registros[i].dui+"</td>"+"<td><a href=''><button type='button' class='btn btn-info' name='editar'><i class='fas fa-edit'></i> Editar</button></a>  <a href=''><button type='button' class='btn btn-danger' name='bloquear'><i class='fas fa-lock'></i> Bloquear</button></a></td>"
+      }
+    }
+  }
+  formulario.addEventListener('keyup',filtrar);
+
+  for(var i=1;i<=tabla_bloqueados.rows.length-2;i++){
+    /*for(var j=0;j<3;j++){
+      alert(tabla.rows[i].cells[j].innerHTML);
+    }*/
+    var usuario_bloqueado = {
+      username: tabla.rows[i].cells[0].innerHTML,
+      nombre: tabla.rows[i].cells[1].innerHTML,
+      apellido: tabla.rows[i].cells[2].innerHTML,
+      correo: tabla.rows[i].cells[3].innerHTML,
+      telefono: tabla.rows[i].cells[4].innerHTML,
+      dui: tabla.rows[i].cells[5].innerHTML,
+    };
+    registros_bloqueados.push(usuario_bloqueado);
+  }
+
+  const filtrar_bloqueados = ()=>{
+    tuplas_bloqueados.innerHTML = ''
+    const texto = formulario_bloqeuados.value.toLowerCase();
+    for(var i=0;i<registros_bloqueados.length;i++){
+      var nombre = registros_bloqueados[i].username.toLowerCase();
+      if(nombre.indexOf(texto) !== -1){
+        tuplas.innerHTML += "<td>"+registros_bloqueados[i].username+"</td><td>"+registros_bloqueados[i].nombre+"</td><td>"+registros_bloqueados[i].apellido+"</td><td>"+registros_bloqueados[i].correo+"</td><td>"+registros_bloqueados[i].telefono+"</td><td>"+registros_bloqueados[i].dui+"</td>"+"<td><a href=''><button type='button' class='btn btn-danger' name='desbloquear'><i class='fas fa-lock-open'></i> Desbloquear</button></a></td>"
+      }
+    }
+  }
+  formulario_bloqeuados.addEventListener('keyup',filtrar_bloqueados);
+
+  var user = card.getAttribute("value");
+  if(user == 'True'){
+    card.style.display = 'block';
+  }else{
+    card.style.display = 'none';
+  }
+
+  $(function () {
+    $('#tabla_roles').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+{% endblock %}

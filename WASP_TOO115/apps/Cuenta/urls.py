@@ -15,10 +15,12 @@ urlpatterns = [
     path('Municipio/<int:pk>', EditarMunicipio.as_view(), name = 'ModificarMunicipio'),
     path('Municipios/<int:pk>/Borrar', EliminarMunicipio.as_view(), name = 'EliminarMunicipio'),
     path('Municipios', AdministrarMunicipios.as_view(), name = 'AdministrarMunicipios'),
-    path('Solicitudes', AdministrarSolicitudes.as_view(), name = 'Solicitudes'),
+    #path('Solicitudes', AdministrarSolicitudes.as_view(), name = 'Solicitudes'),
     re_path(r'^Aprobar/(?P<pk>\w+)', Aprobar.as_view(), name = 'AprobarSolicitud'),
     #Detalle usuario
     re_path(r'^DetalleUsuario/(?P<pk>\w+)', DetalleUsuario.as_view(), name = 'DetalleUsuario'),
     #Para cambiar contraseña
     path('password_change/', PasswordChangeView.as_view(), name='password_change'),
+    #Para Usuarios
+    path('Usuarios/', index_usuarios, name='index usuarios'),
 ]
