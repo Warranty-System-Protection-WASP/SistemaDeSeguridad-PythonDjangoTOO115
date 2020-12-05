@@ -34,12 +34,17 @@ class CuentaConfig(AppConfig):
                 pass
             try:
                 cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'ROL_ROL' FETCH FIRST 1 ROWS ONLY;")
-                existeRolOpcion=cursorVerificacion.fetchone()
+                existeRol=cursorVerificacion.fetchone()
             except:
                 pass
             try:
                 cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'ROL_ROLOPCION' FETCH FIRST 1 ROWS ONLY;")
-                existeRol=cursorVerificacion.fetchone()
+                existeRolOpcion=cursorVerificacion.fetchone()
+            except:
+                pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'ROL_ROLUSUARIO' FETCH FIRST 1 ROWS ONLY;")
+                existeRolUsuario=cursorVerificacion.fetchone()
             except:
                 pass
 
@@ -71,33 +76,44 @@ class CuentaConfig(AppConfig):
                 cursor.execute("SELECT COUNT(*) FROM ROL_OPCIONCRUD")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(11,'Consultar Puesto De Trabajo');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(12,'Crear Puesto De Trabajo');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(13,'Modificar Puesto De Trabajo');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(14,'Eliminar Puesto De Trabajo');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(21,'Consultar Unidad Organizacional');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(22,'Crear Unidad Organizacional');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(23,'Modificar Unidad Organizacional');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(24,'Eliminar Unidad Organizacional');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(31,'Consultar Usuario');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(33,'Modificar Usuario');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(34,'Eliminar Usuario');")
-                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (NUMCRUD, DESCRIPCRUD) VALUES(34,'Eliminar Usuario');")
-
-            '''if(existeUnidad!=None):
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(1, 11,'Consultar Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(2, 12,'Crear Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(3, 13,'Modificar Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(4, 14,'Eliminar Puesto De Trabajo');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(5, 21,'Consultar Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(6, 22,'Crear Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(7, 23,'Modificar Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(8, 24,'Eliminar Unidad Organizacional');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(9, 31,'Consultar Usuario');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(10, 33,'Modificar Usuario');")
+                    cursor.execute("INSERT INTO ROL_OPCIONCRUD (ID, NUMCRUD, DESCRIPCRUD) VALUES(11, 34,'Eliminar Usuario');")
+            if(existeUnidad!=None):
                 cursor.execute("SELECT COUNT(*) FROM UNIDADORGANIZACIONAL_UNIDA4EEA")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
-                    cursor.execute("INSERT INTO UNIDADORGANIZACIONAL_UNIDA4EEA (NOMBREUNIDAD, DESCRIPUNIDAD) VALUES(1,'Departamento De Recursos Humanos');")
-
+                    cursor.execute("INSERT INTO UNIDADORGANIZACIONAL_UNIDA4EEA (IDUNIDAD, NOMBREUNIDAD, DESCRIPUNIDAD) VALUES(1,'Departamento De Recursos Humanos', 'Encargados de la gestion del sistema');")
             if(existeRol!=None):
                 cursor.execute("SELECT COUNT(*) FROM ROL_ROL")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
-                    cursor.execute("INSERT INTO ROL_ROL (NOMBREROL, DESCRIPROL, UNIDAD_ID) VALUES('Jefe De Recursos Huamnos','Administrador del sistema.',1);")
-
+                    cursor.execute("INSERT INTO ROL_ROL (ID, NOMBREROL, DESCRIPROL, UNIDAD_ID) VALUES(1, 'Jefe De Recursos Huamnos','Administrador del sistema.',1);")
             if(existeRolOpcion!=None):
                 cursor.execute("SELECT COUNT(*) FROM ROL_ROLOPCION")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
-                    cursor.execute("INSERT INTO ROL_ROLOPCION (IDOPCION_ID, IDROL_ID) VALUES(1,1);")'''
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(1, 1, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(2, 2, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(3, 3, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(4, 4, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(5, 5, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(6, 6, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(7, 7, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(8, 8, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(9, 9, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(10, 10, 1);")
+                    cursor.execute("INSERT INTO ROL_ROLOPCION (ID, IDOPCION_ID, IDROL_ID) VALUES(11, 11, 1);")
+            if(existeRolUsuario!=None):
+                cursor.execute("SELECT COUNT(*) FROM ROL_ROLUSUARIO")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("INSERT INTO ROL_ROLUSUARIO (ID, IS_ACTIVO, FECHA_INICIO, FECHA_FIN, IDEMPLEADO_ID, IDROL_ID) VALUES(1, 1, TO_DATE(TO_CHAR(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd'), TO_DATE('2025-12-01','yyyy-mm-dd'), 'admin', 1);")
