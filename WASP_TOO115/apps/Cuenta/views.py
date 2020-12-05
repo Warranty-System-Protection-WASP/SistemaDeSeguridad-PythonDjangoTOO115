@@ -116,13 +116,13 @@ class SignUp(SuccessMessageMixin, CreateView):
         passcodeHash = user.passcode #Obtiene el passcode ingresado en texto plano
         hash= pbkdf2_sha256.hash(passcodeHash) #Encripta el passcode
         user.passcode = hash #Para guardar encriptado el passcode en la BD
-        '''
+
         #Lo dejo para prueba... lo ocuparé después en el restablecimiento de contraseña
         verificar = pbkdf2_sha256.verify(passcodeHash, hash)
         print(verificar)
         verificar = pbkdf2_sha256.verify("3451", hash)
         print(verificar)
-        '''
+        
         user.salario = 0.0
         return super(SignUp, self).form_valid(form)
 
@@ -229,7 +229,7 @@ def IniciarSesion(request):
                 # RECORDATORIO PARA CUANDO ME DESPIERTE, SÍ FUNCIONA :3
                 return HttpResponseRedirect(reverse_lazy('Cuenta:AdministrarMunicipios'))
         else:
-            falloContra = Usuario.objects.filter(nomUsuario=user).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para lalógica del bloqueo de cuenta
+            falloContra = Usuario.objects.filter(nomUsuario=u).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para lalógica del bloqueo de cuenta
             messages.error(request, "Contraseña incorrecta")
             return render(request, 'cuenta/Contraseña.html', {'u': u, 'nc': nc})
         return render(request, 'cuenta/Contraseña.html')

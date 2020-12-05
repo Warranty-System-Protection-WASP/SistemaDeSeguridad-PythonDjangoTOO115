@@ -6,8 +6,8 @@ from apps.UnidadOrganizacional.views import UnidadList, UnidadCreate, UnidadUpda
 
 urlpatterns = [
 
-    path('',UnidadList.as_view(), name='index unidad'),
-    path('Agregar', UnidadCreate.as_view(), name='view unidad'),
-    path('Editar/<int:pk>/',UnidadUpdate.as_view(), name='edit unidad'),        
+    path('', UnidadList, name='index unidad'),
+    path('Agregar', UnidadCreate, name='view unidad'),
+    path('Editar/<int:pk>/',UnidadUpdate, name='edit unidad'),
     path('Eliminar/<int:id_unidad>/', UnidadDelete, name='delete unidad'),
 ]

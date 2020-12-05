@@ -11,7 +11,7 @@ class Departamento(models.Model):
 class Municipio(models.Model):
     idMunicipio = models.AutoField(primary_key = True)
     nomMunicipio = models.CharField(max_length=30)
-    departamento = models.ForeignKey(Departamento, on_delete = models.PROTECT)
+    departamento = models.ForeignKey(Departamento, on_delete = models.CASCADE)
     def __str__(self):
         return  self.nomMunicipio
 
@@ -36,7 +36,7 @@ class Usuario(AbstractBaseUser):
     #Referente al Usuario:
     nomUsuario=models.CharField(max_length=15, primary_key=True)
     #EstadisticaCuenta no puede ir aquí, porque la misma EstadisticaCuenta se podría asociar a varias cuentas, lo cuál no debe ser
-    #idEstadisticas=models.ForeignKey(EstadisticaCuenta,on_delete=models.PROTECT)
+    #idEstadisticas=models.ForeignKey(EstadisticaCuenta,on_delete=models.CASCADE)
     passcode=models.CharField(max_length=100, blank=False)
     is_bloqueado=models.BooleanField(default=False)
     #Llevará la cuenta de intentos fallidos de contraseña
@@ -56,7 +56,7 @@ class Usuario(AbstractBaseUser):
     salario=models.DecimalField(max_digits=5, decimal_places=2)
     genero=models.CharField(choices = Genero, max_length=10)
     estadoCivil= models.CharField(choices = EstadoCivil, max_length=10)
-    municipio = models.ForeignKey(Municipio, on_delete = models.PROTECT)
+    municipio = models.ForeignKey(Municipio, on_delete = models.CASCADE)
     numCasa = models.PositiveIntegerField(blank=False)
     calle = models.CharField(max_length=50, blank=False)
     colonia = models.CharField(max_length=50, blank=False)
@@ -73,15 +73,15 @@ class Pregunta(models.Model):
     pregunta=models.CharField(max_length=75)
 
 class BancoPregunta(models.Model):
-    nomUsuario=models.ForeignKey(Usuario, on_delete=models.PROTECT)
-    numPregunta=models.ForeignKey(Pregunta, on_delete=models.PROTECT)
+    nomUsuario=models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    numPregunta=models.ForeignKey(Pregunta, on_delete=models.CASCADE)
     respuesta=models.CharField(max_length=75)
     class Meta:
         unique_together = ("nomUsuario", "numPregunta")
 
 class EstadisticaCuenta(models.Model):
     idEstadisticas=models.AutoField(primary_key=True)
-    cuenta = models.OneToOneField(Usuario, on_delete= models.PROTECT)
+    cuenta = models.OneToOneField(Usuario, on_delete= models.CASCADE)
     cambioClave=models.PositiveIntegerField(default=0)
     cambioRol=models.PositiveIntegerField(default=0)
     bloqueos=models.PositiveIntegerField(default=0)

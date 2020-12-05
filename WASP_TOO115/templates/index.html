@@ -30,22 +30,7 @@ Ejemplo de sobreescritura de Content-Header
 
 {% block extrajs %}
 <script>
-  document.getElementById('catalogo-puestos').style.display = 'none';
-  document.getElementById('unidad-organizacionial').style.display = 'none';
   var anioActual = (new Date()).getFullYear();
   document.getElementById("anioA").value = anioActual;
-
-  var arreglo = {{ permisos|safe }}
-  //alert(arreglo);
-  console.log(JSON.stringify(arreglo));
-  for(var x=0;x<arreglo.length;x++){
-    var item = arreglo[x].fields.numCrud;
-    if(item == '11'){
-      document.getElementById('catalogo-puestos').style.display = 'block';
-    }
-    if(item == '21'){
-      document.getElementById('unidad-organizacionial').style.display = 'block';
-    }
-  }
 </script>
 {% endblock %}
