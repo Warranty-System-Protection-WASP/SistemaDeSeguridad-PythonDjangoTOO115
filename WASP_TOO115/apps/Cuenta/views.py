@@ -26,7 +26,7 @@ from apps.UnidadOrganizacional.models import UnidadOrganizacional
 from .models import *
 from .forms import *
 
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 # Create your views here.
 
@@ -205,11 +205,23 @@ def IniciarSesion(request):
             primerL = pL.get()
             primerLogin = primerL.get('last_login')
             if primerLogin != None:
-                print("SOLO ESTOY COMPROBANDO EL last_login DIFERENTE DE NONE", primerLogin)
-                # Hacemos el login manualmente
-                login(request, user)
-                # Y le redireccionamos a la portada
-                return redirect('/')
+                hoy = datetime.now(timezone.utc)
+                pp = user.password_change_date
+                restaTiempo = hoy - user.password_change_date
+                print(resta)
+                if  restaTiempo > timedelta(seconds=180): #Para comprobar si el tiempo desde que se cambió la contra aún es válido
+                    contraExpirada = True
+                    print("SOLO ESTOY COMPROBANDO EL last_login DIFERENTE DE NONE", primerLogin)
+                    # Hacemos el login manualmente
+                    login(request, user)
+                    # Y le redireccionamos a la portada
+                    return HttpResponseRedirect(reverse_lazy('Cuenta:password_change'))
+                else:
+                    print("SOLO ESTOY COMPROBANDO EL last_login DIFERENTE DE NONE", primerLogin)
+                    # Hacemos el login manualmente
+                    login(request, user)
+                    # Y le redireccionamos a la portada
+                    return redirect('/')
             else:
                 print("SOLO ESTOY COMPROBANDO EL last_login EN NONE", primerLogin)
                 login(request, user)
@@ -249,7 +261,7 @@ class PasswordChangeView(FormView):
 
     def form_valid(self, form):
         user=form.save(commit=False)
-        user.password_change_date = datetime.now()
+        user.password_change_date = datetime.now(timezone.utc)
         form.save()
         # Updating the password logs out all other sessions for the user
         # except the current one.
