@@ -5,14 +5,36 @@ from django.db import connection
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 
-from apps.Rol.models import Rol, RolOpcion
+#from apps.Rol.models import Rol, RolOpcion
 from apps.Rol.forms import rol_form
+from apps.Rol.models import RolUsuario, RolOpcion, Rol
+from apps.Cuenta.models import Usuario
 
 import json
 
 # Create your views here.
 
 switches = ["customSwitch1","customSwitch2","customSwitch3","customSwitch4","customSwitch5","customSwitch6","customSwitch7","customSwitch8","customSwitch9","customSwitch10","customSwitch11","customSwitch12"]
+
+def verificar(request):
+    usuario = Usuario.objects.get(nomUsuario = request.user)
+    roluser = RolUsuario.objects.get(idEmpleado = usuario, is_activo=True)
+    puesto = Rol.objects.get(id = roluser.idRol.id)
+    opciones = RolOpcion.objects.filter(idRol = puesto)
+    #js_data = "{}"
+    acceso = serializers.serialize('json', opciones)
+    return {'permisos':acceso}
+
+def verificar_permiso(request, permiso):
+    usuario = Usuario.objects.get(nomUsuario = request.user)
+    roluser = RolUsuario.objects.get(idEmpleado = usuario, is_activo=True)
+    puesto = Rol.objects.get(id = roluser.idRol.id)
+    try:
+        opciones = RolOpcion.objects.filter(idOpcion = permiso, idRol = puesto)
+        return True
+    except ObjectDoesNotExist:
+        return False
+
 @login_required(login_url='Login')
 def index_roles(request):
     rol = Rol.objects.all()

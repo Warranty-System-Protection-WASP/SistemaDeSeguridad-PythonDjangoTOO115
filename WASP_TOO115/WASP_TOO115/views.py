@@ -14,7 +14,7 @@ def index(request):
         puesto = Rol.objects.get(id = roluser.idRol.id)
         opciones = RolOpcion.objects.filter(idRol = puesto)
         #js_data = "{}"
-        js_data = serializers.serialize('json', opciones)
-        return render(request, 'index.html', {'my_data':js_data})
+        acceso = serializers.serialize('json', opciones)
+        return render(request, 'index.html', {'permisos':acceso})
     else:
         return render(request, 'index.html')

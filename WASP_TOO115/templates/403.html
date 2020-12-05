@@ -1,0 +1,19 @@
+{% extends 'Base/base.html' %}
+{% block title %}
+No puedes acceder a esta página
+{% endblock %}
+{% block content %}
+  <div class="contenedorError" align="center" style="margin-top:-15px; background-color: rgb(0, 0, 0); opacity: 50%;height:100%">
+    <div class="fondoError" style="">
+      <strong><hr/><hr/></strong>
+        <strong><h2 style="color:#FFFFFF; margin:0px; font-size:200px; font-family: Helvetica" >403</h2></strong>
+        <strong><p style="color:#606060; margin:0px; font-size:40px; font-family: Helvetica; margin-top:20px;" >Acceso denegado</p></strong>
+    </div>
+      <div class="section-title">
+        <div style="margin:auto;">
+          <strong><h2 style="color:#FFFFFF; font-size:25px; font-family: Helvetica">No tienes permitido acceder a esta dirección o página.</h2></strong>
+          <p><strong><div style="font-size:18px; font-family: Helvetica"><a href="javascript:window.history.back()">Retornar</a></div></strong></p>
+        </div>
+      </div>
+</div>
+{% endblock %}
