@@ -62,6 +62,17 @@ def verificar_permiso(request, permiso):
     except ObjectDoesNotExist:
         return False
 
+@login_required(login_url='Login')
+def detalle_usuario(request, username):
+    if verificar_permiso(request, 31):
+        usuario = Usuario.objects.get(nomUsuario = username)
+        roles = RolUsuario.objects.filter(idEmpleado = usuario).order_by('-is_activo')
+        context = {'form':usuario, 'bitacora':roles}
+        return render(request, 'Usuarios/detalle_usuario.html', context)
+    else:
+        return render(request, '403.html')
+
+@login_required(login_url='Login')
 def index_usuarios(request):
     if verificar_permiso(request, 31):
         usuario = Usuario.objects.filter(is_bloqueado=False)
@@ -80,6 +91,7 @@ def index_usuarios(request):
     else:
         return render(request, '403.html')
 
+@login_required(login_url='Login')
 def edit_usuario(request, username):
     if verificar_permiso(request, 33):
         usuario = Usuario.objects.get(nomUsuario = username)
@@ -112,6 +124,7 @@ def edit_usuario(request, username):
     else:
         return render(request, '403.html')
 
+@login_required(login_url='Login')
 def bloquear_usuario(request, username):
     if verificar_permiso(request, 34):
         usuario = Usuario.objects.get(nomUsuario = username)
@@ -121,6 +134,7 @@ def bloquear_usuario(request, username):
     else:
         return render(request, '403.html')
 
+@login_required(login_url='Login')
 def desbloquear_usuario(request, username):
     if verificar_permiso(request, 34):
         usuario = Usuario.objects.get(nomUsuario = username)
@@ -132,7 +146,7 @@ def desbloquear_usuario(request, username):
 
 
 #CRUD de Departamento
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class CrearDepartamento(SuccessMessageMixin, CreateView):
     model = Departamento
     form_class = DepartamentoForm
@@ -140,7 +154,7 @@ class CrearDepartamento(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('Cuenta:AdministrarDepartamentos')
     success_message = 'Departamento creado con éxito'
 
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EditarDepartamento(SuccessMessageMixin, UpdateView):
     model = Departamento
     form_class = DepartamentoForm
@@ -148,20 +162,20 @@ class EditarDepartamento(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('Cuenta:AdministrarDepartamentos')
     success_message = 'Departamento editado con éxito'
 
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EliminarDepartamento(DeleteView):
     model = Departamento
     form_class = DepartamentoForm
     def get_success_url(self):
         return reverse_lazy('Cuenta:AdministrarDepartamentos')
 
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class AdministrarDepartamentos(ListView):
     model = Departamento
     template_name = 'cuenta/AdministrarDepartamentos.html'
 
 #CRUD de Municipios
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class CrearMunicipio(SuccessMessageMixin, CreateView):
     model = Municipio
     form_class = MunicipioForm
@@ -169,7 +183,7 @@ class CrearMunicipio(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('Cuenta:AdministrarMunicipios')
     success_message = 'Municipio creado con éxito'
 
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EditarMunicipio(SuccessMessageMixin, UpdateView):
     model = Municipio
     form_class = MunicipioForm
@@ -177,14 +191,14 @@ class EditarMunicipio(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('Cuenta:AdministrarMunicipios')
     success_message = 'Municipio editado con éxito'
 
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EliminarMunicipio(DeleteView):
     model = Municipio
     form_class = MunicipioForm
     def get_success_url(self):
         return reverse_lazy('Cuenta:AdministrarMunicipios')
 
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class AdministrarMunicipios(ListView):
     model = Municipio
     template_name = 'cuenta/AdministrarMunicipios.html'
@@ -234,14 +248,14 @@ class SignUp(SuccessMessageMixin, CreateView):
     template_name = 'cuenta/AdministrarSolicitudes.html'
     context_object_name = 'Solicitudes'
 '''
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class EliminarSolicitud(DeleteView):
     model = Usuario
     form_class = SignUpForm
     def get_success_url(self):
         return reverse_lazy('Cuenta:AdministrarSolicitudes')
 
-#@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class Aprobar(SuccessMessageMixin, UpdateView):
     model = Usuario
     form_class = AprobarForm

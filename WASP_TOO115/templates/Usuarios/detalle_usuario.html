@@ -1,0 +1,139 @@
+{% extends 'Base/Base.html' %}
+
+{% block Title %}
+Detalle de Usuario | WASP - TOO115
+{% endblock Title %}
+
+{% block contentHeader %}
+Detalle de Usuario
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">General:</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="cbodepartamento">UserName:</label>
+                  {{ form.nomUsuario }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Nombre:</label>
+                  {{ form.nombre }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Apellido:</label>
+                  {{ form.apellido }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Fecha De Nacimiento:</label>
+                  {{ form.fechaNacimiento }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Correo:</label>
+                  {{ form.correo }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">#Teléfono:</label>
+                  {{ form.telefono }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">DUI:</label>
+                  {{ form.dui }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">NIT:</label>
+                  {{ form.nit }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">ISSS:</label>
+                  {{ form.isss }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">NUP:</label>
+                  {{ form.nup }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Sexo:</label>
+                  {{ form.genero }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Estado Civil:</label>
+                  {{ form.estadoCivil }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">#Casa:</label>
+                  {{ form.numCasa }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Calle:</label>
+                  {{ form.calle }}
+                </div>
+                <div class="form-group">
+                  <label for="cbodepartamento">Colonia:</label>
+                  {{ form.colonia }}
+                </div>
+                <div class="form-group">
+                  <label for="cbomunicipio">Municipio:</label>
+                  {{ form.municipio }}
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Bitácora:</h3>
+              </div>
+              <div class="card-body">
+                <table id="bitacora_usuario" class="table table-bordered table-striped">
+                  <thead>
+                     <tr>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                     </tr>
+                  </thead>
+                  <tbody id="registros_usuarios">
+                     {% if bitacora %}
+                     {% for reg in bitacora %}
+                     <tr>
+                        <td>{{ reg.idRol.nombreRol }} - {{ reg.idRol.unidad.nombreUnidad }}</td>
+                        {% if reg.is_activo %}
+                        <td>ACTIVO</td>
+                        {% else %}
+                        <td>INACTIVO</td>
+                        {% endif %}
+                        <td>{{ reg.fecha_inicio }}</td>
+                        {% if reg.fecha_fin == null %}
+                        <td>------</td>
+                        {% else %}
+                        <td>{{ reg.fecha_fin }}</td>
+                        {% endif %}
+                     </tr>
+                     {% endfor %}
+                     {% else %}
+                     <h5>No hay registros de Bitácora</h5>
+                     {% endif %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                       <th>Rol</th>
+                       <th>Estado</th>
+                       <th>Fecha Inicio</th>
+                       <th>Fecha Fin</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+        </div>
+      </div>
+</section>
+
+{% endblock %}

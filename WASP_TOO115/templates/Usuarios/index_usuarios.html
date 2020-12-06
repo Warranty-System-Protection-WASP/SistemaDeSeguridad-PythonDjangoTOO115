@@ -54,7 +54,7 @@ Usuarios:
                             {% else %}
                             <td>Inactivo</td>
                             {% endif %}
-                            <td><a href="{% url 'Cuenta:edit usuarios' usuario.nomUsuario %}"><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <a href="{% url 'Cuenta:block usuarios' usuario.nomUsuario %}"><button type="button" class="btn btn-danger" name="bloquear"><i class="fas fa-lock"></i> Bloquear</button></a></td>
+                            <td><a href="{% url 'Cuenta:detalle usuario' usuario.nomUsuario %}"><button type="button" class="btn btn-info" name="button"><i class="far fa-eye"></i></button></a>  <a href="{% url 'Cuenta:edit usuarios' usuario.nomUsuario %}"><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <a href="{% url 'Cuenta:block usuarios' usuario.nomUsuario %}"><button type="button" class="btn btn-danger" name="bloquear"><i class="fas fa-lock"></i> Bloquear</button></a></td>
                          </tr>
                          {% endfor %}
                          {% else %}
@@ -243,7 +243,7 @@ Usuarios:
     for(var i=0;i<registros.length;i++){
       var nombre = registros[i].username.toLowerCase();
       if(nombre.indexOf(texto) !== -1){
-        tuplas.innerHTML += "<td>"+registros[i].username+"</td><td>"+registros[i].nombre+"</td><td>"+registros[i].apellido+"</td><td>"+registros[i].correo+"</td><td>"+registros[i].telefono+"</td><td>"+registros[i].dui+"</td>"+"<td><a href=''><button type='button' class='btn btn-info' name='editar'><i class='fas fa-edit'></i> Editar</button></a>  <a href=''><button type='button' class='btn btn-danger' name='bloquear'><i class='fas fa-lock'></i> Bloquear</button></a></td>"
+        tuplas.innerHTML += "<td>"+registros[i].username+"</td><td>"+registros[i].nombre+"</td><td>"+registros[i].apellido+"</td><td>"+registros[i].correo+"</td><td>"+registros[i].telefono+"</td><td>"+registros[i].dui+"</td>"+"<td><a href='#'><button type='button' class='btn btn-info' name='button'><i class='far fa-eye'></i></button></a>  <a href=''><button type='button' class='btn btn-info' name='editar'><i class='fas fa-edit'></i> Editar</button></a>  <a href=''><button type='button' class='btn btn-danger' name='bloquear'><i class='fas fa-lock'></i> Bloquear</button></a></td>"
       }
     }
   }

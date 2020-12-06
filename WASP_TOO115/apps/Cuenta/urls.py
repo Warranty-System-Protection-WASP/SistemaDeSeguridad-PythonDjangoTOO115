@@ -26,4 +26,5 @@ urlpatterns = [
     path('Usuarios/<slug:username>', edit_usuario, name='edit usuarios'),
     path('Usuarios/<slug:username>/Bloquear', bloquear_usuario, name='block usuarios'),
     path('Usuarios/<slug:username>/Desbloquear', desbloquear_usuario, name='unblock usuarios'),
+    path('Usuarios/<slug:username>/Detalle', detalle_usuario, name='detalle usuario'),
 ]
