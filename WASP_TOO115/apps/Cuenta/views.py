@@ -83,7 +83,7 @@ def index_usuarios(request):
 def edit_usuario(request, username):
     if verificar_permiso(request, 33):
         usuario = Usuario.objects.get(nomUsuario = username)
-        puesto = RolUsuario.objects.get(idEmpleado = usuario)
+        puesto = RolUsuario.objects.get(idEmpleado = usuario, is_activo=True)
         rol = Rol.objects.filter(id = puesto.idRol.id)
         for r in rol:
             unidad = UnidadOrganizacional.objects.filter(idUnidad = r.unidad.idUnidad)
@@ -98,6 +98,16 @@ def edit_usuario(request, username):
             form = usuario_form(request.POST, instance = usuario)
             if form.is_valid():
                 form.save()
+                arg = request.POST.get('puestoUsuario')
+                print(arg)
+                result = Rol.objects.get(id = arg)
+                if result.id != puesto.idRol.id:
+                    now = datetime.now()
+                    puesto.is_activo = False
+                    puesto.fecha_fin = now.date()
+                    puesto.save()
+                    nuevo = RolUsuario(idEmpleado = usuario, idRol = result, is_activo = True, fecha_inicio = now.date())
+                    nuevo.save()
             return redirect('Cuenta:index usuarios')
     else:
         return render(request, '403.html')

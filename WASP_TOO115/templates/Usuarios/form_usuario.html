@@ -35,9 +35,9 @@ Formulario De Puestos De Trabajo:
         {{ form.apellido }}
       </div>
       <div class="form-group">
-        <label for="cbodepartamento">Puesto:</label>
+        <label for="puestoUsuario">Puesto:</label>
         <select class="form-control" id="puestoUsuario" name="puestoUsuario" required >
-          <option id="opcion" value="" selected disabled hidden>Seleccionar</option>
+          <option id="opcion" value="" selected hidden>Seleccionar</option>
           {% for puesto in roles %}
             {% for unidad in unidades %}
                 {% if puesto.unidad == unidad %}
@@ -137,7 +137,7 @@ Formulario De Puestos De Trabajo:
   for(var x=0;x<data_rol.length;x++){
     for(var y=0;y<data_unidad.length;y++){
       if(data_rol[x].fields.unidad == data_unidad[y].pk){
-        seleccion.setAttribute("value", data_rol[x].id);
+        seleccion.setAttribute("value", data_rol[x].pk);
         seleccion.innerHTML = "" + data_rol[x].fields.nombreRol + " - " + data_unidad[y].fields.nombreUnidad;
       }
     }
