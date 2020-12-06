@@ -79,6 +79,40 @@ def index_usuarios(request):
             return render(request, 'Usuarios/index_usuarios.html', context)
     else:
         return render(request, '403.html')
+
+def edit_usuario(request, username):
+    if verificar_permiso(request, 33):
+        usuario = Usuario.objects.get(nomUsuario = username)
+        if request.method == 'GET':
+            form = usuario_form(instance = usuario)
+            return render(request, 'Usuarios/form_usuario.html', {'form':form})
+        else:
+            form = usuario_form(request.POST, instance = usuario)
+            if form.is_valid():
+                form.save()
+            return redirect('Cuenta:index usuarios')
+    else:
+        return render(request, '403.html')
+
+def bloquear_usuario(request, username):
+    if verificar_permiso(request, 34):
+        usuario = Usuario.objects.get(nomUsuario = username)
+        usuario.is_bloqueado = True
+        usuario.save()
+        return redirect('Cuenta:index usuarios')
+    else:
+        return render(request, '403.html')
+
+def desbloquear_usuario(request, username):
+    if verificar_permiso(request, 34):
+        usuario = Usuario.objects.get(nomUsuario = username)
+        usuario.is_bloqueado = False
+        usuario.save()
+        return redirect('Cuenta:index usuarios')
+    else:
+        return render(request, '403.html')
+
+
 #CRUD de Departamento
 #@method_decorator(login_required, name='dispatch')
 class CrearDepartamento(SuccessMessageMixin, CreateView):

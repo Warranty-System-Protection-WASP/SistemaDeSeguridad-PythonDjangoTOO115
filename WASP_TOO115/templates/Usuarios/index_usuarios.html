@@ -36,7 +36,7 @@ Usuarios:
                             <th>Apellido</th>
                             <th>Correo</th>
                             <th>Telefono</th>
-                            <th>DUI</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                          </tr>
                       </thead>
@@ -49,8 +49,12 @@ Usuarios:
                             <td>{{ usuario.apellido }}</td>
                             <td>{{ usuario.correo }}</td>
                             <td>{{ usuario.telefono }}</td>
-                            <td>{{ usuario.dui }}</td>
-                            <td><a href=""><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <a href=""><button type="button" class="btn btn-danger" name="bloquear"><i class="fas fa-lock"></i> Bloquear</button></a></td>
+                            {% if usuario.is_active %}
+                            <td>Activo</td>
+                            {% else %}
+                            <td>Inactivo</td>
+                            {% endif %}
+                            <td><a href="{% url 'Cuenta:edit usuarios' usuario.nomUsuario %}"><button type="button" class="btn btn-info" name="editar"><i class="fas fa-edit"></i> Editar</button></a>  <a href="{% url 'Cuenta:block usuarios' usuario.nomUsuario %}"><button type="button" class="btn btn-danger" name="bloquear"><i class="fas fa-lock"></i> Bloquear</button></a></td>
                          </tr>
                          {% endfor %}
                          {% else %}
@@ -64,7 +68,7 @@ Usuarios:
                           <th>Apellido</th>
                           <th>Correo</th>
                           <th>Telefono</th>
-                          <th>DUI</th>
+                          <th>Estado</th>
                           <th>Acciones</th>
                         </tr>
                       </tfoot>
@@ -108,7 +112,7 @@ Usuarios:
                             <td>{{ usuario_bloqueado.correo }}</td>
                             <td>{{ usuario_bloqueado.telefono }}</td>
                             <td>{{ usuario_bloqueado.dui }}</td>
-                            <td><a href=""><button type="button" class="btn btn-info" name="desbloquear"><i class="fas fa-lock-open"></i> Desbloquear</button></a></td>
+                            <td><a href="{% url 'Cuenta:unblock usuarios' usuario_bloqueado.nomUsuario %}"><button type="button" class="btn btn-info" name="desbloquear"><i class="fas fa-lock-open"></i> Desbloquear</button></a></td>
                          </tr>
                          {% endfor %}
                          {% else %}
@@ -152,8 +156,14 @@ Usuarios:
                         <td>{{ row.pk }}</td>
                         <td>{{ row.nombre }}</td>
                         <td>{{ row.apellido }}</td>
-                        <td>{{ row.is_active }}</td>
-                        <td>{{ row.solicitud }}</td>
+                        {% if row.is_active %}
+                        <td>ACTIVO</td>
+                        {% else %}
+                        <td>INACTIVO</td>
+                        {% endif %}
+                        {% if row.solicitud == "P" %}
+                        <td>PENDIENTE</td>
+                        {% endif %}
                         <td>
 
                           <!--Aprobar-->
@@ -163,7 +173,7 @@ Usuarios:
 
                           <!--Detalle de usuario-->
                           <a href="{% url 'Cuenta:DetalleUsuario' row.pk %}" class="btn-light btn btn-lg">
-                              <i class="fa fa-id-card-o"></i>
+                              <i class="far fa-id-card"></i>
                           </a>
                             <!--borrar-->
                           <button class="btn-danger btn btn-lg" data-toggle='modal' data-target='#deleteModal' data-pk='{{ row.pk }}'>

@@ -1,0 +1,123 @@
+{% extends 'Base/Base.html' %}
+
+{% block title %}
+Catálogo De Puestos | WASP - TOO115
+{% endblock %}
+
+{% block extrastatic %}
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+{% endblock %}
+
+{% block contentHeader %}
+Formulario De Puestos De Trabajo:
+{% endblock %}
+
+{% block content %}
+<div class="card card-primary">
+  <div class="card-header">
+    <h3 class="card-title">General</h3>
+  </div>
+  <!-- /.card-header -->
+  <!-- form start -->
+  <form method="POST">
+    {% csrf_token %}
+    <div class="card-body">
+      <div class="form-group">
+        <label for="cbodepartamento">UserName:</label>
+        {{ form.nomUsuario }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Nombre:</label>
+        {{ form.nombre }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Apellido:</label>
+        {{ form.apellido }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Fecha De Nacimiento:</label>
+        {{ form.fechaNacimiento }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Correo:</label>
+        {{ form.correo }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">#Teléfono:</label>
+        {{ form.telefono }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">DUI:</label>
+        {{ form.dui }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">NIT:</label>
+        {{ form.nit }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">ISSS:</label>
+        {{ form.isss }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">NUP:</label>
+        {{ form.nup }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Sexo:</label>
+        {{ form.genero }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Estado Civil:</label>
+        {{ form.estadoCivil }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">#Casa:</label>
+        {{ form.numCasa }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Calle:</label>
+        {{ form.calle }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Colonia:</label>
+        {{ form.colonia }}
+      </div>
+      <div class="form-group">
+        <label for="cbodepartamento">Departamento:</label>
+        <select class="form-control" name="cbodepartamento" id="cbodepartamento" required >
+          <option value="">Seleccionar</option>
+          {% for d in departamento %}
+          <option value="{{ d.pk }}">{{ d.nomDepartamento }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="cbomunicipio">Municipio:</label>
+        <select class="form-control" name="cbomunicipio" id="cbomunicipio" disabled required>
+          <option value="">Seleccionar</option>
+          {% for m in municipio %}
+          <option value="{{ m.idMunicipio }}" data-region="{{ m.departamento.idDepartamento }}">{{ m.nomMunicipio }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-primary btn-lg" type="submit"><i class="fas fa-save"></i> Guardar</button>
+      <a class="btn btn-danger btn-lg" href="{% url 'Cuenta:index usuarios' %}"><i class="fas fa-times-circle"></i> Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block extrajs %}
+<script>
+  const $departamento = $('#cbodepartamento');
+  const $municipio = $('#cbomunicipio');
+  $departamento.change(function() {
+    $municipio.val('');
+    $municipio.prop('disabled', !Boolean($departamento.val()));
+    $municipio.find('option[data-region]').hide();
+    $municipio.find('option[data-region="' + $departamento.val() + '"]').show();
+  });
+</script>
+{% endblock extrajs %}

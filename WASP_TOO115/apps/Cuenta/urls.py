@@ -23,4 +23,7 @@ urlpatterns = [
     path('password_change/', PasswordChangeView.as_view(), name='password_change'),
     #Para Usuarios
     path('Usuarios/', index_usuarios, name='index usuarios'),
+    path('Usuarios/<slug:username>', edit_usuario, name='edit usuarios'),
+    path('Usuarios/<slug:username>/Bloquear', bloquear_usuario, name='block usuarios'),
+    path('Usuarios/<slug:username>/Desbloquear', desbloquear_usuario, name='unblock usuarios'),
 ]
