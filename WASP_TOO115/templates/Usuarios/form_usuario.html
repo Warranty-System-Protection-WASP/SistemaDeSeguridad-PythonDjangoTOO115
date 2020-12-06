@@ -35,6 +35,19 @@ Formulario De Puestos De Trabajo:
         {{ form.apellido }}
       </div>
       <div class="form-group">
+        <label for="cbodepartamento">Puesto:</label>
+        <select class="form-control" id="puestoUsuario" name="puestoUsuario" required >
+          <option id="opcion" value="" selected disabled hidden>Seleccionar</option>
+          {% for puesto in roles %}
+            {% for unidad in unidades %}
+                {% if puesto.unidad == unidad %}
+                    <option value="{{ puesto.id }}">{{ puesto.nombreRol }} - {{ unidad.nombreUnidad }}</option>
+                {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
         <label for="cbodepartamento">Fecha De Nacimiento:</label>
         {{ form.fechaNacimiento }}
       </div>
@@ -82,6 +95,7 @@ Formulario De Puestos De Trabajo:
         <label for="cbodepartamento">Colonia:</label>
         {{ form.colonia }}
       </div>
+      <!--
       <div class="form-group">
         <label for="cbodepartamento">Departamento:</label>
         <select class="form-control" name="cbodepartamento" id="cbodepartamento" required >
@@ -91,15 +105,10 @@ Formulario De Puestos De Trabajo:
           {% endfor %}
         </select>
       </div>
-
+      -->
       <div class="form-group">
         <label for="cbomunicipio">Municipio:</label>
-        <select class="form-control" name="cbomunicipio" id="cbomunicipio" disabled required>
-          <option value="">Seleccionar</option>
-          {% for m in municipio %}
-          <option value="{{ m.idMunicipio }}" data-region="{{ m.departamento.idDepartamento }}">{{ m.nomMunicipio }}</option>
-          {% endfor %}
-        </select>
+        {{ form.municipio }}
       </div>
     </div>
     <div class="card-footer">
@@ -111,13 +120,27 @@ Formulario De Puestos De Trabajo:
 {% endblock %}
 {% block extrajs %}
 <script>
-  const $departamento = $('#cbodepartamento');
-  const $municipio = $('#cbomunicipio');
-  $departamento.change(function() {
-    $municipio.val('');
-    $municipio.prop('disabled', !Boolean($departamento.val()));
-    $municipio.find('option[data-region]').hide();
-    $municipio.find('option[data-region="' + $departamento.val() + '"]').show();
-  });
+  //const $departamento = $('#cbodepartamento');
+  //const $municipio = $('#cbomunicipio');
+  //$departamento.change(function() {
+    //$municipio.val('');
+    //$municipio.prop('disabled', !Boolean($departamento.val()));
+    //$municipio.find('option[data-region]').hide();
+    //$municipio.find('option[data-region="' + $departamento.val() + '"]').show();
+  //});
+  var seleccion = document.getElementById("opcion");
+  var selector = document.getElementById("puestoUsuario");
+  var data_rol = {{ data_rol|safe }}
+  var data_unidad = {{ data_unidad|safe }}
+  console.log(JSON.stringify(data_rol));
+  console.log(JSON.stringify(data_unidad));
+  for(var x=0;x<data_rol.length;x++){
+    for(var y=0;y<data_unidad.length;y++){
+      if(data_rol[x].fields.unidad == data_unidad[y].pk){
+        seleccion.setAttribute("value", data_rol[x].id);
+        seleccion.innerHTML = "" + data_rol[x].fields.nombreRol + " - " + data_unidad[y].fields.nombreUnidad;
+      }
+    }
+  }
 </script>
 {% endblock extrajs %}

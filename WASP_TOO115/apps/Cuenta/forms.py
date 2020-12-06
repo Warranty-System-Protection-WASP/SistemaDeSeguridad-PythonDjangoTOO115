@@ -139,6 +139,7 @@ class usuario_form(forms.ModelForm):
             'numCasa',
             'calle',
             'colonia',
+            'municipio',
         ]
         labels = {
             'nomUsuario':'UserName',
@@ -157,6 +158,7 @@ class usuario_form(forms.ModelForm):
             'numCasa':'#Casa',
             'calle':'Calle',
             'colonia':'Colonia',
+            'municipio':'Municipio',
         }
         widgets = {
             'nomUsuario':forms.TextInput(attrs={'class':'form-control', 'readonly':'True'}),
@@ -174,4 +176,5 @@ class usuario_form(forms.ModelForm):
             'calle':forms.TextInput(attrs={'class':'form-control'}),
             'colonia':forms.TextInput(attrs={'class':'form-control'}),
             'correo':forms.EmailInput(attrs={'class':'form-control'}),
+            'municipio':forms.Select(attrs={'class': 'form-control'}),
         }

@@ -83,9 +83,17 @@ def index_usuarios(request):
 def edit_usuario(request, username):
     if verificar_permiso(request, 33):
         usuario = Usuario.objects.get(nomUsuario = username)
+        puesto = RolUsuario.objects.get(idEmpleado = usuario)
+        rol = Rol.objects.filter(id = puesto.idRol.id)
+        for r in rol:
+            unidad = UnidadOrganizacional.objects.filter(idUnidad = r.unidad.idUnidad)
+        roles = Rol.objects.all()
+        unidades = UnidadOrganizacional.objects.all()
+        objeto_rol = serializers.serialize('json', rol)
+        objeto_unidad = serializers.serialize('json', unidad)
         if request.method == 'GET':
             form = usuario_form(instance = usuario)
-            return render(request, 'Usuarios/form_usuario.html', {'form':form})
+            return render(request, 'Usuarios/form_usuario.html', {'form':form, 'roles':roles, 'unidades':unidades, 'data_rol':objeto_rol, 'data_unidad':objeto_unidad})
         else:
             form = usuario_form(request.POST, instance = usuario)
             if form.is_valid():

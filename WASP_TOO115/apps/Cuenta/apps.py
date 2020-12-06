@@ -127,4 +127,4 @@ class CuentaConfig(AppConfig):
                 cursor.execute("SELECT COUNT(*) FROM ROL_ROLUSUARIO")
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
-                    cursor.execute("INSERT INTO ROL_ROLUSUARIO (ID, IS_ACTIVO, FECHA_INICIO, FECHA_FIN, IDEMPLEADO_ID, IDROL_ID) VALUES(1, TO_DATE(TO_CHAR(sysdate, 'yyyy-mm-dd'), 'yyyy-mm-dd'), TO_DATE('2025-12-01','yyyy-mm-dd'), 'admin', 1);")
+                    cursor.execute("INSERT INTO ROL_ROLUSUARIO (IS_ACTIVO, FECHA_INICIO, IDEMPLEADO_ID, IDROL_ID) VALUES(1, sysdate, 'admin', 1);")
