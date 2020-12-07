@@ -8,7 +8,6 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import PasswordChangeForm
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.contrib.auth.decorators import login_required
@@ -295,7 +294,7 @@ class Aprobar(SuccessMessageMixin, UpdateView):
                 nombreU = '\nNombre de usuario: ' + user.nomUsuario
                 credencial = '\nPrimera contraseña: ' + password
                 linkLogin = '\nhttp://localhost:8000/Login/NomUsuario/'
-                textoInicial = 'Su solicitud de creación de cuenta en WASP, ha sido aprobada exitosamente.\nA continuación se le indican sus credenciales para su primer inicio de sesión.'                
+                textoInicial = 'Su solicitud de creación de cuenta en WASP, ha sido aprobada exitosamente.\nA continuación se le indican sus credenciales para su primer inicio de sesión.'
                 parte0 = MIMEText(textoInicial, 'plain')
                 parte1 = MIMEText(nombreU, 'plain')
                 parte2 = MIMEText(credencial, 'plain')
