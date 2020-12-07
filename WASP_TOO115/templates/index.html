@@ -5,32 +5,13 @@ Inicio
 {% endblock %}
 
 {% block extrastatic %}
-<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
 {% endblock %}
 
 {% block contentHeader %}
-<div class="row">
-Ejemplo de sobreescritura de Content-Header
-</div>
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center mt-5">
-  <h4>Ejemplo de sobreescritura de Content</h4>
-</div>
-<div>
-  <div class="row justify-content-center mt-5">
-    <h4>Ejemplo de sobreescritura de extrajs:</h4>
-  </div>
-  <div class="row justify-content-center">
-      <h4>El año actual es </h4> <input id="anioA" style="margin-left:10px" value="">
-  </div>
-</div>
 {% endblock %}
 
 {% block extrajs %}
-<script>
-  var anioActual = (new Date()).getFullYear();
-  document.getElementById("anioA").value = anioActual;
-</script>
 {% endblock %}

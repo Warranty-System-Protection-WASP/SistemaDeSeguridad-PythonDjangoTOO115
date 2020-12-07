@@ -212,7 +212,6 @@ class SignUp(SuccessMessageMixin, CreateView):
     form_class = SignUpForm
     template_name = 'cuenta/SignUp.html'
     success_url = reverse_lazy('index')
-    success_message = 'Usuario creado con éxito'
 
     def form_valid(self, form):
         user=form.save(commit=False)
@@ -262,7 +261,7 @@ class Aprobar(SuccessMessageMixin, UpdateView):
     model = Usuario
     form_class = AprobarForm
     template_name = 'cuenta/Aprobar.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('Cuenta:index usuarios')
 
     def get_context_data(self, **kwargs):
         context = super(Aprobar, self).get_context_data(**kwargs)
@@ -345,33 +344,30 @@ def IniciarSesion(request):
         user = authenticate(request, username=username, password=password)
         # Si existe un usuario con ese nombre y contraseña
         if user is not None:
-            pL = Usuario.objects.filter(nomUsuario=user).values('last_login') #Para verificar el último login
-            primerL = pL.get()
-            primerLogin = primerL.get('last_login')
-            if primerLogin != None and user.password_change_date is not None:
+            if user.password_change_date is not None:
                 hoy = datetime.now(timezone.utc)
                 pp = user.password_change_date
                 restaTiempo = hoy - user.password_change_date
                 if  restaTiempo > timedelta(seconds=180): #Para comprobar si el tiempo desde que se cambió la contra aún es válido
                     contraExpirada = True
-                    print("SOLO ESTOY COMPROBANDO EL last_login DIFERENTE DE NONE", primerLogin)
+                    print("SOLO ESTOY COMPROBANDO EL PasswordChange 1:", user.password_change_date, 'Tiempo:', restaTiempo)
                     # Hacemos el login manualmente
                     login(request, user)
                     # Y le redireccionamos a la portada
                     return HttpResponseRedirect(reverse_lazy('Cuenta:password_change'))
                 else:
-                    print("SOLO ESTOY COMPROBANDO EL last_login DIFERENTE DE NONE", primerLogin)
+                    print("SOLO ESTOY COMPROBANDO EL PasswordChange 2: ", user.password_change_date, 'Tiempo:', restaTiempo)
                     # Hacemos el login manualmente
                     login(request, user)
                     # Y le redireccionamos a la portada
                     return redirect('/')
             else:
-                print("SOLO ESTOY COMPROBANDO EL last_login EN NONE", primerLogin)
+                print("SOLO ESTOY COMPROBANDO EL PasswordChange EN NONE", user.password_change_date)
                 login(request, user)
                 # AQUÍ SE LE VA A REDIRIGIR A UNA PANTALLA PARA EL CAMBIO DE CONTRA Y OTRAS CONFIGURACIONES
                 #DE MOMENTO EL REDIRECCIONAMIENTO A LA LIST VIEW DE MUNICIPIOS SOLO ES PARA PRUEBA :V
                 # RECORDATORIO PARA CUANDO ME DESPIERTE, SÍ FUNCIONA :3
-                return HttpResponseRedirect(reverse_lazy('Cuenta:AdministrarMunicipios'))
+                return HttpResponseRedirect(reverse_lazy('Cuenta:first_password_change'))
         else:
             falloContra = Usuario.objects.filter(nomUsuario=u).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para lalógica del bloqueo de cuenta
             messages.error(request, "Contraseña incorrecta")
@@ -390,6 +386,33 @@ class PasswordChangeView(FormView):
     form_class = PasswordChangeForm
     success_url = reverse_lazy('index')
     template_name = 'cuenta/change_password.html'
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(csrf_protect)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        user=form.save(commit=False)
+        user.password_change_date = datetime.now(timezone.utc)
+        form.save()
+        # Updating the password logs out all other sessions for the user
+        # except the current one.
+        update_session_auth_hash(self.request, form.user)
+        return super().form_valid(form)
+
+
+####Para cambio de contraseña en primer inicio de sesión####
+class FirstPasswordChangeView(FormView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('index')
+    template_name = 'cuenta/primercambio.html'
 
     @method_decorator(sensitive_post_parameters())
     @method_decorator(csrf_protect)

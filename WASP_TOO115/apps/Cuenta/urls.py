@@ -21,6 +21,7 @@ urlpatterns = [
     re_path(r'^DetalleUsuario/(?P<pk>\w+)', DetalleUsuario.as_view(), name = 'DetalleUsuario'),
     #Para cambiar contraseña
     path('password_change/', PasswordChangeView.as_view(), name='password_change'),
+    path('first_password_change/', FirstPasswordChangeView.as_view(), name='first_password_change'),
     #Para Usuarios
     path('Usuarios/', index_usuarios, name='index usuarios'),
     path('Usuarios/<slug:username>', edit_usuario, name='edit usuarios'),

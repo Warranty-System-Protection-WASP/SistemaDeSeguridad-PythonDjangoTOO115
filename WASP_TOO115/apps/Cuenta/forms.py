@@ -34,7 +34,19 @@ class MunicipioForm(forms.ModelForm):
 
 #Formulario para la solicitud de SignUp
 class SignUpForm(forms.ModelForm):
-    passcode = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control',
+    passcode = forms.CharField(label='Passcode', widget=forms.TextInput(attrs={'class': 'form-control',
+    'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '4'}))
+    telefono = forms.CharField(label='Teléfono', widget=forms.TextInput(attrs={'class': 'form-control',
+    'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '8'}))
+    dui = forms.CharField(label='Dui', widget=forms.TextInput(attrs={'class': 'form-control',
+    'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '9'}))
+    nit = forms.CharField(label='Nit', widget=forms.TextInput(attrs={'class': 'form-control',
+    'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '14'}))
+    isss = forms.CharField(label='ISSS', widget=forms.TextInput(attrs={'class': 'form-control',
+    'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '9'}))
+    nup = forms.CharField(label='NUP', widget=forms.TextInput(attrs={'class': 'form-control',
+    'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '12'}))
+    numCasa = forms.CharField(label='Número de casa', widget=forms.TextInput(attrs={'class': 'form-control',
     'pattern': '[0-9]+','title': 'Números únicamente','maxlength' : '4'}))
     class Meta:
         model = Usuario
@@ -80,14 +92,8 @@ class SignUpForm(forms.ModelForm):
             'nombre':forms.TextInput(attrs={'class':'form-control'}),
             'apellido':forms.TextInput(attrs={'class':'form-control', 'name': 'ap'}),
             'fechaNacimiento':forms.DateInput(attrs={'type':'date', 'value':datetime.datetime.now().strftime('%Y-%m-%d')}),
-            'telefono':forms.TextInput(attrs={'class':'form-control'}),
-            'dui':forms.TextInput(attrs={'class':'form-control'}),
-            'nit':forms.TextInput(attrs={'class':'form-control'}),
-            'isss':forms.TextInput(attrs={'class':'form-control'}),
-            'nup':forms.TextInput(attrs={'class':'form-control'}),
             'genero':forms.Select(attrs={'class':'form-control'}),
             'estadoCivil':forms.Select(attrs={'class':'form-control'}),
-            'numCasa':forms.TextInput(attrs={'class':'form-control'}),
             'calle':forms.TextInput(attrs={'class':'form-control'}),
             'colonia':forms.TextInput(attrs={'class':'form-control'}),
             'correo':forms.EmailInput(attrs={'class':'form-control'}),
