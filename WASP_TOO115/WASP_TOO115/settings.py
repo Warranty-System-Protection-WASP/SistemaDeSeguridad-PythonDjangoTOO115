@@ -133,6 +133,14 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 180 #segungos ...3 min para prueba
 SESSION_SAVE_EVERY_REQUEST = True
 
+
+#Para envío de correo con las primeras credenciales
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT =587
+EMAIL_HOST_USER = 'wasptoo115@gmail.com'
+EMAIL_HOST_PASSWORD = 'W@sptoO115'
+EMAIL_USE_TLS = True
+
 #Para archivos estaticos
 STATIC_URL = '/static/'
 

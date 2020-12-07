@@ -31,8 +31,11 @@ from apps.Rol.models import RolUsuario, RolOpcion, Rol, OpcionCrud
 from apps.Cuenta.models import Usuario
 
 from datetime import datetime, timedelta, timezone
-
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import json
+from django.conf import settings
 
 # Create your views here.
 def verificar_permiso(request, permiso):
@@ -209,7 +212,7 @@ class SignUp(SuccessMessageMixin, CreateView):
     model = Usuario
     form_class = SignUpForm
     template_name = 'cuenta/SignUp.html'
-    success_url = reverse_lazy('Cuenta:Solicitudes')
+    success_url = reverse_lazy('index')
     success_message = 'Usuario creado con éxito'
 
     def form_valid(self, form):
@@ -260,7 +263,7 @@ class Aprobar(SuccessMessageMixin, UpdateView):
     model = Usuario
     form_class = AprobarForm
     template_name = 'cuenta/Aprobar.html'
-    success_url = reverse_lazy('Cuenta:Solicitudes')
+    success_url = reverse_lazy('index')
 
     def get_context_data(self, **kwargs):
         context = super(Aprobar, self).get_context_data(**kwargs)
@@ -277,8 +280,35 @@ class Aprobar(SuccessMessageMixin, UpdateView):
             object = RolUsuario.objects.create(idEmpleado=user, idRol=rol, is_activo=True, fecha_inicio=now.date(), fecha_fin='2021-12-04')
             object.save()
             password = get_random_string(length=12)
+            try:
+                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                print(mailServer.ehlo())
+                mailServer.starttls()
+                print(mailServer.ehlo())
+                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                print('Conectado...')
+                #Construcción del mensaje
+                mensaje = MIMEMultipart('WASP TOO115')
+                mensaje['From'] = settings.EMAIL_HOST_USER
+                mensaje['To'] = user.correo
+                mensaje['Subject'] = 'Aprobación de cuenta WASP'
+                nombreU = '\nNombre de usuario: ' + user.nomUsuario
+                credencial = '\nPrimera contraseña: ' + password
+                linkLogin = '\nhttp://localhost:8000/Login/NomUsuario/'
+                textoInicial = 'Su solicitud de creación de cuenta en WASP, ha sido aprobada exitosamente.\nA continuación se le indican sus credenciales para su primer inicio de sesión.'                
+                parte0 = MIMEText(textoInicial, 'plain')
+                parte1 = MIMEText(nombreU, 'plain')
+                parte2 = MIMEText(credencial, 'plain')
+                parte3 = MIMEText(linkLogin, 'plain')
+                mensaje.attach(parte0)
+                mensaje.attach(parte1)
+                mensaje.attach(parte2)
+                mensaje.attach(parte3)
+                mailServer.sendmail(settings.EMAIL_HOST_USER, user.correo, mensaje.as_string())
+                print('Correo enviado correctamente')
+            except Exception as e:
+                print(e)
             user.set_password(password)
-            print("Password que mandaré por correo:", password) #Prueba
             user.is_active = True
         return super(Aprobar, self).form_valid(form)
 
