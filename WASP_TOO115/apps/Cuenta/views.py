@@ -39,7 +39,9 @@ from django.conf import settings
 
 # Create your views here.
 
-cache.add('intento',1)
+def instancia():
+    if cache.get('intento') == None:
+        cache.add('intento',1)
 
 def verificar_permiso(request, permiso):
     valor = False
@@ -340,6 +342,7 @@ def Contrasenia(request):
 def IniciarSesion(request):
     if request.method == 'POST':
         # Recuperamos las credenciales validadas
+        instancia()
         username = request.POST.get('nombre')
         password = request.POST.get('contra')
         u = Usuario.objects.filter(nomUsuario=username).only('nomUsuario').first()

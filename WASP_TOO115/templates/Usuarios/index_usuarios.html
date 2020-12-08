@@ -112,7 +112,7 @@ Usuarios:
                             <td>{{ usuario_bloqueado.correo }}</td>
                             <td>{{ usuario_bloqueado.telefono }}</td>
                             <td>{{ usuario_bloqueado.dui }}</td>
-                            <td><a href="{% url 'Cuenta:unblock usuarios' usuario_bloqueado.nomUsuario %}"><button type="button" class="btn btn-info" name="desbloquear"><i class="fas fa-lock-open"></i> Desbloquear</button></a></td>
+                            <td><a href="{% url 'Cuenta:detalle usuario' usuario_bloqueado.nomUsuario %}"><button type="button" class="btn btn-info" name="button"><i class="far fa-eye"></i></button></a>  <a href="{% url 'Cuenta:unblock usuarios' usuario_bloqueado.nomUsuario %}"><button type="button" class="btn btn-info" name="desbloquear"><i class="fas fa-lock-open"></i> Desbloquear</button></a></td>
                          </tr>
                          {% endfor %}
                          {% else %}
