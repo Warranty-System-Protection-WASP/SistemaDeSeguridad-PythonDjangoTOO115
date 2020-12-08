@@ -411,7 +411,7 @@ class PasswordChangeView(FormView):
 ####Para cambio de contraseña en primer inicio de sesión####
 class FirstPasswordChangeView(FormView):
     form_class = PasswordChangeForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('Cuenta:form preguntas')
     template_name = 'cuenta/primercambio.html'
 
     @method_decorator(sensitive_post_parameters())
@@ -433,3 +433,31 @@ class FirstPasswordChangeView(FormView):
         # except the current one.
         update_session_auth_hash(self.request, form.user)
         return super().form_valid(form)
+
+def formulario_autenticacion(request):
+    if request.method == 'GET':
+        preguntas = Pregunta.objects.all()
+        datos = serializers.serialize('json',preguntas)
+        context = {'preguntas':datos}
+        return render(request, 'Cuenta/Preguntas.html', context)
+
+    if request.method == 'POST':
+        if 'respuesta1' in request.POST:
+            if 'respuesta2' in request.POST:
+                if 'respuesta3' in request.POST:
+                    p1 = Pregunta.objects.get(numPregunta = 1)
+                    p2 = Pregunta.objects.get(numPregunta = 2)
+                    p3 = Pregunta.objects.get(numPregunta = 3)
+                    respuesta_1 = request.POST['respuesta1']
+                    respuesta_2 = request.POST['respuesta2']
+                    respuesta_3 = request.POST['respuesta3']
+                    BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p1, respuesta = respuesta_1)
+                    BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p2, respuesta = respuesta_2)
+                    BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p3, respuesta = respuesta_3)
+                    return HttpResponse('success')
+                else:
+                    return HttpResponse('fail')
+            else:
+                return HttpResponse('fail')
+        else:
+            return HttpResponse('fail')

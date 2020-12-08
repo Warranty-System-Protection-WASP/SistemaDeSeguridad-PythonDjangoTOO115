@@ -1,0 +1,168 @@
+{% extends 'Base/Base.html' %}
+{% load static %}
+{% block title %}
+Autenticación | WASP - TOO115
+{% endblock %}
+
+{% block contentHeader %}
+{% endblock %}
+
+{% block navbar %}
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="" class="nav-link">WASP - TOO115</a>
+    </li>
+  </ul>
+
+  <!-- Right navbar links -->
+  {% if request.user.is_authenticated %}
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link" data-slide="true" href="{% url 'Logout' %}" role="button">
+        <i class="fas fa-sign-out"></i> Cerrar sesión
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+        <i class="fas fa-th-large"></i>
+      </a>
+    </li>
+  </ul>
+  {% endif %}
+</nav>
+{% endblock %}
+
+
+{% block sidebar %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="" class="row justify-content-center" style="background-color: rgb(255, 255, 255)">
+    <img src="{% static 'WASP.png' %}" alt="AdminLTE Logo" style="width:50%">
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
+{% endblock %}
+
+{% block extrastatic %}
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<style type="text/css">
+  .window-notice {
+    background: rgba(33, 41, 52, .85);
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    position: fixed;
+    z-index: 999;
+  }
+
+  .window-notice .content {
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(33, 41, 52, .75);
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 600px;
+    min-width: 320px !important;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding: 2rem;
+    font-size: 1.3rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="window-notice" id="window-notice">
+    <form method="post" class="content">
+      {% csrf_token %}
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Complete las siguientes preguntas:</h3>
+              </div>
+              <div class="card-body">
+                <form action="{% url 'Cuenta:form preguntas' %}" method="post" id="formulario">
+                  {% csrf_token %}
+                  <div id="preguntas" class="form-group">
+                  </div>
+                </form>
+              </div>
+              <div class="card-footer">
+                <button type="button" class="btn btn-info btn-lg border float-right mr-3" onclick="enviar()"><i class="fas fa-save"></i> Guardar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+  var objeto = {{ preguntas|safe }}
+  var preguntas = document.getElementById("preguntas");
+  var cadena = "";
+  for(i=0;i<objeto.length;i++){
+    var item = objeto[i].fields.pregunta;
+    cadena += "<label for=''>"+item+"</label><input type='text' class='form-control' id="+objeto[i].pk+"><div class='alert alert-danger' id='pregunta"+objeto[i].pk+"'><h6><strong>Datos Erroneos</strong></h6></div>";
+  }
+  preguntas.innerHTML = cadena;
+  for(i=0;i<objeto.length;i++){
+    elemento = document.getElementById('pregunta'+objeto[i].pk);
+    elemento.style.display = 'none';
+  }
+  console.log(JSON.stringify(data_rol));
+  function verificar(){
+    for(i=0;i<objeto.length;i++){
+      elemento = document.getElementById('pregunta'+objeto[i].pk);
+      elemento.style.display = 'none';
+    }
+    for(i=0;i<objeto.length;i++){
+      entrada = document.getElementById(objeto[i].pk).value;
+      if(entrada == "" || entrada == null){
+        elemento = document.getElementById('pregunta'+objeto[i].pk);
+        elemento.style.display = 'block';
+        return false;
+        break;
+      }
+    }
+    return true;
+  }
+  function enviar(){
+    if(verificar()){
+      respuesta1 = $("#1").val();
+      respuesta2 = $("#2").val();
+      respuesta3 = $("#3").val();
+      var data = {'csrfmiddlewaretoken': '{{ csrf_token }}','respuesta1':respuesta1,'respuesta2':respuesta2,'respuesta3':respuesta3};
+      $.post("{% url 'Cuenta:form preguntas' %}", data, function(response){
+        if(response == 'success'){
+          window.location.href = "{% url 'index' %}";
+        }else{
+          alert("Algo ha fallado!");
+        }
+      });
+    }
+  }
+</script>
+{% endblock %}
