@@ -133,3 +133,13 @@ class CuentaConfig(AppConfig):
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
                     cursor.execute("INSERT INTO ROL_ROLUSUARIO (IS_ACTIVO, FECHA_INICIO, IDEMPLEADO_ID, IDROL_ID) VALUES(1, sysdate, 'admin', 1);")
+            if(existePregunta!=None):
+                cursor.execute("SELECT COUNT(*) FROM CUENTA_PREGUNTA")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(1, '¿Cuál es tu lugar favorito?');")
+                    cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(2, '¿Cuál es el nombre de tu amigo de infancia?');")
+                    cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(3, '¿Cuál es el nombre de tu primera mascota?');")
+                    cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(4, '¿Cuál es el nombre de tu primera escuela donde estudiaste?');")
+                    cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(5, '¿Dónde nació tu abuela?');")
+                    cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(6, '¿Dónde se conocieron tus padres?');")
