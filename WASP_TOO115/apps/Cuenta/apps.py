@@ -47,6 +47,11 @@ class CuentaConfig(AppConfig):
                 existeRolUsuario=cursorVerificacion.fetchone()
             except:
                 pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'CUENTA_PREGUNTA' FETCH FIRST 1 ROWS ONLY;")
+                existePregunta=cursorVerificacion.fetchone()
+            except:
+                pass
 
         with connection.cursor() as cursor:
             if(existeDepartamento!=None):
