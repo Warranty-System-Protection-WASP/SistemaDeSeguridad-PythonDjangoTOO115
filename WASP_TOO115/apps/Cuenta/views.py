@@ -17,6 +17,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login, logout
 from django.utils.crypto import get_random_string
 from django.urls import reverse_lazy, reverse
+from django.core.cache import cache
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from passlib.hash import pbkdf2_sha256 #Para encriptación de passcode
@@ -37,6 +38,9 @@ import json
 from django.conf import settings
 
 # Create your views here.
+
+cache.add('intento',1)
+
 def verificar_permiso(request, permiso):
     valor = False
 
@@ -344,34 +348,47 @@ def IniciarSesion(request):
         user = authenticate(request, username=username, password=password)
         # Si existe un usuario con ese nombre y contraseña
         if user is not None:
-            if user.password_change_date is not None:
-                hoy = datetime.now(timezone.utc)
-                pp = user.password_change_date
-                restaTiempo = hoy - user.password_change_date
-                if  restaTiempo > timedelta(seconds=180): #Para comprobar si el tiempo desde que se cambió la contra aún es válido
-                    contraExpirada = True
-                    print("SOLO ESTOY COMPROBANDO EL PasswordChange 1:", user.password_change_date, 'Tiempo:', restaTiempo)
-                    # Hacemos el login manualmente
-                    login(request, user)
-                    # Y le redireccionamos a la portada
-                    return HttpResponseRedirect(reverse_lazy('Cuenta:password_change'))
-                else:
-                    print("SOLO ESTOY COMPROBANDO EL PasswordChange 2: ", user.password_change_date, 'Tiempo:', restaTiempo)
-                    # Hacemos el login manualmente
-                    login(request, user)
-                    # Y le redireccionamos a la portada
-                    return redirect('/')
+            cache.set('intento',1)
+            if user.is_bloqueado:
+                return render(request, '403_2.html')
             else:
-                print("SOLO ESTOY COMPROBANDO EL PasswordChange EN NONE", user.password_change_date)
-                login(request, user)
-                # AQUÍ SE LE VA A REDIRIGIR A UNA PANTALLA PARA EL CAMBIO DE CONTRA Y OTRAS CONFIGURACIONES
-                #DE MOMENTO EL REDIRECCIONAMIENTO A LA LIST VIEW DE MUNICIPIOS SOLO ES PARA PRUEBA :V
-                # RECORDATORIO PARA CUANDO ME DESPIERTE, SÍ FUNCIONA :3
-                return HttpResponseRedirect(reverse_lazy('Cuenta:first_password_change'))
+                if user.password_change_date is not None:
+                    hoy = datetime.now(timezone.utc)
+                    pp = user.password_change_date
+                    restaTiempo = hoy - user.password_change_date
+                    if  restaTiempo > timedelta(seconds=180): #Para comprobar si el tiempo desde que se cambió la contra aún es válido
+                        contraExpirada = True
+                        print("SOLO ESTOY COMPROBANDO EL PasswordChange 1:", user.password_change_date, 'Tiempo:', restaTiempo)
+                        # Hacemos el login manualmente
+                        login(request, user)
+                        # Y le redireccionamos a la portada
+                        return HttpResponseRedirect(reverse_lazy('Cuenta:password_change'))
+                    else:
+                        print("SOLO ESTOY COMPROBANDO EL PasswordChange 2: ", user.password_change_date, 'Tiempo:', restaTiempo)
+                        # Hacemos el login manualmente
+                        login(request, user)
+                        # Y le redireccionamos a la portada
+                        return redirect('/')
+                else:
+                    print("SOLO ESTOY COMPROBANDO EL PasswordChange EN NONE", user.password_change_date)
+                    login(request, user)
+                    # AQUÍ SE LE VA A REDIRIGIR A UNA PANTALLA PARA EL CAMBIO DE CONTRA Y OTRAS CONFIGURACIONES
+                    #DE MOMENTO EL REDIRECCIONAMIENTO A LA LIST VIEW DE MUNICIPIOS SOLO ES PARA PRUEBA :V
+                    # RECORDATORIO PARA CUANDO ME DESPIERTE, SÍ FUNCIONA :3
+                    return HttpResponseRedirect(reverse_lazy('Cuenta:first_password_change'))
         else:
-            falloContra = Usuario.objects.filter(nomUsuario=u).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para lalógica del bloqueo de cuenta
-            messages.error(request, "Contraseña incorrecta")
-            return render(request, 'cuenta/Contraseña.html', {'u': u, 'nc': nc})
+            if cache.get('intento') <3:
+                falloContra = Usuario.objects.filter(nomUsuario=u).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para lalógica del bloqueo de cuenta
+                messages.error(request, "Contraseña incorrecta")
+                print(cache.get('intento'))
+                cache.incr('intento')
+                return render(request, 'cuenta/Contraseña.html', {'u': u, 'nc': nc})
+            else:
+                cache.set('intento',1)
+                usb = Usuario.objects.get(nomUsuario=username)
+                usb.is_bloqueado=True
+                usb.save()
+                return render(request, '403_2.html')
         return render(request, 'cuenta/Contraseña.html')
     else:
         return HttpResponseRedirect(reverse_lazy('NombreUsuario'))
