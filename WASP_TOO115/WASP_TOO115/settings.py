@@ -141,6 +141,8 @@ EMAIL_HOST_USER = 'wasptoo115@gmail.com'
 EMAIL_HOST_PASSWORD = 'W@sptoO115'
 EMAIL_USE_TLS = True
 
+DOMAIN = ''
+
 #Para archivos estaticos
 STATIC_URL = '/static/'
 

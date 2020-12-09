@@ -121,6 +121,7 @@ Autenticación | WASP - TOO115
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
   var objeto = {{ preguntas|safe }}
+  console.log(JSON.stringify(objeto));
   var preguntas = document.getElementById("preguntas");
   var cadena = "";
   for(i=0;i<objeto.length;i++){
@@ -154,7 +155,10 @@ Autenticación | WASP - TOO115
       respuesta1 = $("#1").val();
       respuesta2 = $("#2").val();
       respuesta3 = $("#3").val();
-      var data = {'csrfmiddlewaretoken': '{{ csrf_token }}','respuesta1':respuesta1,'respuesta2':respuesta2,'respuesta3':respuesta3};
+      respuesta4 = $("#4").val();
+      respuesta5 = $("#5").val();
+      respuesta6 = $("#6").val();
+      var data = {'csrfmiddlewaretoken': '{{ csrf_token }}','respuesta1':respuesta1,'respuesta2':respuesta2,'respuesta3':respuesta3,'respuesta4':respuesta4,'respuesta5':respuesta5,'respuesta6':respuesta6};
       $.post("{% url 'Cuenta:form preguntas' %}", data, function(response){
         if(response == 'success'){
           window.location.href = "{% url 'index' %}";

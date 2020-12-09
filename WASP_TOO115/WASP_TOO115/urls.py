@@ -19,7 +19,7 @@ from django.conf.urls import include
 from WASP_TOO115.views import index
 from apps.Cuenta import views
 from django.contrib.auth.decorators import login_required
-from apps.Cuenta.views import Logout, SignUp, NameUser, Contrasenia, IniciarSesion
+from apps.Cuenta.views import Logout, SignUp, NameUser, Contrasenia, IniciarSesion, CuentaUser, Passcode, Reset, ResetPassword
 
 from apps.Rol.views import index_roles, create_rol, edit_rol, delete_rol
 from apps.UnidadOrganizacional.views import UnidadList
@@ -37,5 +37,9 @@ urlpatterns = [
     path('Unidad/', include('apps.UnidadOrganizacional.urls'), name='unidad'),   #URL para UNIDAD ORGANIZACIONAL
     path('Login/NomUsuario/', NameUser.as_view(), name = 'NombreUsuario'),
     path('Login/Contrasenia/', Contrasenia, name = 'Contrasenia'),
-    path('accounts/login/', IniciarSesion, name = 'Login')
+    path('accounts/login/', IniciarSesion, name = 'Login'),
+    path('Reset/Cuenta/', CuentaUser.as_view(), name = 'CuentaUsuario'),
+    path('Reset/Passcode/', Passcode, name = 'PasscodeUsuario'),
+    path('Reset/Reset/', Reset, name = 'Reset'),
+    path('Reset/Password/<str:token>/', ResetPassword.as_view(), name = 'ResetPassword'),
 ]

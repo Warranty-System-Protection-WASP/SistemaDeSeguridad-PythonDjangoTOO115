@@ -195,3 +195,21 @@ class PasswordChangeForm(PasswordChangeForm):
         self.fields['new_password1'].widget.attrs['placeholder'] = 'Nueva Contraseña'
         self.fields['new_password2'].widget.attrs['class'] = 'form-control'
         self.fields['new_password2'].widget.attrs['placeholder'] = 'Confirmación de nueva contraseña'
+
+class ResetPasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+    'placeholder': 'Ingrese una nueva contraseña',
+    'class': 'form-control',
+    'autocomplete': 'off'}))
+    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={
+    'placeholder': 'Repita la nueva contraseña',
+    'class': 'form-control',
+    'autocomplete': 'off'}))
+
+    def clean(self):
+        cleaned = super().clean()
+        password = cleaned['password']
+        confirmPassword = cleaned['confirmPassword']
+        if password != confirmPassword:
+            raise forms.ValidationError('Las contraseñas no coinciden')
+        return cleaned

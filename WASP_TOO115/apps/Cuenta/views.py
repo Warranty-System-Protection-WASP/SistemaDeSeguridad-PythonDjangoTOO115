@@ -36,6 +36,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import json
 from django.conf import settings
+import uuid
+from uuid import uuid4
+from django.db.models import F
 
 # Create your views here.
 
@@ -496,12 +499,21 @@ def formulario_autenticacion(request):
                     p1 = Pregunta.objects.get(numPregunta = 1)
                     p2 = Pregunta.objects.get(numPregunta = 2)
                     p3 = Pregunta.objects.get(numPregunta = 3)
+                    p4 = Pregunta.objects.get(numPregunta = 4)
+                    p5 = Pregunta.objects.get(numPregunta = 5)
+                    p6 = Pregunta.objects.get(numPregunta = 6)
                     respuesta_1 = request.POST['respuesta1']
                     respuesta_2 = request.POST['respuesta2']
                     respuesta_3 = request.POST['respuesta3']
+                    respuesta_4 = request.POST['respuesta4']
+                    respuesta_5 = request.POST['respuesta5']
+                    respuesta_6 = request.POST['respuesta6']
                     BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p1, respuesta = respuesta_1)
                     BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p2, respuesta = respuesta_2)
                     BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p3, respuesta = respuesta_3)
+                    BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p4, respuesta = respuesta_4)
+                    BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p5, respuesta = respuesta_5)
+                    BancoPregunta.objects.create(nomUsuario = request.user, numPregunta = p6, respuesta = respuesta_6)
                     return HttpResponse('success')
                 else:
                     return HttpResponse('fail')
@@ -509,3 +521,96 @@ def formulario_autenticacion(request):
                 return HttpResponse('fail')
         else:
             return HttpResponse('fail')
+
+class CuentaUser(TemplateView):
+    template_name = 'cuenta/CuentaUsuario.html'
+
+def Passcode(request):
+    if request.method == "POST":
+        u = request.POST.get('cuentaUsuario')
+        existeCuenta = Usuario.objects.filter(nomUsuario=u).only('nomUsuario')
+        if existeCuenta.count() != 0:
+            nc = Usuario.objects.filter(nomUsuario=u).values('nombre', 'apellido').first()
+            #preguntaU = BancoPregunta.objects.filter(nomUsuario=u)
+            preguntaU = Pregunta.objects.all()
+            return render(request, 'cuenta/Passcode.html', {'u': u, 'nc':nc, 'preguntaU':preguntaU})
+        else:
+            messages.error(request, "No existe ninguna cuenta con ese nombre de usuario")
+            return HttpResponseRedirect(reverse_lazy('CuentaUsuario'))
+    else:
+        return HttpResponseRedirect(reverse_lazy('CuentaUsuario'))
+
+def Reset(request):
+    if request.method == 'POST':
+        # Recuperamos el nombre de usuario (Cuenta)
+        username = request.POST.get('nombre')
+        passc = request.POST.get('passcode')
+        prU = request.POST.get('pregunta')
+        rU = request.POST.get('respuesta')
+        u = Usuario.objects.filter(nomUsuario=username).only('nomUsuario').first()
+        emailReset = Usuario.objects.filter(nomUsuario=username).values('correo')
+        eR = emailReset.get()
+        emailR = eR.get('correo')
+        bancoPregunta = BancoPregunta.objects.filter(nomUsuario=username).filter(numPregunta=prU).filter(respuesta=rU).values().first()
+        passcodeBD = Usuario.objects.filter(nomUsuario=username).values('passcode')
+        pBD = passcodeBD.get()
+        passcodeUsuarioBD = pBD.get('passcode')
+        nc = Usuario.objects.filter(nomUsuario=u).values('nombre', 'apellido').first()
+        preguntaU = BancoPregunta.objects.filter(nomUsuario=u)
+        verificar = pbkdf2_sha256.verify(passc, passcodeUsuarioBD) #Retorna un boolean
+        if verificar == True and bancoPregunta is not None:
+            try:
+                URL = settings.DOMAIN if not settings.DEBUG else request.META['HTTP_HOST']
+                too = uuid.uuid4()
+                tk = Usuario.objects.filter(nomUsuario=username).values('token')
+                tk.update(token=too)
+                mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+                print(mailServer.ehlo())
+                mailServer.starttls()
+                print(mailServer.ehlo())
+                mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+                print('Conectado...')
+                #Construcción del mensaje
+                mensaje = MIMEMultipart()
+                mensaje['From'] = settings.EMAIL_HOST_USER
+                mensaje['To'] = emailR
+                mensaje['Subject'] = 'Resetear contraseña'
+                textoInicial = '\nPrueba Reset'
+                linkReset = '\nhttp://{}/Reset/Password/{}/'.format(URL, str(too))
+                linkHome = '\nhttp://{}'.format(URL)
+                parte0 = MIMEText(textoInicial, 'plain')
+                parte1 = MIMEText(linkReset, 'plain')
+                parte2 = MIMEText(linkHome, 'plain')
+                mensaje.attach(parte0)
+                mensaje.attach(parte1)
+                mensaje.attach(parte2)
+                mailServer.sendmail(settings.EMAIL_HOST_USER, emailR, mensaje.as_string())
+                print('Correo enviado correctamente')
+            except Exception as e:
+                print(e)
+            return redirect('/')
+        else:
+            messages.error(request, "Passcode o respuesta a pregunta incorrecta")
+            return render(request, 'cuenta/Passcode.html', {'u': u, 'nc': nc, 'preguntaU':preguntaU})
+    else:
+        return HttpResponseRedirect(reverse_lazy('CuentaUsuario'))
+
+class ResetPassword(FormView):
+    form_class = ResetPasswordForm
+    template_name = 'cuenta/ResetPassword.html'
+    success_url = reverse_lazy('Login')
+
+    def get(self, request, *args, **kwargs):
+        token =self.kwargs['token']
+        if Usuario.objects.filter(token=token).exists():
+            return super().get(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect('/')
+
+    def form_valid(self, request, *args, **kwargs):
+        form = ResetPasswordForm(data=request.POST)
+        if form.is_valid():
+            upass = Usuario.objects.filter(token=self.kwargs['token'])
+            upass.set_password(form.cleaned_data['password'])
+            upass.token = uuid.uuid4()
+            return HttpResponseRedirect('Login/NomUsuario/')
