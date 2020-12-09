@@ -43,6 +43,16 @@ def instancia():
     if cache.get('intento') == None:
         cache.add('intento',1)
 
+def instancia_data(usuario):
+    data = None
+    if data == None:
+        try:
+            data = EstadisticaCuenta.objects.get(cuenta = usuario)
+        except EstadisticaCuenta.DoesNotExist:
+            data = EstadisticaCuenta(cuenta = usuario, cambioClave = 0, cambioRol = 0, bloqueos = 0)
+            data.save()
+    return data
+
 def verificar_permiso(request, permiso):
     valor = False
 
@@ -75,7 +85,9 @@ def detalle_usuario(request, username):
     if verificar_permiso(request, 31):
         usuario = Usuario.objects.get(nomUsuario = username)
         roles = RolUsuario.objects.filter(idEmpleado = usuario).order_by('-is_activo')
-        context = {'form':usuario, 'bitacora':roles}
+        estadisticas = EstadisticaCuenta.objects.filter(cuenta = usuario)
+        objeto = serializers.serialize('json', estadisticas)
+        context = {'form':usuario, 'bitacora':roles, 'estadisticas':objeto}
         return render(request, 'Usuarios/detalle_usuario.html', context)
     else:
         return render(request, '403.html')
@@ -126,6 +138,9 @@ def edit_usuario(request, username):
                     puesto.is_activo = False
                     puesto.fecha_fin = now.date()
                     puesto.save()
+                    estadistica = instancia_data(usuario)
+                    estadistica.cambioRol += 1
+                    estadistica.save()
                     nuevo = RolUsuario(idEmpleado = usuario, idRol = result, is_activo = True, fecha_inicio = now.date())
                     nuevo.save()
             return redirect('Cuenta:index usuarios')
@@ -138,6 +153,9 @@ def bloquear_usuario(request, username):
         usuario = Usuario.objects.get(nomUsuario = username)
         usuario.is_bloqueado = True
         usuario.save()
+        estadistica = instancia_data(usuario)
+        estadistica.bloqueos += 1
+        estadistica.save()
         return redirect('Cuenta:index usuarios')
     else:
         return render(request, '403.html')
@@ -422,6 +440,10 @@ class PasswordChangeView(FormView):
         user=form.save(commit=False)
         user.password_change_date = datetime.now(timezone.utc)
         form.save()
+        usuario = Usuario.objects.get(nomUsuario = self.request.user)
+        estadistica = instancia_data(usuario)
+        estadistica.cambioClave += 1
+        estadistica.save()
         # Updating the password logs out all other sessions for the user
         # except the current one.
         update_session_auth_hash(self.request, form.user)

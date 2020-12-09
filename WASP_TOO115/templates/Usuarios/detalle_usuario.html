@@ -4,6 +4,13 @@
 Detalle de Usuario | WASP - TOO115
 {% endblock Title %}
 
+{% block extrastatic %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+{% endblock %}
+
 {% block contentHeader %}
 Detalle de Usuario
 {% endblock %}
@@ -13,12 +20,12 @@ Detalle de Usuario
 <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-12">
-            <div class="card">
+          <div class="col-lg-6 col-6">
+            <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">General:</h3>
               </div>
-              <div class="card-body">
+              <div class="card-body" style="overflow:auto; max-height:25rem;">
                 <div class="form-group">
                   <label for="cbodepartamento">UserName:</label>
                   {{ form.nomUsuario }}
@@ -85,55 +92,134 @@ Detalle de Usuario
                 </div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Bitácora:</h3>
-              </div>
-              <div class="card-body">
-                <table id="bitacora_usuario" class="table table-bordered table-striped">
-                  <thead>
-                     <tr>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                     </tr>
-                  </thead>
-                  <tbody id="registros_usuarios">
-                     {% if bitacora %}
-                     {% for reg in bitacora %}
-                     <tr>
-                        <td>{{ reg.idRol.nombreRol }} - {{ reg.idRol.unidad.nombreUnidad }}</td>
-                        {% if reg.is_activo %}
-                        <td>ACTIVO</td>
-                        {% else %}
-                        <td>INACTIVO</td>
-                        {% endif %}
-                        <td>{{ reg.fecha_inicio }}</td>
-                        {% if reg.fecha_fin == null %}
-                        <td>------</td>
-                        {% else %}
-                        <td>{{ reg.fecha_fin }}</td>
-                        {% endif %}
-                     </tr>
-                     {% endfor %}
-                     {% else %}
-                     <h5>No hay registros de Bitácora</h5>
-                     {% endif %}
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                       <th>Rol</th>
-                       <th>Estado</th>
-                       <th>Fecha Inicio</th>
-                       <th>Fecha Fin</th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
+        </div>
+        <div class="col-lg-6 col-6">
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Bitácora:</h3>
             </div>
+            <div class="card-body" style="overflow:auto; max-height:25rem;">
+              <table id="bitacora_usuario" class="table table-bordered table-striped">
+                <thead>
+                   <tr>
+                      <th>Rol</th>
+                      <th>Estado</th>
+                      <th>Fecha Inicio</th>
+                      <th>Fecha Fin</th>
+                   </tr>
+                </thead>
+                <tbody id="registros_usuarios">
+                   {% if bitacora %}
+                   {% for reg in bitacora %}
+                   <tr>
+                      <td>{{ reg.idRol.nombreRol }} - {{ reg.idRol.unidad.nombreUnidad }}</td>
+                      {% if reg.is_activo %}
+                      <td>ACTIVO</td>
+                      {% else %}
+                      <td>INACTIVO</td>
+                      {% endif %}
+                      <td>{{ reg.fecha_inicio }}</td>
+                      {% if reg.fecha_fin == null %}
+                      <td>------</td>
+                      {% else %}
+                      <td>{{ reg.fecha_fin }}</td>
+                      {% endif %}
+                   </tr>
+                   {% endfor %}
+                   {% else %}
+                   <h5>No hay registros de Bitácora</h5>
+                   {% endif %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                     <th>Rol</th>
+                     <th>Estado</th>
+                     <th>Fecha Inicio</th>
+                     <th>Fecha Fin</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="col-13">
+        <div class="card card-warning">
+          <div class="card-header">
+            <h3 class="card-title">Estadísticas:</h3>
+          </div>
+          <div class="card-body" style="overflow:auto; max-height:27rem;">
+            <div class="form-group">
+              <figure class="highcharts-figure">
+                <div id="container"></div>
+              </figure>
+            </div>
+          </div>
+        </div>
+    </div>
 </section>
-
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript">
+    var arreglo = {{ estadisticas|safe }}
+    if(arreglo == null || arreglo == ""){
+      document.getElementById('container').innerHTML = "<h5>No Hay Estadísticas Aún ...</h5>"
+    }else{
+      var cambioClave = parseInt(arreglo[0].fields.cambioClave);
+      var bloqueos = parseInt(arreglo[0].fields.bloqueos);
+      Highcharts.chart('container', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Estadísticas de Usuario'
+        },
+        xAxis: {
+            categories: ['Cambios de Clave', 'Bloqueos'],
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: '',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'left',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor:
+                Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            data: [cambioClave, bloqueos]
+        }]
+    });
+    }
+  </script>
 {% endblock %}
