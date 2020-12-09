@@ -102,7 +102,13 @@ def index_usuarios(request):
         token = False
         if usuario2.nomUsuario == 'admin':
             token = True
-            context = {'usuarios':usuario, 'bloqueados':usuario_bloqueado, 'solicitudes':solicitud, 'admin':token}
+            rol = Rol.objects.all()
+            unidad = UnidadOrganizacional.objects.all()
+            rol_usuario = RolUsuario.objects.filter(is_activo=True).order_by('idRol')
+            data_rol = serializers.serialize('json', rol)
+            data_unidad = serializers.serialize('json', unidad)
+            data_rol_usuario = serializers.serialize('json', rol_usuario)
+            context = {'usuarios':usuario, 'bloqueados':usuario_bloqueado, 'solicitudes':solicitud, 'admin':token, 'data_rol':data_rol, 'data_unidad': data_unidad, 'data_rol_usuario':data_rol_usuario}
             return render(request, 'Usuarios/index_usuarios.html', context)
         else:
             token = False

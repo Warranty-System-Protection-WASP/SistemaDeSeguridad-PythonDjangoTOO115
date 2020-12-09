@@ -148,7 +148,7 @@ Detalle de Usuario
           <div class="card-header">
             <h3 class="card-title">Estadísticas:</h3>
           </div>
-          <div class="card-body" style="overflow:auto; max-height:27rem;">
+          <div class="card-body" style="overflow:auto; max-height:29rem;">
             <div class="form-group">
               <figure class="highcharts-figure">
                 <div id="container"></div>
@@ -203,7 +203,7 @@ Detalle de Usuario
         },
         legend: {
             layout: 'vertical',
-            align: 'left',
+            align: 'right',
             verticalAlign: 'top',
             x: -40,
             y: 80,
@@ -217,6 +217,7 @@ Detalle de Usuario
             enabled: false
         },
         series: [{
+            name: 'Cantidad',
             data: [cambioClave, bloqueos]
         }]
     });

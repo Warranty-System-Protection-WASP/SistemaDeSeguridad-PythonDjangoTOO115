@@ -4,6 +4,13 @@
 Usuarios | WASP - TOO115
 {% endblock %}
 
+{% block extrastatic %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+{% endblock %}
+
 {% block contentHeader %}
 Usuarios:
 {% endblock %}
@@ -133,7 +140,7 @@ Usuarios:
                   </table>
               </div>
             </div>
-            <div class="card card-info" id="card_solicitudes" value="{{ admin }}">
+            <div class="card card-success" id="card_solicitudes" value="{{ admin }}">
               <div class="card-header">
                 <h3 class="card-title">Solicitudes:</h3>
               </div>
@@ -199,6 +206,20 @@ Usuarios:
                   </table>
               </div>
             </div>
+            <div class="col-13">
+              <div class="card card-info">
+                <div class="card-header">
+                  <h3 class="card-title">Estadísticas:</h3>
+                </div>
+                <div class="card-body" style="overflow:auto; max-height:29rem;">
+                  <div class="form-group">
+                    <figure class="highcharts-figure">
+                      <div id="container"></div>
+                    </figure>
+                  </div>
+                </div>
+              </div>
+          </div>
           </div>
         </div>
       </div>
@@ -283,16 +304,86 @@ Usuarios:
     card.style.display = 'none';
   }
 
-  $(function () {
-    $('#tabla_roles').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
+  //Para las estadisticas
+  var data_rol = {{ data_rol|safe }}
+  var data_unidad = {{ data_unidad|safe }}
+  var data_rol_usuario = {{ data_rol_usuario|safe }}
+  console.log(JSON.stringify(data_rol));
+  console.log(JSON.stringify(data_unidad));
+  console.log(JSON.stringify(data_rol_usuario));
+  if((data_rol == null || data_rol == "") && (data_unidad == null || data_unidad == "") && (data_rol_usuario == null || data_rol_usuario == "")){
+    document.getElementById('container').innerHTML = "<h5>No Hay Estadísticas Aún ...</h5>"
+  }else{
+    var categorias = [];
+    var datos = [];
+
+    for(var i=0;i<data_rol.length;i++){
+      for(var j=0;j<data_unidad.length;j++){
+        if(data_rol[i].fields.unidad == data_unidad[j].pk){
+          categorias.push(data_rol[i].fields.nombreRol + " - " + data_unidad[j].fields.nombreUnidad);
+          contador = 0;
+          for(var k=0;k<data_rol_usuario.length;k++){
+            if(data_rol_usuario[k].fields.idRol == data_rol[i].pk){
+              contador = contador + 1;
+            }
+          }
+          datos.push(contador);
+        }
+      }
+    }
+    Highcharts.chart('container', {
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Estadísticas de Usuario/Rol'
+      },
+      xAxis: {
+          categories: categorias,
+          title: {
+              text: null
+          }
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: '',
+              align: 'high'
+          },
+          labels: {
+              overflow: 'justify'
+          }
+      },
+      tooltip: {
+          valueSuffix: ''
+      },
+      plotOptions: {
+          bar: {
+              dataLabels: {
+                  enabled: true
+              }
+          }
+      },
+      legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'top',
+          x: -40,
+          y: 80,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor:
+              Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+          shadow: true
+      },
+      credits: {
+          enabled: false
+      },
+      series: [{
+          name: 'Cantidad',
+          data: datos
+      }]
   });
+}
 </script>
 {% endblock %}
