@@ -610,7 +610,9 @@ class ResetPassword(FormView):
     def form_valid(self, request, *args, **kwargs):
         form = ResetPasswordForm(data=self.request.POST)
         if form.is_valid():
-            upass = Usuario.objects.filter(token=self.kwargs['token'])
+            upass = Usuario.objects.get(token=self.kwargs['token'])
             upass.set_password(form.cleaned_data['password'])
             upass.token = uuid.uuid4()
-            return HttpResponseRedirect('Login/NomUsuario/')
+            upass.is_bloqueado=False
+            upass.save()
+            return redirect('NombreUsuario')
