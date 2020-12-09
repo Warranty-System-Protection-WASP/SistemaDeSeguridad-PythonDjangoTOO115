@@ -22,6 +22,7 @@ urlpatterns = [
     #Para cambiar contraseña
     path('password_change/', PasswordChangeView.as_view(), name='password_change'),
     path('first_password_change/', FirstPasswordChangeView.as_view(), name='first_password_change'),
+    path('force_password_change/', ForcePasswordChangeView.as_view(), name='force_password_change'),
     #Para Usuarios
     path('Usuarios/', index_usuarios, name='index usuarios'),
     path('Usuarios/<slug:username>', edit_usuario, name='edit usuarios'),

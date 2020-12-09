@@ -86,3 +86,7 @@ class EstadisticaCuenta(models.Model):
     cambioClave=models.PositiveIntegerField(default=0)
     cambioRol=models.PositiveIntegerField(default=0)
     bloqueos=models.PositiveIntegerField(default=0)
+
+class BitacoraContrasenia(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete = models.CASCADE)
+    old_password = models.CharField(max_length=128)

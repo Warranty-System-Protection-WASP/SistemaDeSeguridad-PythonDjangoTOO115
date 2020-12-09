@@ -392,7 +392,7 @@ def IniciarSesion(request):
                         # Hacemos el login manualmente
                         login(request, user)
                         # Y le redireccionamos a la portada
-                        return HttpResponseRedirect(reverse_lazy('Cuenta:password_change'))
+                        return HttpResponseRedirect(reverse_lazy('Cuenta:force_password_change'))
                     else:
                         print("SOLO ESTOY COMPROBANDO EL PasswordChange 2: ", user.password_change_date, 'Tiempo:', restaTiempo)
                         # Hacemos el login manualmente
@@ -417,6 +417,9 @@ def IniciarSesion(request):
                 cache.set('intento',1)
                 usb = Usuario.objects.get(nomUsuario=username)
                 usb.is_bloqueado=True
+                estadistica = instancia_data(usb)
+                estadistica.bloqueos += 1
+                estadistica.save()
                 usb.save()
                 return render(request, '403_2.html')
         return render(request, 'cuenta/Contraseña.html')
@@ -480,6 +483,35 @@ class FirstPasswordChangeView(FormView):
         user=form.save(commit=False)
         user.password_change_date = datetime.now(timezone.utc)
         form.save()
+        # Updating the password logs out all other sessions for the user
+        # except the current one.
+        update_session_auth_hash(self.request, form.user)
+        return super().form_valid(form)
+
+class ForcePasswordChangeView(FormView):
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy('index')
+    template_name = 'cuenta/cambio_estricto.html'
+
+    @method_decorator(sensitive_post_parameters())
+    @method_decorator(csrf_protect)
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        user=form.save(commit=False)
+        user.password_change_date = datetime.now(timezone.utc)
+        form.save()
+        usuario = Usuario.objects.get(nomUsuario = self.request.user)
+        estadistica = instancia_data(usuario)
+        estadistica.cambioClave += 1
+        estadistica.save()
         # Updating the password logs out all other sessions for the user
         # except the current one.
         update_session_auth_hash(self.request, form.user)
@@ -615,4 +647,7 @@ class ResetPassword(FormView):
             upass.token = uuid.uuid4()
             upass.is_bloqueado=False
             upass.save()
+            estadistica = instancia_data(upass)
+            estadistica.cambioClave += 1
+            estadistica.save()
             return redirect('NombreUsuario')
