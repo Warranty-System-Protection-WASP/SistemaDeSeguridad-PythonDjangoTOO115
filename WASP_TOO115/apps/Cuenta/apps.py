@@ -52,6 +52,11 @@ class CuentaConfig(AppConfig):
                 existePregunta=cursorVerificacion.fetchone()
             except:
                 pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'CUENTA_BANCOPREGUNTA' FETCH FIRST 1 ROWS ONLY;")
+                existeBanco=cursorVerificacion.fetchone()
+            except:
+                pass
 
         with connection.cursor() as cursor:
             if(existeDepartamento!=None):
@@ -143,3 +148,13 @@ class CuentaConfig(AppConfig):
                     cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(4, '¿Cuál es el nombre de tu primera escuela donde estudiaste?');")
                     cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(5, '¿Dónde nació tu abuela?');")
                     cursor.execute("INSERT INTO CUENTA_PREGUNTA (NUMPREGUNTA, PREGUNTA) VALUES(6, '¿Dónde se conocieron tus padres?');")
+            if(existeBanco!=None):
+                cursor.execute("SELECT COUNT(*) FROM CUENTA_BANCOPREGUNTA")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 1, 'El bosque');")
+                    cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 2, 'Kike');")
+                    cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 3, 'Lassie');")
+                    cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 4, 'Centro Escolar Estados Unidos de América');")
+                    cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 5, 'Chalatenango');")
+                    cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 6, 'Santa Tecla');")
