@@ -1,39 +1,47 @@
 {% extends 'Base/Base.html' %}
 
 {% block Title %}
-    Gestión de solictud
+Gestión de solictud
 {% endblock Title %}
 
 {% block contentHeader %}
-    Tome una decisión
+Tome una decisión
 {% endblock %}
 
 
 {% block content %}
-
-<form method="POST">
-    {{ form.as_p }}
+<div class="container-fluid row justify-content-center">
+  <form method="POST" class="content col-lg-6 border">
     {% csrf_token %}
-
-    <div class="row">
-      <div class="form-group col-md-6">
-        <label for="cbodepartamento">Puesto:</label>
-        <select class="form-control" id="puestoUsuario" name="puestoUsuario" required >
-          <option value="">Seleccionar</option>
-          {% for puesto in roles %}
-            {% for unidad in unidades %}
-                {% if puesto.unidad == unidad %}
-                    <option value="{{ puesto.id }}">{{ puesto.nombreRol }} - {{ unidad.nombreUnidad }}</option>
-                {% endif %}
-            {% endfor %}
-          {% endfor %}
-        </select>
+    <div class="container-fluid border mt-3">
+      <div class="card-body">
+        <div class="card-header"">
+          <h3 class="card-title">Apruebe o rechace la solicitud:</h3>
+        </div>
+        <div class="form-group mt-3">
+          {{ form.as_p }}
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="cbodepartamento">Puesto:</label>
+            <select class="form-control" id="puestoUsuario" name="puestoUsuario" required >
+              <option value="">Seleccionar</option>
+              {% for puesto in roles %}
+              {% for unidad in unidades %}
+              {% if puesto.unidad == unidad %}
+              <option value="{{ puesto.id }}">{{ puesto.nombreRol }} - {{ unidad.nombreUnidad }}</option>
+              {% endif %}
+              {% endfor %}
+              {% endfor %}
+            </select>
+          </div>
+        </div>
       </div>
     </div>
-
-    <button type="submit">Registrar</button>
-</form>
-
-<hr />
-
+    <div class="card-footer mb-3">
+      <a class="btn btn-danger btn-lg border float-right mr-3" href="{% url 'Cuenta:index usuarios' %}"><i class="fas fa-times-circle"></i> Cancelar</a>
+      <button type="submit" class="btn btn-info btn-lg border float-right mr-3"><i class="fas fa-save"></i> Guardar</button>
+    </div>
+  </form>
+</div>
 {% endblock %}

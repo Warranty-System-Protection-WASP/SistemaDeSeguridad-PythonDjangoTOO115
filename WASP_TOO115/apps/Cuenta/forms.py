@@ -124,7 +124,7 @@ class AprobarForm(forms.ModelForm):
             'nombre':forms.TextInput(attrs={'class':'form-control', 'readonly':'True'}),
             'apellido':forms.TextInput(attrs={'class':'form-control', 'readonly':'True'}),
             'dui':forms.TextInput(attrs={'class':'form-control', 'readonly':'True'}),
-            'salario': forms.TextInput(attrs={'class':'form-control', 'pattern': '[0-9, "."]+', 'title':'Sólo números'})
+            'salario': forms.TextInput(attrs={'class':'form-control', 'pattern': '[0-9, "."]+', 'title':'Sólo números'}),            
         }
 
 class usuario_form(forms.ModelForm):

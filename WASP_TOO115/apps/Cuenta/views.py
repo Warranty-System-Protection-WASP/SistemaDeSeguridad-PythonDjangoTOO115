@@ -265,23 +265,9 @@ class SignUp(SuccessMessageMixin, CreateView):
         passcodeHash = user.passcode #Obtiene el passcode ingresado en texto plano
         hash= pbkdf2_sha256.hash(passcodeHash) #Encripta el passcode
         user.passcode = hash #Para guardar encriptado el passcode en la BD
-
-        #Lo dejo para prueba... lo ocuparé después en el restablecimiento de contraseña
-        verificar = pbkdf2_sha256.verify(passcodeHash, hash)
-        print(verificar)
-        verificar = pbkdf2_sha256.verify("3451", hash)
-        print(verificar)
-
         user.salario = 0.0
         return super(SignUp, self).form_valid(form)
 
-#Gestión de Solicitudes
-#@method_decorator(login_required, name='dispatch')
-'''class AdministrarSolicitudes(ListView):
-    model = Usuario
-    template_name = 'cuenta/AdministrarSolicitudes.html'
-    context_object_name = 'Solicitudes'
-'''
 @method_decorator(login_required, name='dispatch')
 class EliminarSolicitud(DeleteView):
     model = Usuario
@@ -403,12 +389,10 @@ def IniciarSesion(request):
                     print("SOLO ESTOY COMPROBANDO EL PasswordChange EN NONE", user.password_change_date)
                     login(request, user)
                     # AQUÍ SE LE VA A REDIRIGIR A UNA PANTALLA PARA EL CAMBIO DE CONTRA Y OTRAS CONFIGURACIONES
-                    #DE MOMENTO EL REDIRECCIONAMIENTO A LA LIST VIEW DE MUNICIPIOS SOLO ES PARA PRUEBA :V
-                    # RECORDATORIO PARA CUANDO ME DESPIERTE, SÍ FUNCIONA :3
                     return HttpResponseRedirect(reverse_lazy('Cuenta:first_password_change'))
         else:
             if cache.get('intento') <3:
-                falloContra = Usuario.objects.filter(nomUsuario=u).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para lalógica del bloqueo de cuenta
+                falloContra = Usuario.objects.filter(nomUsuario=u).values('contadorIntentos', 'is_bloqueado') #Voy a recuperar para la lógica del bloqueo de cuenta
                 messages.error(request, "Contraseña incorrecta")
                 print(cache.get('intento'))
                 cache.incr('intento')
@@ -607,15 +591,12 @@ def Reset(request):
                 mensaje['From'] = settings.EMAIL_HOST_USER
                 mensaje['To'] = emailR
                 mensaje['Subject'] = 'Resetear contraseña'
-                textoInicial = '\nPrueba Reset'
+                textoInicial = '\nEnlace temporal para resetear contraseña'
                 linkReset = '\nhttp://{}/Reset/Password/{}/'.format(URL, str(too))
-                linkHome = '\nhttp://{}'.format(URL)
                 parte0 = MIMEText(textoInicial, 'plain')
                 parte1 = MIMEText(linkReset, 'plain')
-                parte2 = MIMEText(linkHome, 'plain')
                 mensaje.attach(parte0)
                 mensaje.attach(parte1)
-                mensaje.attach(parte2)
                 mailServer.sendmail(settings.EMAIL_HOST_USER, emailR, mensaje.as_string())
                 print('Correo enviado correctamente')
             except Exception as e:
