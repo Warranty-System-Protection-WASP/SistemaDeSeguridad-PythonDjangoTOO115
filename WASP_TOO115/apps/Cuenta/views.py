@@ -645,6 +645,7 @@ class ResetPassword(FormView):
             upass = Usuario.objects.get(token=self.kwargs['token'])
             upass.set_password(form.cleaned_data['password'])
             upass.token = uuid.uuid4()
+            upass.password_change_date = datetime.now(timezone.utc)
             upass.is_bloqueado=False
             upass.save()
             estadistica = instancia_data(upass)
