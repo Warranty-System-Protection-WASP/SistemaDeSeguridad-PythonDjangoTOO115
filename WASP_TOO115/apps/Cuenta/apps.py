@@ -92,7 +92,7 @@ class CuentaConfig(AppConfig):
                 cantidad = cursor.fetchone()
                 if(cantidad[0]==0):
 
-                    cursor.execute("INSERT INTO CUENTA_USUARIO (PASSWORD, LAST_LOGIN, NOMUSUARIO, PASSCODE, IS_BLOQUEADO, CONTADORINTENTOS, IS_ACTIVE, SOLICITUD, NOMBRE, APELLIDO, FECHANACIMIENTO, CORREO, TELEFONO, DUI, NIT, ISSS, NUP, SALARIO, GENERO, ESTADOCIVIL, MUNICIPIO_ID, NUMCASA, CALLE, COLONIA) VALUES('pbkdf2_sha256$216000$3eV7aGYpIlRH$TGj6vyx4oCODWXHJxwKyg4zrsMqzVeY1gMIWOx6z87I=',NULL, 'admin', '$pbkdf2-sha256$29000$3RsDwBhDKKW01rrXeq917g$MPi8zq254FVo8ZAKVnysLxcHoXbgyRdO131tfiBaxwY',0,0,1, 'A','admin','admin', to_date('1996-06-09', 'yyyy-mm-dd'),'vabcruz96@gmail.com','63141818','053733490','06140906961090','123456789','123456789012',500.0,'femenino', 'soltero', 3000, 6, 'Rafael Hernández','La Fuente');")
+                    cursor.execute("INSERT INTO CUENTA_USUARIO (PASSWORD, LAST_LOGIN, NOMUSUARIO, PASSCODE, IS_BLOQUEADO, CONTADORINTENTOS, IS_ACTIVE, SOLICITUD, NOMBRE, APELLIDO, FECHANACIMIENTO, CORREO, TELEFONO, DUI, NIT, ISSS, NUP, SALARIO, GENERO, ESTADOCIVIL, MUNICIPIO_ID, NUMCASA, CALLE, COLONIA, PASSWORD_CHANGE_DATE) VALUES('pbkdf2_sha256$216000$3eV7aGYpIlRH$TGj6vyx4oCODWXHJxwKyg4zrsMqzVeY1gMIWOx6z87I=',NULL, 'admin', '$pbkdf2-sha256$29000$3RsDwBhDKKW01rrXeq917g$MPi8zq254FVo8ZAKVnysLxcHoXbgyRdO131tfiBaxwY',0,0,1, 'A','admin','admin', to_date('1996-06-09', 'yyyy-mm-dd'),'vabcruz96@gmail.com','63141818','053733490','06140906961090','123456789','123456789012',500.0,'femenino', 'soltero', 3000, 6, 'Rafael Hernández','La Fuente', sysdate);")
             if(existeOpcion!=None):
                 cursor.execute("SELECT COUNT(*) FROM ROL_OPCIONCRUD")
                 cantidad = cursor.fetchone()
