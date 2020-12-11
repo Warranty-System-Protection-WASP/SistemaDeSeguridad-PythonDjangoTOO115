@@ -23,10 +23,11 @@ class ValidadorPersonalizado():
             raise ValidationError(_('La contraseña debe contener al menos %(min_length)d letra mayúscula.') % {'min_length': self.min_length})
         if not any(char in caracteres_especiales for char in password):
             raise ValidationError(_('La contraseña debe contener al menos %(min_length)d caracter especial.') % {'min_length': self.min_length})
-
-        for item in old_pass:
-            result = django_pbkdf2_sha256.verify(password, item.old_password)
-            if  result == True:
-                raise ValidationError(_('La contraseña debe ser diferente a anteriores.'))
+        '''if old_pass is not None:
+            for item in old_pass:
+                if item.old_password is not None:
+                    result = django_pbkdf2_sha256.verify(password, item.old_password)
+                    if  result == True:
+                        raise ValidationError(_('La contraseña debe ser diferente a anteriores.'))'''
     def get_help_text(self):
         return ""

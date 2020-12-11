@@ -606,7 +606,7 @@ def Reset(request):
             messages.error(request, "Passcode o respuesta a pregunta incorrecta")
             return render(request, 'cuenta/Passcode.html', {'u': u, 'nc': nc, 'preguntaU':preguntaU})
     else:
-        return HttpResponseRedirect(reverse_lazy('CuentaUsuario'))
+        return render(request, 'cuenta/notificacion_correo.html', {'correo':emailR})
 
 class ResetPassword(FormView):
     form_class = ResetPasswordForm

@@ -1,0 +1,57 @@
+{% extends 'Base/Base.html' %}
+{% load static %}
+{% block title %}
+Autenticación | WASP - TOO115
+{% endblock %}
+
+{% block sidebar %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="{% url 'index' %}" class="row justify-content-center" style="background-color: rgb(255, 255, 255)">
+      <img src="{% static 'WASP.png' %}" alt="AdminLTE Logo" style="width:50%">
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-header">OPCIONES</li>
+        <li class="nav-item">
+          <a href="{% url 'SignUp' %}" class="nav-link">
+            <i class="nav-icon fa fa-user-plus"></i>
+            <p>Crear cuenta</p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>
+{% endblock %}
+
+{% block contentHeader %}
+Verificación por Correo Electrónico
+{% endblock %}
+
+{% block content %}
+<div class="card" style="background-color: rgb(32,32,32) ; opacity: 70%;">
+  <div class="mx-auto">
+    <form method="POST" action="{% url 'Reset' %}">
+      {% csrf_token %}
+      <div class="container-fluid mt-3">
+        <div class="container-fluid" align="center">
+          <h3>Hemos enviado un correo electronico a:</h3>
+          <strong><i class="fas fa-mail"></i> {{ correo }}</strong> <h3>, para verificar tu cuenta.</h3>
+        </div>
+      </div>
+      <div class="form-group">
+        <div align= "center" class="btn_crear mb-3">
+          <button class="btn btn-success btn-lg border" style="background: #002f61" type="button"><a href="{% url 'CuentaUsuario' %}"><i class="fas fa-sing-in"></i> Entendido!</a></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
