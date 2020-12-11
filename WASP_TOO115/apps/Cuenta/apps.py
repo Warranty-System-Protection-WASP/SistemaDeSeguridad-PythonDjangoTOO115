@@ -57,6 +57,11 @@ class CuentaConfig(AppConfig):
                 existeBanco=cursorVerificacion.fetchone()
             except:
                 pass
+            try:
+                cursorVerificacion.execute("SELECT * FROM ALL_TABLES WHERE TABLE_NAME = 'CUENTA_BITACORACONTRASENIA' FETCH FIRST 1 ROWS ONLY;")
+                existeBitacoraContra=cursorVerificacion.fetchone()
+            except:
+                pass
 
         with connection.cursor() as cursor:
             if(existeDepartamento!=None):
@@ -158,3 +163,8 @@ class CuentaConfig(AppConfig):
                     cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 4, 'Centro Escolar Estados Unidos de América');")
                     cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 5, 'Chalatenango');")
                     cursor.execute("INSERT INTO CUENTA_BANCOPREGUNTA (NOMUSUARIO_ID, NUMPREGUNTA_ID, RESPUESTA) VALUES('admin', 6, 'Santa Tecla');")
+            if(existeBitacoraContra!=None):
+                cursor.execute("SELECT COUNT(*) FROM CUENTA_BITACORACONTRASENIA")
+                cantidad = cursor.fetchone()
+                if(cantidad[0]==0):
+                    cursor.execute("CREATE OR REPLACE TRIGGER PASS_CHANGE BEFORE INSERT OR UPDATE OF PASSWORD ON CUENTA_USUARIO FOR EACH ROW BEGIN INSERT INTO CUENTA_BITACORACONTRASENIA (USUARIO_ID, OLD_PASSWORD) VALUES (:NEW.NOMUSUARIO, :NEW.PASSWORD); END;/")
