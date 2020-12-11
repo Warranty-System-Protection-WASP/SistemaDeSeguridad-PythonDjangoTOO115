@@ -588,7 +588,7 @@ def Reset(request):
         pBD = passcodeBD.get()
         passcodeUsuarioBD = pBD.get('passcode')
         nc = Usuario.objects.filter(nomUsuario=u).values('nombre', 'apellido').first()
-        preguntaU = BancoPregunta.objects.filter(nomUsuario=u)
+        preguntaU = Pregunta.objects.all()
         verificar = pbkdf2_sha256.verify(passc, passcodeUsuarioBD) #Retorna un boolean
         if verificar == True and bancoPregunta is not None:
             try:
